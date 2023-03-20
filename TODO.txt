@@ -1,0 +1,15 @@
+0. Test stack.c
+1. convert push_swap_operations.c to use stack data structure and then convert others as well:
+   push_swap.c
+   stack_functions.c
+   sorting_algorithms.c
+   insertion_sort.c
+   naive_sort.c
+   checker.c
+   (breadth_first_search.c)
+2. Add command tracing to push_swap_operations.c
+3. Test and benchmark.
+4. Additional sorting algorithms.
+5. Replace ft_printf with latest.
+6. Folder structure
+7. Makefile

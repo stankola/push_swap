@@ -12,10 +12,11 @@
 #include <stdlib.h>
 #include <stdio.h>		// TESTING
 #include "push_swap.h"
-#include "ft_printf.h"
+#include "sorting_algorithms.h"
+//#include "ft_printf.h"
 
 // TODO NEXT:
-// Shortest route problem, not sorting problem! (edit: maybe little sorting required)
+// Shortest route problem, not sorting problem! (edit: maybe little sorting required ;)
 // Should there be better data structure than linked list? Could try to do data structure independent traversal and replace if needed.
 
 void	delstacks(t_list *stacks[])
@@ -101,10 +102,11 @@ int	main(int argc, char *argv[])
 		*iptr = ft_atoi(argv[i--]);	// TODO: Error handlng and detection: Errors include for example: some arguments aren’t integers, some arguments are bigger than an integer and/or there are duplicates.
 		ft_lstadd_front(&stacks[a], ft_lstnew(iptr));
 	}
-	fprintf(stderr, "Finding goal\n");
-	char *path = breadth_first_search(stacks);
-	printf("Printing goal\n");
-	printf("%s", path);
-	system("Leaks pusa");
+	insertion_sort(stacks);
+//	fprintf(stderr, "Finding goal\n");
+//	char *path = breadth_first_search(stacks);
+//	printf("Printing goal\n");
+//	printf("%s", path);
+//	system("Leaks pusa");
 	return (1);
 }

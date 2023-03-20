@@ -12,6 +12,7 @@
 #include "push_swap.h"
 #include <stdio.h>		// TESTING
 
+// Swaps the position of the first two elements of stack
 void	swap(t_list **stack)
 {
 	t_list	*temp;
@@ -24,6 +25,7 @@ void	swap(t_list **stack)
 	*stack = temp;
 }
 
+// Pushes the first element from stack_a to stack_b
 void	push(t_list **stack_a, t_list **stack_b)
 {
 	t_list	*temp;
@@ -35,8 +37,8 @@ void	push(t_list **stack_a, t_list **stack_b)
 	ft_lstadd_front(stack_b, temp);
 }
 
-
-void	rotate(t_list **stack)
+// Rotates the stack so that the last element becomes the first
+void	reverse_rotate(t_list **stack)
 {
 	t_list	*next_to_last;
 
@@ -50,8 +52,8 @@ void	rotate(t_list **stack)
 	next_to_last->next = NULL;
 }
 
-
-void	reverse_rotate(t_list **stack)
+// Rotates the stack so that the first element becomes the last
+void	rotate(t_list **stack)
 {
 	t_list	*temp;
 

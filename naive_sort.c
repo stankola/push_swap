@@ -11,6 +11,9 @@
 /* ************************************************************************** */
 #include "push_swap.h"
 
+/* Works by finding the minimum value from stack a and pushes it to stack b for
+ * as long as there are values in stack a.
+ */
 static int	get_min_value(const t_list *stack)
 {
 	int	min;
