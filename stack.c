@@ -36,6 +36,9 @@ void	push(t_stack *stack, void *content)
 	ft_lstadd_front(&stack->head, content);
 }
 
+/* If NULL has been inserted then pop returns values that are indistinguishable
+ * from invalid behaviour.
+ */
 void	*pop(t_stack *stack)
 {
 	void	*content;

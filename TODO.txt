@@ -1,5 +1,5 @@
 0. Test stack.c
-1. convert push_swap_operations.c to use stack data structure and then convert others as well:
+1. convert push_swap_operations.c to use stack data structure and then convert others as well: *
    push_swap.c
    stack_functions.c
    sorting_algorithms.c
