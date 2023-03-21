@@ -10,33 +10,40 @@
 /*                                                                            */
 /* ************************************************************************** */
 #include "stack.h"
+#include <stdio.h> // TESTING
 
 t_stack	*new_stack()
 {
-	t_list	*head;
+//	t_list	*head;
 	t_stack	*stack;
 
-	head = malloc(sizeof(t_list));
-	if (head == NULL)
-		return (NULL);
+//	head = malloc(sizeof(t_list));
+//	if (head == NULL)
+//		return (NULL);
 	stack = malloc(sizeof(t_stack));
 	if (stack == NULL)
 	{
-		free(head);
+//		free(head);
 		return (NULL);
 	}
-	stack->head = head;
+	stack->head = NULL;
 	return (stack);
 }
 
+// NULL value for content is not supported because they would break the logic
 void	push(t_stack *stack, void *content)
 {
-	if (stack == NULL)
+	t_list	*node;
+
+	if (stack == NULL || content == NULL)
 		return ;
-	ft_lstadd_front(&stack->head, content);
+	node = ft_lstnew(content);
+	if (node == NULL)
+		return ;
+	ft_lstadd_front(&stack->head, node);
 }
 
-/* If NULL has been inserted then pop returns values that are indistinguishable
+/* If NULL has/had been inserted then pop returns values that are indistinguishable
  * from invalid behaviour.
  */
 void	*pop(t_stack *stack)
@@ -54,8 +61,8 @@ void	*pop(t_stack *stack)
 	return (content);
 }
 
-// del is not required. If NULL is passed, we assume that the caller knows
-// that the stack is empty.
+/* del is not required. If NULL is passed, assume that the stack is empty.
+ */
 void	del_stack(t_stack **stack, void (*del)(void*))
 {
 	if (*stack == NULL)
@@ -65,4 +72,16 @@ void	del_stack(t_stack **stack, void (*del)(void*))
 	free((*stack)->head);
 	free(*stack);
 	*stack = NULL;
+}
+
+/* Returns pointer to first element.
+ */
+void	*peek(t_stack *stack)
+{
+	void	*ptr;
+
+	ptr = pop(stack);
+//	fprintf(stderr, "Peek: popped %p\n", ptr);
+	push(stack, ptr);
+	return (ptr);
 }

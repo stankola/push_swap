@@ -12,6 +12,7 @@
 #ifndef PUSH_SWAP_H
 # define PUSH_SWAP_H 
 # include "libft.h"
+# include "stack.h"
 
 typedef struct	s_vertex
 {
@@ -26,40 +27,38 @@ typedef struct	s_queue
 	t_list		*tail;
 }				t_queue;
 
-enum	e_commands {ps_sa, ps_sb, ps_ss, ps_pa, ps_pb, ps_ra, ps_rb, ps_rr, ps_rra, ps_rrb, ps_rrr};
+enum		e_commands {ps_sa, ps_sb, ps_ss, ps_pa, ps_pb, ps_ra, ps_rb, ps_rr, ps_rra, ps_rrb, ps_rrr};
 
-enum	e_stacks {a, b};
-
-int			is_sorted(t_list *const stacks[]);
+enum		e_stacks {a, b};
 
 void		delstacks(t_list *stacks[]);
 
-t_list		**execute(t_list *stacks[], int command);
+void		execute(t_stack *stacks[], t_stack *command_stack, int command);
 
 char		*command_to_string(int command);
 
 void		del_int_ptr(int *iptr);
 
-void		swap(t_list**);
+void		ps_swap(t_stack *stack);
 
-t_list		*swa(t_list *stack);
+void		ps_push(t_stack *stack_a, t_stack *stack_b);
 
-void		push(t_list**, t_list**);
+void		ps_rotate(t_stack *stack);
 
-t_list		**pus(t_list *stack_a, t_list *stack_b);
-
-void		rotate(t_list**);
-
-t_list		*rotat(t_list *stack);
-
-void		reverse_rotate(t_list **stack);
-
-t_list		*reverse_rotat(t_list *stack);
-
-void		print_stacks(t_list *const stacks[]);
+void		ps_reverse_rotate(t_stack *stack);
 
 int			compare_stacks(t_list *stacks_1[], t_list *stacks_2[]);
 
+/* stack_functions.c TODO: consider moving to own header file */
+int			is_sorted(t_stack *const stack);
+
+void		print_stacks(t_stack *const stacks[]);
+
+void		stack_to_stack(t_stack *stack_a, t_stack *stack_b);
+
+int			get_stack_size(t_stack *stack);
+
+/*
 t_list		*clone_stack(t_list const *stack);
 
 t_list		**clone_stacks(t_list const *stacks[]);
@@ -91,7 +90,7 @@ t_list		*ft_vertpath(t_vertex *v);
 void		ft_vertdel(t_vertex **v, void(*del_content)(void*), void(*del_edge)(void*));
 
 char		*breadth_first_search(t_list *stacks[]);
-
+*/
 #endif
 
 /*

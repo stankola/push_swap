@@ -12,7 +12,7 @@
 #include "libft.h"
 #include <stdlib.h>
 
-static unsigned int	pow(int a, unsigned int power)
+static unsigned int	ft_power(int a, unsigned int power)
 {
 	unsigned int	result;
 
@@ -34,14 +34,14 @@ char	*ft_uitoa(unsigned int n)
 	char			*a;
 
 	order_of_magnitude = 1;
-	while (n / pow(10, order_of_magnitude) != 0 && order_of_magnitude < 10)
+	while (n / ft_power(10, order_of_magnitude) != 0 && order_of_magnitude < 10)
 		order_of_magnitude++;
 	a = malloc(sizeof(char) * (order_of_magnitude + 1));
 	if (a == NULL)
 		return (NULL);
 	i = 0;
 	while (order_of_magnitude > 0)
-		a[i++] = '0' + (n / pow(10, --order_of_magnitude) % 10);
+		a[i++] = '0' + (n / ft_power(10, --order_of_magnitude) % 10);
 	a[i] = '\0';
 	return (a);
 }

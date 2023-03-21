@@ -13,46 +13,35 @@
 #include <stdio.h>		// TESTING
 #include "push_swap.h"
 #include "sorting_algorithms.h"
-//#include "ft_printf.h"
+#include "ft_printf.h"
 
-// TODO NEXT:
-// Shortest route problem, not sorting problem! (edit: maybe little sorting required ;)
-// Should there be better data structure than linked list? Could try to do data structure independent traversal and replace if needed.
-
-void	delstacks(t_list *stacks[])
+void	execute(t_stack *stacks[], t_stack *command_stack, int command)
 {
-	if (stacks == NULL)
+	int	*iptr;
+
+	if (stacks == NULL || stacks[a] == NULL || stacks[b] == NULL ||
+		command_stack == NULL || command < ps_sa || command > ps_rrr)
 		return ;
-	ft_lstclear(&stacks[a], (void(*)(void*))del_int_ptr);
-	ft_lstclear(&stacks[b], (void(*)(void*))del_int_ptr);
-	free(stacks);
-}
-
-t_list	**execute(t_list *stacks[], int command)
-{
-	t_list	**result_stacks;
-
-	result_stacks = clone_stacks((const t_list**)stacks);
-	if (result_stacks != NULL)
-	{
-		if (command == ps_sa || command == ps_ss)
-			swap(&result_stacks[a]);
-		if (command == ps_sb || command == ps_ss)
-			swap(&result_stacks[b]);
-		if (command == ps_pa)
-			push(&result_stacks[a], &result_stacks[b]);
-		if (command == ps_pb)
-			push(&result_stacks[b], &result_stacks[a]);
-		if (command == ps_ra || command == ps_rr)
-			rotate(&result_stacks[a]);
-		if (command == ps_rb || command == ps_rr)
-			rotate(&result_stacks[b]);
-		if (command == ps_rra || command == ps_rrr)
-			reverse_rotate(&result_stacks[a]);
-		if (command == ps_rrb || command == ps_rrr)
-			reverse_rotate(&result_stacks[b]);
-	}
-	return (result_stacks);
+	if (command == ps_sa || command == ps_ss)
+		ps_swap(stacks[a]);
+	if (command == ps_sb || command == ps_ss)
+		ps_swap(stacks[b]);
+	if (command == ps_pa)
+		ps_push(stacks[a], stacks[b]);
+	if (command == ps_pb)
+		ps_push(stacks[b], stacks[a]);
+	if (command == ps_ra || command == ps_rr)
+		ps_rotate(stacks[a]);
+	if (command == ps_rb || command == ps_rr)
+		ps_rotate(stacks[b]);
+	if (command == ps_rra || command == ps_rrr)
+		ps_reverse_rotate(stacks[a]);
+	if (command == ps_rrb || command == ps_rrr)
+		ps_reverse_rotate(stacks[b]);
+	iptr = malloc(sizeof(int));
+	*iptr = command;
+	if (iptr != NULL)
+		push(command_stack, iptr);
 }
 
 char	*command_to_string(int command)
@@ -81,32 +70,108 @@ char	*command_to_string(int command)
 		str = "rrb\n";
 	else if (command == ps_rrr)
 		str = "rrr\n";
-	return (ft_strdup(str));	//possible malloc failure inside, returns NULL, should be ok.
+	return (ft_strdup(str));	//possible malloc failure inside, returns NULL, should be ok, NULL is then returned upwards.
 }
 
+void	print_command_stack(t_stack *command_stack)
+{
+	int		*iptr;
+	t_stack	*temp_stack;
+
+	temp_stack = new_stack();
+	stack_to_stack(command_stack, temp_stack);
+	while (peek(temp_stack) != NULL)
+	{
+		iptr = (int*)pop(temp_stack);
+		ft_printf("%s", command_to_string(*iptr));
+		free(iptr);
+		iptr = NULL;
+	}
+	del_stack(&temp_stack, NULL);
+}
+// TODO: Errors include: some arguments aren’t integers, some arguments are bigger than an integer and/or there are duplicates.
+static int	*args_to_int_array(int argc, char *argv[])
+{
+	int		*iarr;
+	int		i;
+
+	iarr = malloc(sizeof(int) * argc);
+	if (iarr == NULL)
+		return (NULL);
+	i  = 0;
+	while(i < argc)
+	{
+		if (!ft_isinteger(argv[i]))
+		{
+			free(iarr);
+			return (NULL);
+		}
+		iarr[i] = ft_atoi(argv[i]);
+		i++;
+	}
+	return (iarr);
+}
+
+
+
+/* TESTING MAIN */
 int	main(int argc, char *argv[])
 {
-	t_list	**stacks;
+	t_stack	**stacks;
+	t_stack *command_stack;
 	int		i;
 	int		*iptr;
 
 	if (argc <= 1)
 		return (1);
 	i = argc - 1;
-	stacks = malloc((b + 1) * sizeof(t_list*));
-	stacks[a] = NULL;
-	stacks[b] = NULL;
+	stacks = malloc((b + 1) * sizeof(t_stack*));
+	stacks[a] = new_stack();
+	stacks[b] = new_stack();
+//	command_stack = new_stack();
+	while(i > 0)
+	{
+		iptr = malloc(sizeof(int));
+		*iptr = ft_atoi(argv[i--]);
+		printf("Pushing %p: %i\n", iptr, *iptr);
+		push(stacks[a], iptr);
+	}
+	print_stacks(stacks);
+/*	execute(stacks, command_stack, ps_pa);
+	execute(stacks, command_stack, ps_pa);
+	execute(stacks, command_stack, ps_ss);
+	print_stacks(stacks);
+	print_command_stack(command_stack);*/
+	command_stack = insertion_sort(stacks);
+	print_command_stack(command_stack);
+
+//	system("Leaks pusa");
+	return (1);
+}
+
+/* PRODUCTION MAIN */
+int	main(int argc, char *argv[])
+{
+	t_stack	**stacks;
+	t_stack *command_stack;
+	int		i;
+	int		*iptr;
+
+	if (argc <= 1)
+		return (1);
+	i = argc - 1;
+	stacks = malloc((b + 1) * sizeof(t_stack*));
+	if (stacks == NULL)
+		return (0);
+	stacks[a] = new_stack();
+	stacks[b] = new_stack();
 	while(i > 0)
 	{
 		iptr = malloc(sizeof(int));
 		*iptr = ft_atoi(argv[i--]);	// TODO: Error handlng and detection: Errors include for example: some arguments aren’t integers, some arguments are bigger than an integer and/or there are duplicates.
-		ft_lstadd_front(&stacks[a], ft_lstnew(iptr));
+		push(stacks[a], iptr);
 	}
-	insertion_sort(stacks);
-//	fprintf(stderr, "Finding goal\n");
-//	char *path = breadth_first_search(stacks);
-//	printf("Printing goal\n");
-//	printf("%s", path);
-//	system("Leaks pusa");
+	command_stack = insertion_sort(stacks);
+	print_command_stack(command_stack);
 	return (1);
 }

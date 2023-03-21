@@ -19,6 +19,10 @@ typedef struct s_list
 	struct s_list	*next;
 }					t_list;
 
+int		ft_isspace(char c);
+
+int		ft_isinteger(char *str);
+
 int		ft_isalpha(int c);
 
 int		ft_isdigit(int c);

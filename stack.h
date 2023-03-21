@@ -26,4 +26,6 @@ void	*pop(t_stack *stack);
 
 void	del_stack(t_stack **stack, void (*del)(void*));
 
+void	*peek(t_stack *stack);
+
 #endif

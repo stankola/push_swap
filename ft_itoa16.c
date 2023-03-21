@@ -12,7 +12,7 @@
 #include "libft.h"
 #include <stdlib.h>
 
-static unsigned int	pow(int a, unsigned int power)
+static unsigned int	ft_power(int a, unsigned int power)
 {
 	unsigned int	result;
 
@@ -47,14 +47,14 @@ char	*ft_itoa16(unsigned int n, int cap)
 	char			*a;
 
 	oom = 1;
-	while (oom < 8 && n / pow(16, oom) != 0)
+	while (oom < 8 && n / ft_power(16, oom) != 0)
 		oom++;
 	a = malloc(sizeof(char) * (oom + 1));
 	if (a == NULL)
 		return (NULL);
 	i = 0;
 	while (oom > 0)
-		a[i++] = get_a_hex((n / pow(16, --oom) % 16), cap);
+		a[i++] = get_a_hex((n / ft_power(16, --oom) % 16), cap);
 	a[i] = '\0';
 	return (a);
 }

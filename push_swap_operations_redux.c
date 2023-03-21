@@ -14,90 +14,68 @@
 #include <stdio.h>		// TESTING
 
 // Swaps the position of the first two elements of stack
-void	swap(t_stack *stack)
+void	ps_swap(t_stack *stack)
 {
 	void	*temp1;
 	void	*temp2;
 
-	if (stack == NULL || stack->head == NULL)
+	if (stack == NULL)
 		return ;
 	temp1 = pop(stack);
 	temp2 = pop(stack);
-	if (temp2 == NULL)
 	push(stack, temp1);
-	if (temp2 != NULL)
-		push(stack, temp2);
+	push(stack, temp2);
 }
 
 // Pushes the first element from stack_a to stack_b
-void	push(t_stack *stack_a, t_stack *stack_b)
+void	ps_push(t_stack *stack_a, t_stack *stack_b)
 {
-	void	*temp;
-
-	if (stack_a == NULL || stack_b == NULL
-		|| stack_a->head == NULL || stack_b->head == NULL)
+	if (stack_a == NULL || stack_b == NULL)
 		return ;
-	temp = pop(stack_a);
-	if (temp != NULL)
+	if (peek(stack_a) != NULL)
 		push(stack_b, pop(stack_a));
 }
 
-// Rotates the stack so that the last element becomes the first
-void	reverse_rotate(t_stack *stack)
-{
-	void	*temp_last;
-	t_stack	*temp_stack;
-	void	*temp_content;
-
-	if (stack == NULL || stack->head == NULL)
-		return ;
-	temp_stack = new_stack();
-	temp_content = pop(stack);
-	if (temp_content == NULL)
-		return ;
-	while (temp_content != NULL)
-	{
-		push(temp_stack, temp_content);
-		temp_content = pop(stack);
-	}
-	temp_content = pop(temp_stack);
-	temp_last = temp_content;
-	while (temp_content != NULL)
-	{
-		push(stack, temp_content);
-		temp_content = pop(temp_stack);
-	}
-	push(stack, temp_last);
-	del_stack(&temp_stack, NULL);
-}
-
 // Rotates the stack so that the first element becomes the last
-void	rotate(t_stack *stack)
+void	ps_rotate(t_stack *stack)
 {
 	void	*temp_first;
 	t_stack	*temp_stack;
-	void	*temp_content;
 
-	if (stack == NULL || stack->head == NULL)
+	if (stack == NULL)
+		return ;
+	temp_first = pop(stack);
+	if (temp_first == NULL)
 		return ;
 	temp_stack = new_stack();
-	temp_content = pop(stack);
-	if (temp_content == NULL)
+	if (temp_stack == NULL)
 		return ;
-	temp_first = temp_content;
-	temp_content = pop(stack);
-	while (temp_content != NULL)
-	{
-		push(temp_stack, temp_content);
-		temp_content = pop(stack);
-	}
+	stack_to_stack(stack, temp_stack);
 	push(stack, temp_first);
-	temp_content = pop(temp_stack);
-	while (temp_content != NULL)
+	stack_to_stack(temp_stack, stack);
+	del_stack(&temp_stack, NULL);
+}
+
+// Rotates the stack so that the last element becomes the first
+void	ps_reverse_rotate(t_stack *stack)
+{
+	void	*temp_last;
+	t_stack	*temp_stack;
+
+	if (stack == NULL)
+		return ;
+	temp_stack = new_stack();
+	if (temp_stack == NULL)
+		return ;
+	stack_to_stack(stack, temp_stack);
+	temp_last = pop(temp_stack);
+	if (temp_last == NULL)
 	{
-		push(stack, temp_content);
-		temp_content = pop(temp_stack);
+		del_stack(&temp_stack, NULL);
+		return ;
 	}
+	stack_to_stack(temp_stack, stack);
+	push(stack, temp_last);
 	del_stack(&temp_stack, NULL);
 }
 

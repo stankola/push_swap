@@ -14,7 +14,7 @@
 /* Works by finding the minimum value from stack a and pushes it to stack b for
  * as long as there are values in stack a.
  */
-static int	get_min_value(const t_list *stack)
+static int	get_min_value(const t_stack *stack)
 {
 	int	min;
 
@@ -30,7 +30,7 @@ static int	get_min_value(const t_list *stack)
 	return (min);
 }
 
-void naive_sort(t_list *stacks[])
+void naive_sort(t_stack *stacks[])
 {
 	int	min;
 
@@ -40,9 +40,9 @@ void naive_sort(t_list *stacks[])
 	{
 		min = get_min_value(stacks[a]);
 		while (*(int*)stacks[a]->content != min)
-			rotate(&stacks[a]);
-		push(&stacks[a], &stacks[b]);
+			ps_rotate(&stacks[a]);
+		ps_push(&stacks[a], &stacks[b]);
 	}
 	while (stacks[b] != NULL)
-		push(&stacks[b], &stacks[a]);
+		ps_push(&stacks[b], &stacks[a]);
 }
