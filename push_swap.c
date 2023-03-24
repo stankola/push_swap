@@ -10,6 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 #include "push_swap.h"
+#include "ft_printf.h" // TESTING
 
 void	execute(t_stack *stacks[], t_stack *command_stack, int command)
 {
@@ -68,6 +69,46 @@ char	*command_to_string(int command)
 	else if (command == ps_rrr)
 		str = "rrr\n";
 	return (ft_strdup(str));
+}
+
+int		string_to_command(char *str)
+{
+	int	command;
+
+	command = -1;
+	if (ft_strncmp(str, "sa", 2) == 0)
+		command = ps_sa;
+	else if (ft_strncmp(str, "sb", 2) == 0)
+		command = ps_sb;
+	else if (ft_strncmp(str, "ss", 2) == 0)
+		command = ps_ss;
+	else if (ft_strncmp(str, "pa", 2) == 0)
+		command = ps_pa;
+	else if (ft_strncmp(str, "pb", 2) == 0)
+		command = ps_pb;
+	else if (ft_strncmp(str, "rra", 3) == 0)
+		command = ps_rra;
+	else if (ft_strncmp(str, "rrb", 3) == 0)
+		command = ps_rrb;
+	else if (ft_strncmp(str, "rrr", 3) == 0)
+		command = ps_rrr;
+	else if (ft_strncmp(str, "ra", 2) == 0)
+		command = ps_ra;
+	else if (ft_strncmp(str, "rb", 2) == 0)
+		command = ps_rb;
+	else if (ft_strncmp(str, "rr", 2) == 0)
+		command = ps_rr;
+	return (command);
+}
+
+int		countwords(char *strarr[])
+{
+	int	i;
+
+	i = 0;
+	while (strarr[i] != NULL)
+		i++;
+	return (i);
 }
 
 /* TESTING MAIN */ /*

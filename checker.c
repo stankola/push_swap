@@ -14,57 +14,7 @@
 #include "libft.h"
 #include "ft_printf.h"
 
-int		is_sorted(t_list *const stacks[])
-{
-	int				prev;
-	t_list const	*a_iterator;
-
-	if (stacks[b] != NULL)
-		return (0);
-	if (stacks[a] == NULL && stacks[b] == NULL)
-		return (1);
-	a_iterator = stacks[a];
-	while (a_iterator->next != NULL)
-	{
-		prev = *(int*)a_iterator->content;
-		a_iterator = a_iterator->next;
-		if (prev > *(int*)a_iterator->content)
-			return (0);
-	}
-	return (1);
-}
-
-int		string_to_command(char *str)
-{
-	int	command;
-
-	command = -1;
-	if (ft_strncmp(str, "sa", 2) == 0)
-		command = ps_sa;
-	else if (ft_strncmp(str, "sb", 2) == 0)
-		command = ps_sb;
-	else if (ft_strncmp(str, "ss", 2) == 0)
-		command = ps_ss;
-	else if (ft_strncmp(str, "pa", 2) == 0)
-		command = ps_pa;
-	else if (ft_strncmp(str, "pb", 2) == 0)
-		command = ps_pb;
-	else if (ft_strncmp(str, "rra", 3) == 0)
-		command = ps_rra;
-	else if (ft_strncmp(str, "rrb", 3) == 0)
-		command = ps_rrb;
-	else if (ft_strncmp(str, "rrr", 3) == 0)
-		command = ps_rrr;
-	else if (ft_strncmp(str, "ra", 2) == 0)
-		command = ps_ra;
-	else if (ft_strncmp(str, "rb", 2) == 0)
-		command = ps_rb;
-	else if (ft_strncmp(str, "rr", 2) == 0)
-		command = ps_rr;
-	return (command);
-}
-
-static void	chexecute(t_list *stacks[], t_queue *commands)
+static void	chexecute(t_stack *stacks[], t_queue *commands)
 {
 	int	*command;
 	
@@ -72,21 +22,21 @@ static void	chexecute(t_list *stacks[], t_queue *commands)
 	while (command != NULL)
 	{
 		if (*command == ps_sa || *command == ps_ss)
-			swap(&stacks[a]);
+			ps_swap(stacks[a]);
 		if (*command == ps_sb || *command == ps_ss)
-			swap(&stacks[b]);
+			ps_swap(stacks[b]);
 		if (*command == ps_pa)
-			push(&stacks[a], &stacks[b]);
+			ps_push(stacks[a], &stacks[b]);
 		if (*command == ps_pb)
-			push(&stacks[b], &stacks[a]);
+			ps_push(stacks[b], &stacks[a]);
 		if (*command == ps_ra || *command == ps_rr)
-			rotate(&stacks[a]);
+			ps_rotate(stacks[a]);
 		if (*command == ps_rb || *command == ps_rr)
-			rotate(&stacks[b]);
+			ps_rotate(stacks[b]);
 		if (*command == ps_rra || *command == ps_rrr)
-			reverse_rotate(&stacks[a]);
+			ps_reverse_rotate(stacks[a]);
 		if (*command == ps_rrb || *command == ps_rrr)
-			reverse_rotate(&stacks[b]);
+			ps_reverse_rotate(stacks[b]);
 		free(command);
 		command = (int*)ft_dequeue(&commands);
 	}
@@ -95,7 +45,7 @@ static void	chexecute(t_list *stacks[], t_queue *commands)
 //TODO: File input to stdin???
 int	main(int argc, char *argv[])
 {
-	t_list	**stacks;
+	t_stack	**stacks;
 	int		i;
 	int		*iptr;
 	char	*read_bfr;
@@ -104,7 +54,7 @@ int	main(int argc, char *argv[])
 	if (argc <= 1)
 		return (1);
 	commands = NULL;
-	stacks = malloc((b + 1) * sizeof(t_list*));
+	stacks = malloc((b + 1) * sizeof(t_stack*));
 	i = argc - 1;
 	stacks[a] = NULL;
 	stacks[b] = NULL;

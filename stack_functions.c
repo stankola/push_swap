@@ -178,10 +178,11 @@ int		inverted_measure_disorder(t_list const *stack)
 */
 
 /* Checks to see if stack is in order using integer comparison.
- * Const keyword might be misleading since the stack is modified.
+ * Const keyword might be misleading since the stack itself is modified during 
+ * execution. However, it should be returned to its original order.
  * TODO: Test. Probably works, not 100% sure. Might not be needed.
  */
-int		is_sorted(t_stack *const stack)
+int		is_sorted(t_stack *stack)
 {
 	t_stack	*temp_stack;
 	int i;

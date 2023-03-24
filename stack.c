@@ -6,12 +6,12 @@
 /*   By: tsankola <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/20 18:40:32 by tsankola          #+#    #+#             */
-/*   Updated: 2023/03/20 18:40:32 by tsankola         ###   ########.fr       */
+/*   Updated: 2023/03/24 13:52:44 by tsankola         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #include "stack.h"
 
-t_stack	*ft_new_stack()
+t_stack	*ft_new_stack(void)
 {
 	t_stack	*stack;
 

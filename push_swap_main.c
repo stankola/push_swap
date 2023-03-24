@@ -61,9 +61,9 @@ t_stack	**get_main_stacks(int *iarr, int size)
 		free(stacks);
 		return (NULL);
 	}
-	i = 0;
-	while (i < size)
-		ft_push(stacks[a], &iarr[i++]);
+	i = size - 1;
+	while (0 <= i)
+		ft_push(stacks[a], &iarr[i--]);
 	return stacks;
 }
 
@@ -89,10 +89,19 @@ int	main(int argc, char *argv[])
 	t_stack	**stacks;
 	t_stack	*command_stack;
 	int		*iarr;
+	char	**strarr;
 
 	if (argc <= 1)
 		return (1);
-	iarr = args_to_int_array(argc - 1, &argv[1]);
+	if (argc == 2)
+	{
+		strarr = ft_split(argv[1], ' ');
+		argc = countwords(strarr) + 1;
+	}
+	else
+		strarr = &argv[1];
+	
+	iarr = args_to_int_array(argc - 1, strarr);
 	if (iarr == NULL || check_duplicates(iarr, argc - 1))
 	{
 		ft_printf("Error\n"); // TODO: This has to be printed in stderr!
@@ -103,6 +112,7 @@ int	main(int argc, char *argv[])
 	if (stacks != NULL)
 	{
 		command_stack = insertion_sort(stacks);
+//		command_stack = merge_sort(stacks);
 		print_command_stack(command_stack);
 		ft_del_stack(&command_stack, NULL);
 		ft_del_stack(&stacks[a], NULL);
