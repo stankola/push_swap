@@ -125,4 +125,8 @@ int		ft_min(int a, int b);
 
 int		ft_max(int a, int b);
 
+int		ft_chkovrflw_add(int x, int y);
+
+int		ft_chkovrflw_mlt(int x, int y);
+
 #endif

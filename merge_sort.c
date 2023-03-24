@@ -10,115 +10,99 @@
 /*                                                                            */
 /* ************************************************************************** */
 #include "push_swap.h"
-#include "libft.h"
-#include <math.h>	// FORBIDDEN
+#include "sorting_algorithms.h"
+#include "ft_printf.h" // TESTING
 
-
-void	merge_sort(t_list *stacks[], int step, int size)
+// Might overflow. TODO: Consider this
+static int	power(int x, int y)
 {
-	int	chunk_size;
-	int	compare_step;
-	int	push_count;
-	int	iterations;
-	iterations = 0;
-	chunk_size = power(2, (double)step);
-	while (iterations * chunk_size < size)
+	int	result;
+
+	result = 1;
+	if (y = 0)
+		return (result);
+	while (y-- > 0)
+		result *= x;
+	while (y++ < 0)
+		result *= 1 / x;
+	return (result);
+}
+
+// TODO: Consider size < 2
+// TODO: Consider offset values when size is not a power of 2
+static void	divide_step(t_stack *stacks[], t_stack *command_stack, int size)
+{
+	int	i;
+	int	x;
+
+	i = 0;
+	while (i < size / 2)
 	{
-		compare_step = 0;
-		push_count = 0;
-		while (compare_step < chunk_size)
+		x = *(int*)ft_peek(stacks[a]);
+		execute(stacks, command_stack, ps_sa);
+		if (i % 2 == 0)
 		{
-			if (stacks[a] == NULL || stacks[b] == NULL) //or something
-			if (iterations % 2 == 1)
+			if (x < *(int*)ft_peek(stacks[a]))
+				execute(stacks, command_stack, ps_sa);
+			execute(stacks, command_stack, ps_ra);
+			execute(stacks, command_stack, ps_ra);
+		}
+		else
+		{
+			if (x > *(int*)ft_peek(stacks[a]))
+				execute(stacks, command_stack, ps_sa);
+			execute(stacks, command_stack, ps_pa);
+			execute(stacks, command_stack, ps_pa);
+		}
+	}
+}
+
+static void sorting_step(t_stack *stacks[], t_stack *command_stack, int step, int size)
+{
+	int	*iptr;
+	int	i;
+	int	j;
+
+	i = 0;
+	while (i < size)	// Check upper limit
+	{
+		j = 0;
+		if (i % 2 == 0)
+		{
+			while (j < power(step, 2))
 			{
-				if (*(int*)stacks[a]->content > *(int*)stacks[b]->content && push_count++ < chunk_size / 2)
-					push(&stacks[b], &stacks[a]);
-				rotate(&stacks[a]);
+				if (*(int*)ft_peek(stacks[a]) > *(int*)ft_peek(stacks[b]))
+					execute(stacks, command_stack, ps_pb);
+				execute(stacks, command_stack, ps_ra);
+				// TODO: How to keep track of how many values have been sorted
+				// from each side? Maybe left and right side counter?
 			}
-			else
-			{
-				if (*(int*)stacks[b]->content > *(int*)stacks[a]->content && push_count++ < chunk_size / 2)
-					push(&stacks[a], &stacks[b]);
-				rotate(&stacks[b]);
-			}
-			compare_step++;
 		}
-		iterations++;
-	}
-}
-
-	if (step % 2 = 0)
-	{
-		
-		while (size >= 0)	// check if math is correct
+		else
 		{
-			if (stacks[a] != NULL && stacks[a]->next != NULL)
-				if (*(int*)stacks[a]->content < *(int*)stacks[a]->next->content)
-				{
-					rotate(stacks[a]);
-					push(stacks[a], stacks[b]);
-				}
-				else
-				{
-					push(stacks[a], stacks[b]);
-					rotate(stacks[a]);
-				}
-			size -= 2;
+
 		}
-	}
-	else if (step == 1)
-	{
-		while (size >= 0)	// check if math is correct
-		{
-//			if (*(int*)stacks[a]->content < 
-			if (stacks[a] != NULL && stacks[a]->next != NULL)
-				if (*(int*)stacks[a]->content < *(int*)stacks[a]->next->content)
-				{
-					rotate(stacks[a]);
-					push(stacks[a], stacks[b]);
-				}
-				else
-				{
-					push(stacks[b], stacks[a]);
-					rotate(stacks[a]);
-				}
-			size -= 2;
-		}
+		i++;
 	}
 }
 
-
-// array A[] has the items to sort; array B[] is a work array
-void BottomUpMergeSort(A[], B[], n)
+t_stack	*merge_sort(t_stack *stacks[])
 {
-    for (width = 1; width < n; width = 2 * width)
-    {
-        for (i = 0; i < n; i = i + 2 * width)
-        {
-            BottomUpMerge(A, i, min(i+width, n), min(i+2*width, n), B);
-        }
-        CopyArray(B, A, n);
-    }
-}
+	t_stack	*command_stack;
+	int		size;
+	int		i;
 
-//  Left run is A[iLeft :iRight-1].
-// Right run is A[iRight:iEnd-1  ].
-void BottomUpMerge(A[], iLeft, iRight, iEnd, B[])
-{
-    i = iLeft, j = iRight;
-    for (k = iLeft; k < iEnd; k++) {
-        if (i < iRight && (j >= iEnd || A[i] <= A[j])) {
-            B[k] = A[i];
-            i = i + 1;
-        } else {
-            B[k] = A[j];
-            j = j + 1;    
-        }
-    } 
-}
-
-void CopyArray(B[], A[], n)
-{
-    for (i = 0; i < n; i++)
-        A[i] = B[i];
+	if (stacks == NULL || stacks[a] == NULL || stacks[b] == NULL)
+		return (NULL);
+	command_stack = ft_new_stack();
+	if (command_stack == NULL)
+		return (NULL);
+	size = get_stack_size(stacks[a])
+	// divide stack
+	ft_printf("Dividing\n");	// TEST
+	divide_step(stacks, command_stack, size);
+	print_stacks(stacks);		// TEST
+	// while unsorted sort from n² to size, where n = 0, 1, 2, 3...
+	ft_printf("Sorting\n");		// TEST
+	sorting_step(stacks, command_stack, size);
 }

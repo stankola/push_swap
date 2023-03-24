@@ -30,12 +30,16 @@ static int	get_min_value(const t_stack *stack)
 	return (min);
 }
 
-void naive_sort(t_stack *stacks[])
+t_stack *naive_sort(t_stack *stacks[])
 {
-	int	min;
+	t_stack	*command_stack;
+	int		min;
 
-	if (stacks == NULL)
-		return ;
+	if (stacks == NULL || stacks[a] == NULL || stacks[b] == NULL)
+		return (NULL);
+	command_stack = ft_new_stack();
+	if (command_stack == NULL)
+		return (NULL);
 	while (stacks[a] != NULL)
 	{
 		min = get_min_value(stacks[a]);

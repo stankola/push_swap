@@ -14,10 +14,13 @@ int	ft_isinteger(char *str)
 		str++;
 	if (!ft_isdigit(*str))
 		return (0);
-	value = *str++ - '0';
+	value = sign * (*(str++) - '0');
 	while (ft_isdigit(*str))
 	{
-		value = value * 10 + *str - '0'; // TODO: Overflow detection
+		if (ft_chkovrflw_mlt(value, 10) ||
+			ft_chkovrflw_add(value * 10, sign * (*str - '0')))
+			return (0);
+		value = value * 10 + sign * (*str - '0');
 		str++;
 	}
 	if (*str == '\0')

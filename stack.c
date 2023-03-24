@@ -10,28 +10,23 @@
 /*                                                                            */
 /* ************************************************************************** */
 #include "stack.h"
-#include <stdio.h> // TESTING
 
-t_stack	*new_stack()
+t_stack	*ft_new_stack()
 {
-//	t_list	*head;
 	t_stack	*stack;
 
-//	head = malloc(sizeof(t_list));
-//	if (head == NULL)
-//		return (NULL);
 	stack = malloc(sizeof(t_stack));
 	if (stack == NULL)
-	{
-//		free(head);
 		return (NULL);
-	}
 	stack->head = NULL;
 	return (stack);
 }
 
-// NULL value for content is not supported because they would break the logic
-void	push(t_stack *stack, void *content)
+/* NULL value for content is not supported because they would break the logic
+ * If ft_lstnew fails, nothing will be added and it may not be detected. This
+ * could be fixed if the function returned a "boolean" value, for instance.
+ */
+void	ft_push(t_stack *stack, void *content)
 {
 	t_list	*node;
 
@@ -43,27 +38,24 @@ void	push(t_stack *stack, void *content)
 	ft_lstadd_front(&stack->head, node);
 }
 
-/* If NULL has/had been inserted then pop returns values that are indistinguishable
- * from invalid behaviour.
- */
-void	*pop(t_stack *stack)
+void	*ft_pop(t_stack *stack)
 {
 	void	*content;
-	t_list	*temp;
+	t_list	*node;
 
 	if (stack == NULL || stack->head == NULL)
 		return (NULL);
-	temp = stack->head;
+	node = stack->head;
 	stack->head = stack->head->next;
-	content = temp->content;
-	temp->next = NULL;
-	free(temp);
+	content = node->content;
+	node->next = NULL;
+	free(node);
 	return (content);
 }
 
 /* del is not required. If NULL is passed, assume that the stack is empty.
  */
-void	del_stack(t_stack **stack, void (*del)(void*))
+void	ft_del_stack(t_stack **stack, void (*del)(void*))
 {
 	if (*stack == NULL)
 		return ;
@@ -76,12 +68,11 @@ void	del_stack(t_stack **stack, void (*del)(void*))
 
 /* Returns pointer to first element.
  */
-void	*peek(t_stack *stack)
+void	*ft_peek(t_stack *stack)
 {
 	void	*ptr;
 
-	ptr = pop(stack);
-//	fprintf(stderr, "Peek: popped %p\n", ptr);
-	push(stack, ptr);
+	ptr = ft_pop(stack);
+	ft_push(stack, ptr);
 	return (ptr);
 }

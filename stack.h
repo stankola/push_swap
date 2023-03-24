@@ -18,14 +18,14 @@ typedef struct	s_stack
 	t_list	*head;
 }				t_stack;
 
-t_stack	*new_stack();
+t_stack	*ft_new_stack();
 
-void	push(t_stack *stack, void *content);
+void	ft_push(t_stack *stack, void *content);
 
-void	*pop(t_stack *stack);
+void	*ft_pop(t_stack *stack);
 
-void	del_stack(t_stack **stack, void (*del)(void*));
+void	ft_del_stack(t_stack **stack, void (*del)(void*));
 
-void	*peek(t_stack *stack);
+void	*ft_peek(t_stack *stack);
 
 #endif
