@@ -60,6 +60,15 @@ int			get_stack_size(t_stack *stack);
 
 int			countwords(char *strarr[]);
 
+int			ft_min(int a, int b);
+
+int			ft_max(int a, int b);
+
+int			ft_chkovrflw_add(int x, int y);
+
+int			ft_chkovrflw_mlt(int x, int y);
+
+
 /*
 t_list		*clone_stack(t_list const *stack);
 

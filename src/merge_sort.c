@@ -11,7 +11,6 @@
 /* ************************************************************************** */
 #include "push_swap.h"
 #include "sorting_algorithms.h"
-#include "ft_printf.h" // TESTING
 
 // Might overflow. TODO: Consider this
 static int	power(int x, int y)
@@ -42,7 +41,7 @@ static void	divide_step(t_stack *stacks[], t_stack *command_stack, int size)
 	int	x;
 
 	i = 0;
-	ft_printf("size: %d\n", size);
+	ft_printf("size: %d\n", size);	// TEST
 	while (i < size / 2)
 	{
 		x = *(int*)ft_peek(stacks[a]);
@@ -77,7 +76,7 @@ static void	divide_step(t_stack *stacks[], t_stack *command_stack, int size)
 
 static void merge_left(t_stack *stacks[], t_stack *command_stack, int a_height, int b_height)
 {
-	ft_printf("left%d %d\n", a_height, b_height);
+	ft_printf("left%d %d\n", a_height, b_height);	// TEST
 	while (a_height > 0 || b_height > 0)
 	{
 		if (((a_height != 0 && b_height != 0)

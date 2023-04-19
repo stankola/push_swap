@@ -13,7 +13,6 @@
 #include <stdarg.h>
 #include <unistd.h>
 
-#include "ft_printf.h"
 #include "libft.h"
 #ifndef FORMAT_CHARACTERS
 # define FORMAT_CHARACTERS "scdiuxXp%"

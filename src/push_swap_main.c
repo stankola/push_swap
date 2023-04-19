@@ -1,6 +1,5 @@
 #include "push_swap.h"
 #include "libft.h"
-#include "ft_printf.h"		// To be included in libft.h
 #include "sorting_algorithms.h"
 
 static int	*args_to_int_array(int argc, char *argv[])
@@ -114,6 +113,7 @@ int	main(int argc, char *argv[])
 		command_stack = insertion_sort(stacks);
 //		command_stack = merge_sort(stacks);
 		print_command_stack(command_stack);
+		print_stacks(stacks);
 		ft_del_stack(&command_stack, NULL);
 		ft_del_stack(&stacks[a], NULL);
 		ft_del_stack(&stacks[b], NULL);

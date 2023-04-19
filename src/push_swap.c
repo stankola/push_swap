@@ -10,7 +10,6 @@
 /*                                                                            */
 /* ************************************************************************** */
 #include "push_swap.h"
-#include "ft_printf.h" // TESTING
 
 void	execute(t_stack *stacks[], t_stack *command_stack, int command)
 {

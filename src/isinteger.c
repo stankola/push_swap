@@ -9,7 +9,7 @@
 /*   Updated: 2023/03/24 13:51:43 by tsankola         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-#include "libft.h"
+#include "push_swap.h"
 
 int	ft_isinteger(char *str)
 {

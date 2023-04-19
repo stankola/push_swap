@@ -121,12 +121,6 @@ char	*ft_uitoa(unsigned int n);
 
 char	*ft_ulitoa16(unsigned long int n, int cap);
 
-int		ft_min(int a, int b);
-
-int		ft_max(int a, int b);
-
-int		ft_chkovrflw_add(int x, int y);
-
-int		ft_chkovrflw_mlt(int x, int y);
+int		ft_printf(const char *c, ...);
 
 #endif

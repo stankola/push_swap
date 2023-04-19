@@ -9,7 +9,7 @@
 /*   Updated: 2023/03/24 13:50:58 by tsankola         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-#include "libft.h"
+#include "push_swap.h"
 #ifndef INT_MAX
 # define INT_MAX 2147483647
 #endif

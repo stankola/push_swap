@@ -10,7 +10,6 @@
 /*                                                                            */
 /* ************************************************************************** */
 #include "push_swap.h"
-#include "ft_printf.h"
 #include <stdio.h>	// testing
 
 void	del_int_ptr(int *iptr)
@@ -185,14 +184,12 @@ int		inverted_measure_disorder(t_list const *stack)
 int		is_sorted(t_stack *stack)
 {
 	t_stack	*temp_stack;
-	int i;
 
 	if (stack == NULL)
 		return -1;
 	temp_stack = ft_new_stack();
 	if (temp_stack == NULL)
 		return (-1);
-	i = 0;
 	while (ft_peek(stack) != NULL)
 	{
 		if ((ft_peek(temp_stack) == NULL) ||
