@@ -1,7 +1,0 @@
-#ignore all
-*
-
-#include these
-!Makefile
-!push_swap.h
-!push_swap.c

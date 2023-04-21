@@ -11,95 +11,6 @@
 /* ************************************************************************** */
 #include "push_swap.h"
 
-void	execute(t_stack *stacks[], t_stack *command_stack, int command)
-{
-	int	*iptr;
-
-	if (stacks == NULL || stacks[a] == NULL || stacks[b] == NULL ||
-		command_stack == NULL || command < ps_sa || command > ps_rrr)
-		return ;
-	if (command == ps_sa || command == ps_ss)
-		ps_swap(stacks[a]);
-	if (command == ps_sb || command == ps_ss)
-		ps_swap(stacks[b]);
-	if (command == ps_pa)
-		ps_push(stacks[a], stacks[b]);
-	if (command == ps_pb)
-		ps_push(stacks[b], stacks[a]);
-	if (command == ps_ra || command == ps_rr)
-		ps_rotate(stacks[a]);
-	if (command == ps_rb || command == ps_rr)
-		ps_rotate(stacks[b]);
-	if (command == ps_rra || command == ps_rrr)
-		ps_reverse_rotate(stacks[a]);
-	if (command == ps_rrb || command == ps_rrr)
-		ps_reverse_rotate(stacks[b]);
-	iptr = malloc(sizeof(int));
-	*iptr = command;
-	if (iptr != NULL)
-		ft_push(command_stack, iptr);
-}
-
-// Returns NULL if ft_strdup fails
-char	*command_to_string(int command)
-{
-	char	*str;
-
-	if (command == ps_sa)
-		str = "sa\n";
-	else if (command == ps_sb)
-		str = "sb\n";
-	else if (command == ps_ss)
-		str = "ss\n";
-	else if (command == ps_pa)
-		str = "pa\n";
-	else if (command == ps_pb)
-		str = "pb\n";
-	else if (command == ps_ra)
-		str = "ra\n";
-	else if (command == ps_rb)
-		str = "rb\n";
-	else if (command == ps_rr)
-		str = "rr\n";
-	else if (command == ps_rra)
-		str = "rra\n";
-	else if (command == ps_rrb)
-		str = "rrb\n";
-	else if (command == ps_rrr)
-		str = "rrr\n";
-	return (ft_strdup(str));
-}
-
-int		string_to_command(char *str)
-{
-	int	command;
-
-	command = -1;
-	if (ft_strncmp(str, "sa", 2) == 0)
-		command = ps_sa;
-	else if (ft_strncmp(str, "sb", 2) == 0)
-		command = ps_sb;
-	else if (ft_strncmp(str, "ss", 2) == 0)
-		command = ps_ss;
-	else if (ft_strncmp(str, "pa", 2) == 0)
-		command = ps_pa;
-	else if (ft_strncmp(str, "pb", 2) == 0)
-		command = ps_pb;
-	else if (ft_strncmp(str, "rra", 3) == 0)
-		command = ps_rra;
-	else if (ft_strncmp(str, "rrb", 3) == 0)
-		command = ps_rrb;
-	else if (ft_strncmp(str, "rrr", 3) == 0)
-		command = ps_rrr;
-	else if (ft_strncmp(str, "ra", 2) == 0)
-		command = ps_ra;
-	else if (ft_strncmp(str, "rb", 2) == 0)
-		command = ps_rb;
-	else if (ft_strncmp(str, "rr", 2) == 0)
-		command = ps_rr;
-	return (command);
-}
-
 int		countwords(char *strarr[])
 {
 	int	i;
@@ -110,33 +21,70 @@ int		countwords(char *strarr[])
 	return (i);
 }
 
-/* TESTING MAIN */ /*
-int	main(int argc, char *argv[])
+void	print_stacks(t_stack *const stacks[])
 {
-	t_stack	**stacks;
-	t_stack *command_stack;
-	int		i;
-	int		*iptr;
+	t_stack *temp_stack_a;
+	t_stack *temp_stack_b;
+	int		*a_iterator;
+	int		*b_iterator;
 
-	if (argc <= 1)
-		return (1);
-	i = argc - 1;
-	stacks = malloc((b + 1) * sizeof(t_stack*));
-	stacks[a] = ft_new_stack();
-	stacks[b] = ft_new_stack();
-//	command_stack = ft_new_stack();
-	while(i > 0)
+	if (stacks == NULL || stacks[a] == NULL || stacks[b] == NULL)
+		return ;
+	temp_stack_a = ft_new_stack();
+	if (temp_stack_a == NULL)
+		return ;
+	temp_stack_b = ft_new_stack();
+	if (temp_stack_a == NULL)
 	{
-		iptr = malloc(sizeof(int));
-		*iptr = ft_atoi(argv[i--]);
-		printf("Pushing %p: %i\n", iptr, *iptr);
-		ft_push(stacks[a], iptr);
+		free(temp_stack_a);
+		return ;
 	}
-	print_stacks(stacks);
-	command_stack = insertion_sort(stacks);
-	print_command_stack(command_stack);
+	a_iterator = (int*)ft_pop(stacks[a]);
+	b_iterator = (int*)ft_pop(stacks[b]);
+	while (a_iterator != NULL || b_iterator != NULL)
+	{
+		if (a_iterator != NULL)
+			ft_printf("%d", *a_iterator);
+		if (b_iterator != NULL)
+			ft_printf("\t%d", *b_iterator);
+		ft_printf("\n");
+		ft_push(temp_stack_a, a_iterator);
+		ft_push(temp_stack_b, b_iterator);
+		a_iterator = (int*)ft_pop(stacks[a]);
+		b_iterator = (int*)ft_pop(stacks[b]);
+	}
+	stack_to_stack(temp_stack_a, stacks[a]);
+	stack_to_stack(temp_stack_b, stacks[b]);
+	ft_printf("---------\na\tb\n");
+}
 
-//	system("Leaks pusa");
+/* Checks to see if stack is in order using integer comparison.
+ * Const keyword might be misleading since the stack itself is modified during 
+ * execution. However, it should be returned to its original order.
+ * TODO: Test. Probably works, not 100% sure. Might not be needed.
+ */
+int		is_sorted(t_stack *stack)
+{
+	t_stack	*temp_stack;
+
+	if (stack == NULL)
+		return -1;
+	temp_stack = ft_new_stack();
+	if (temp_stack == NULL)
+		return (-1);
+	while (ft_peek(stack) != NULL)
+	{
+		if ((ft_peek(temp_stack) == NULL) ||
+			(*(int*)ft_peek(stack) >= *(int*)ft_peek(temp_stack)))
+			ft_push(temp_stack, ft_pop(stack));
+		else
+		{
+			stack_to_stack(temp_stack, stack);
+			ft_del_stack(&temp_stack, NULL);
+			return (0);
+		}
+	}
+	stack_to_stack(temp_stack, stack);
+	ft_del_stack(&temp_stack, NULL);
 	return (1);
 }
-*/

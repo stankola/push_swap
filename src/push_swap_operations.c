@@ -9,8 +9,7 @@
 /*   Updated: 2023/03/24 13:52:06 by tsankola         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-#include "push_swap.h"
-#include "stack.h"
+#include "push_swap_operations.h"
 
 // Swaps the position of the first two elements of stack
 void	ps_swap(t_stack *stack)

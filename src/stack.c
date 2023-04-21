@@ -70,9 +70,9 @@ void	ft_del_stack(t_stack **stack, void (*del)(void*))
  */
 void	*ft_peek(t_stack *stack)
 {
-	void	*ptr;
+	void	*content;
 
-	ptr = ft_pop(stack);
-	ft_push(stack, ptr);
-	return (ptr);
+	content = ft_pop(stack);
+	ft_push(stack, content);
+	return (content);
 }

@@ -37,8 +37,6 @@ void		execute(t_stack *stacks[], t_stack *command_stack, int command);
 
 char		*command_to_string(int command);
 
-void		del_int_ptr(int *iptr);
-
 void		ps_swap(t_stack *stack);
 
 void		ps_push(t_stack *stack_a, t_stack *stack_b);
@@ -47,16 +45,10 @@ void		ps_rotate(t_stack *stack);
 
 void		ps_reverse_rotate(t_stack *stack);
 
-int			compare_stacks(t_list *stacks_1[], t_list *stacks_2[]);
-
 /* stack_functions.c TODO: consider moving to own header file */
 int			is_sorted(t_stack *stack);
 
 void		print_stacks(t_stack *const stacks[]);
-
-void		stack_to_stack(t_stack *stack_a, t_stack *stack_b);
-
-int			get_stack_size(t_stack *stack);
 
 int			countwords(char *strarr[]);
 

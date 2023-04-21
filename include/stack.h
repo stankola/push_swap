@@ -16,6 +16,7 @@
 typedef struct	s_stack
 {
 	t_list	*head;
+	int		size;
 }				t_stack;
 
 t_stack	*ft_new_stack();
@@ -27,5 +28,9 @@ void	*ft_pop(t_stack *stack);
 void	ft_del_stack(t_stack **stack, void (*del)(void*));
 
 void	*ft_peek(t_stack *stack);
+
+void	stack_to_stack(t_stack *stack_a, t_stack *stack_b);
+
+int		get_stack_size(t_stack *stack);
 
 #endif

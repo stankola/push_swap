@@ -1,0 +1,10 @@
+#ignore all
+#*
+*/obj
+obj
+.vscode
+	
+#include these
+#!Makefile
+#!push_swap.h
+#!push_swap.c
