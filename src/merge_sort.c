@@ -18,6 +18,7 @@
  * over the data. n/2 moves to divide the first time, max n/2 swaps and n/2
  * rotates to get the initial tuples. Then merging will take something like 3n/2
  * (constant) for ~sqrt(n) times. For 100 values this would take ~1650 moves.
+ * No, that is bad math. It's not that bad.
  */
 
 // Returns closest integer (rounded down) to log x of base y.
@@ -40,11 +41,13 @@ static void	divide_step(t_stack *stacks[], t_stack *command_stack, int size)
 
 	i = 0;
 	ft_printf("dividing size: %d\n", size);	// TEST
-	while (i < size / 2)
+	while (i++ < size / 2)
 		execute(stacks, command_stack, ps_sa);
 	print_stacks(stacks);		// TEST
 }
 
+
+// Takes max(left,right) (, pushes it left) and rotates for a_height+b_height times
 static void merge_left(t_stack *stacks[], t_stack *command_stack, int a_height, int b_height)
 {
 	ft_printf("left%d %d\n", a_height, b_height);	// TEST
@@ -88,6 +91,11 @@ static void	sorting_step(t_stack *stacks[], t_stack *command_stack, int step, in
 
 	i = 0;
 	ft_printf("step %d\n", step);
+	if (step == 0)
+	{
+		
+	}
+
 	while (i < size / power(2, step + 1))	// Perhaps <= to account for leftover values? Or another loop for them
 	{
 		if (i % 2 == 0)
@@ -129,13 +137,11 @@ t_stack	*merge_sort(t_stack *stacks[])
 	size = get_stack_size(stacks[a]);
 	// divide stack
 	print_stacks(stacks);		// TEST
-	ft_printf("Dividing\n");	// TEST
-	divide_step(stacks, command_stack, size);
-	print_stacks(stacks);		// TEST
+	divide_step(stacks, command_stack, size, step);
 	// while unsorted sort from 2^n to size, where n = 0, 1, 2, 3...
 	ft_printf("Sorting ");		// TEST
-	step = 1;
-	while (size / power(2, step + 1) > 0)
+	step = 0;
+	while (ft_pow_pos(step, 2) < size)
 	{
 		sorting_step(stacks, command_stack, step++, size);
 		ft_printf("After Sorting\n");		// TEST

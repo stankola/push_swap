@@ -40,6 +40,40 @@ int	execute(t_stack *stacks[], t_stack *command_stack, int command)
 	return (1);
 }
 
+int	ring_execute(t_ring *rings[], t_stack *command_stack, int command, unsigned int repeat)
+{
+	int	*iptr;
+
+	if (repeat == 0)
+		return (0);
+	ft_printf("%s\n", command_to_string(command));	// TESTING
+	if (rings == NULL || command_stack == NULL || command < ps_sa || command > ps_rrr)
+		return (0);
+	if (command == ps_sa || command == ps_ss)
+		ring_ps_swap(rings[a]);
+	if (command == ps_sb || command == ps_ss)
+		ring_ps_swap(rings[b]);
+	if (command == ps_pa)
+		ring_ps_push(rings[a], rings[b]);
+	if (command == ps_pb)
+		ring_ps_push(rings[b], rings[a]);
+	if (command == ps_ra || command == ps_rr)
+		ring_ps_rotate(rings[a]);
+	if (command == ps_rb || command == ps_rr)
+		ring_ps_rotate(rings[b]);
+	if (command == ps_rra || command == ps_rrr)
+		ring_ps_reverse_rotate(rings[a]);
+	if (command == ps_rrb || command == ps_rrr)
+		ring_ps_reverse_rotate(rings[b]);
+	iptr = malloc(sizeof(int));
+	*iptr = command;
+	if (iptr != NULL)
+		ft_push(command_stack, iptr);
+	print_rings(rings);	// TESTING
+	getchar(); // TESTING
+	return (1 + ring_execute(rings, command_stack, command, repeat - 1));
+}
+
 // Translates command to a string. Returns NULL if ft_strdup fails
 char	*command_to_string(int command)
 {

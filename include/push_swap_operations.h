@@ -8,6 +8,8 @@ enum		e_ps_commands {ps_sa, ps_sb, ps_ss, ps_pa, ps_pb, ps_ra, ps_rb,
 
 int			execute(t_stack *stacks[], t_stack *command_stack, int command);
 
+int			ring_execute(t_ring *rings[], t_stack *command_stack, int command);
+
 char		*command_to_string(int command);
 
 int			string_to_command(char *str);

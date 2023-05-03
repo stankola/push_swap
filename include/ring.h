@@ -20,4 +20,6 @@ void	ring_rotate(t_ring **ring);
 
 void	ring_reverse_rotate(t_ring **ring);
 
+int		get_ring_size(t_ring *ring);
+
 #endif
