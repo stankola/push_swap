@@ -13,6 +13,7 @@
 # define PUSH_SWAP_H 
 # include "libft.h"
 # include "stack.h"
+# include "ring.h"
 
 typedef struct	s_vertex
 {
@@ -27,38 +28,26 @@ typedef struct	s_queue
 	t_list		*tail;
 }				t_queue;
 
-enum		e_commands {ps_sa, ps_sb, ps_ss, ps_pa, ps_pb, ps_ra, ps_rb, ps_rr, ps_rra, ps_rrb, ps_rrr};
+typedef struct	s_ps_stacks
+{
+	t_stack		*a;
+	t_stack		*b;
+	int			a_size;
+	int			b_size;
+	int			min;
+	int			max;
+}				t_ps_stacks;
+
 
 enum		e_stacks {a, b};
 
-void		delstacks(t_list *stacks[]);
-
-void		execute(t_stack *stacks[], t_stack *command_stack, int command);
-
-char		*command_to_string(int command);
-
-void		ps_swap(t_stack *stack);
-
-void		ps_push(t_stack *stack_a, t_stack *stack_b);
-
-void		ps_rotate(t_stack *stack);
-
-void		ps_reverse_rotate(t_stack *stack);
-
-/* stack_functions.c TODO: consider moving to own header file */
 int			is_sorted(t_stack *stack);
 
 void		print_stacks(t_stack *const stacks[]);
 
+void		print_rings(t_ring *rings[]);
+
 int			countwords(char *strarr[]);
-
-int			ft_min(int a, int b);
-
-int			ft_max(int a, int b);
-
-int			ft_chkovrflw_add(int x, int y);
-
-int			ft_chkovrflw_mlt(int x, int y);
 
 
 /*
@@ -95,59 +84,3 @@ void		ft_vertdel(t_vertex **v, void(*del_content)(void*), void(*del_edge)(void*)
 char		*breadth_first_search(t_list *stacks[]);
 */
 #endif
-
-/*
- stack size = 1: vertices = 2, edges = 24
- stack size = 2: vertices = 2 + 2 + 2 = 6, edges = 12 * 6 = 72
- stack size = 3: vertices = 6 + 6 + 6 + 6 = 24, edges = 24 * 12 = 288
- stack size = 4: vertices = 24 + 24 + 24 + 24 + 24 = 24 * 5 = 120, edges = 120 * 12 = 1440
- stack size = n: vertices = n
-
-n! 
-
-1
-2
-3 4
-
-1
-3
-2 4
-
-
-1
-2 3
-
-2
-1 3
-
-1
-3 2
-
-2
-3 1
-
-3
-1 2
-
-3
-2 1
-
-  1
-2 3
-
-  1
-3 2
-
-  2
-1 3
-
-  2
-3 1
-
-  3
-1 2
-
-  3
-2 1
-
-*/

@@ -1,6 +1,10 @@
+//TODO header
+
 #include "push_swap.h"
+#include "push_swap_operations.h"
 #include "libft.h"
 #include "sorting_algorithms.h"
+#include "ft_math.h"
 
 static int	*args_to_int_array(int argc, char *argv[])
 {
@@ -83,12 +87,64 @@ void	print_command_stack(t_stack *command_stack)
 	ft_del_stack(&temp_stack, NULL);
 }
 
+
+int		*get_ptr_to_next_min_value(int iarr[], int cur_min, int size)
+{
+	int	next_min;
+	int	i;
+	int	*iptr;
+
+	ft_printf("get_ptr_tonextminvalue\n"); // TEst
+	i = 0;
+	next_min = INT_MAX;
+	while (i < size)
+	{
+		if (iarr[i] < next_min && iarr[i] > cur_min)
+		{
+			next_min = iarr[i];
+			iptr = &(iarr[i]);
+		}
+		i++;
+	}
+	ft_printf("Returning %d\n", *iptr);
+	return (iptr);
+}
+
+void	normalize_array(int iarr[], int size)
+{
+	int	**iptr_arr;
+	int	i;
+	int	*current_min;
+
+	ft_printf("Normalizing\n"); // TEst
+	if (size <= 0)
+		return ;
+	iptr_arr = malloc(sizeof(int*) * size);
+	if (iptr_arr == NULL)
+		return ;
+	current_min = get_ptr_to_next_min_value(iarr, INT_MIN, size);
+	iptr_arr[0] = current_min;
+	i = 1;
+	while (i < size)
+	{
+		current_min = get_ptr_to_next_min_value(iarr, *current_min, size);
+		iptr_arr[i++] = current_min;
+	}
+	while (--i >= 0)
+	{
+		*(iptr_arr[i]) = i;
+	}
+	free(iptr_arr);
+}
+
 int	main(int argc, char *argv[])
 {
 	t_stack	**stacks;
 	t_stack	*command_stack;
 	int		*iarr;
 	char	**strarr;
+
+	// Argument parsing
 
 	if (argc <= 1)
 		return (1);
@@ -107,11 +163,24 @@ int	main(int argc, char *argv[])
 		free(iarr);
 		return (0);
 	}
+
+	// Arguments parsed
+
+	normalize_array(iarr, argc - 1);
+/*	// Normalized array print test:
+	for (int j = 0; j < argc - 1; j++)
+		ft_printf("%d\n", iarr[j]);
+	return (0);
+*/
 	stacks = get_main_stacks(iarr, argc - 1);
+	print_stacks(stacks);
+	ft_printf("---------SORTING STARTING----------\n");
 	if (stacks != NULL)
 	{
-		command_stack = insertion_sort(stacks);
+//		command_stack = insertion_sort(stacks);
 //		command_stack = merge_sort(stacks);
+		command_stack = radix_sort(stacks);
+		ft_printf("---------SORTED----------\n");
 		print_command_stack(command_stack);
 		print_stacks(stacks);
 		ft_del_stack(&command_stack, NULL);

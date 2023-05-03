@@ -16,9 +16,10 @@ INCDIR = include
 
 LIB_INCDIR = $(LIBDIR)/$(INCDIR)
 
-_SRC =	stack.c stack_functions.c push_swap.c push_swap_operations.c \
-		push_swap_main.c isinteger.c chkoverflow.c insertion_sort.c \
-		ft_graph.c ft_max.c ft_min.c ft_queue.c
+_SRC =	ft_math.c insertion_sort.c isinteger.c push_swap.c \
+		push_swap_main.c push_swap_operations.c push_swap_operator.c \
+		radix_sort.c stack.c stack_functions.c
+
 SRC = $(patsubst %, $(SRCDIR)/%, $(_SRC))
 
 _OBJ = $(patsubst %.c, %.o, $(_SRC))
@@ -27,7 +28,7 @@ OBJ = $(patsubst %, $(OBJDIR)/%, $(_OBJ))
 _LIB =	libft.a
 LIB = $(patsubst %, $(LIBDIR)/%, $(_LIB))
 
-_INC = push_swap.h sorting_algorithms.h stack.h
+_INC = ft_math.h push_swap.h push_swap_operations.h sorting_algorithms.h stack.h 
 INC = $(patsubst %, $(INCDIR)/%, $(_INC))
 
 _LIB_INC = libft.h

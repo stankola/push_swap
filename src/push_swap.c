@@ -58,6 +58,36 @@ void	print_stacks(t_stack *const stacks[])
 	ft_printf("---------\na\tb\n");
 }
 
+void	print_rings(t_ring *rings[])
+{
+	t_ring	*a_iterator;
+	t_ring	*b_iterator;
+
+	if (rings == NULL)
+		return ;
+	a_iterator = rings[a];
+	b_iterator = rings[b];
+	while (a_iterator != NULL || b_iterator != NULL)
+	{
+		if (a_iterator != NULL)
+		{
+			ft_printf("%d", *(int*)a_iterator->content);
+			a_iterator = a_iterator->prev;
+		}
+		if (b_iterator != NULL)
+		{
+			ft_printf("\t%d", *(int*)b_iterator->content);
+			b_iterator = b_iterator->prev;
+		}
+		ft_printf("\n");
+		if (a_iterator == rings[a])
+			a_iterator = NULL;
+		if (b_iterator == rings[b])
+			b_iterator = NULL;
+	}
+	ft_printf("---------\na\tb\n");
+}
+
 /* Checks to see if stack is in order using integer comparison.
  * Const keyword might be misleading since the stack itself is modified during 
  * execution. However, it should be returned to its original order.

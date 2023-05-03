@@ -10,6 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 #include "push_swap.h"
+#include "ft_math.h"
 
 int	ft_isinteger(char *str)
 {

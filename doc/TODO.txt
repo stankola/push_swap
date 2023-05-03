@@ -8,6 +8,8 @@
    naive_sort.c
    checker.c
    (breadth_first_search.c)
+2. convert functions to use ring data structure instead of prev
+   ...
 *2. Add command tracing to push_swap_operations.c
 *3. main function + input parsing + error detection
 4. Replace ft_printf with latest.
@@ -22,5 +24,6 @@
 9. Cleanup
 
 ideas:
-Bubblesort
-
+Bubblesort -- BAD
+Radixsort
+Mergesort

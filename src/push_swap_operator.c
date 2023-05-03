@@ -1,16 +1,20 @@
 // TODO: header
 
+#include "push_swap.h"
 #include "push_swap_operations.h"
 #include "libft.h"
+#include <stdio.h> // TESTING
 
-// Executes command on stacks and pushes it into command_stack
-void	execute(t_stack *stacks[], t_stack *command_stack, int command)
+// Executes command on stacks and pushes it into command_stack. Returns 0 on
+// succesful operation, 1 otherwise.
+int	execute(t_stack *stacks[], t_stack *command_stack, int command)
 {
 	int	*iptr;
 
+	ft_printf("%s\n", command_to_string(command));
 	if (stacks == NULL || stacks[a] == NULL || stacks[b] == NULL ||
 		command_stack == NULL || command < ps_sa || command > ps_rrr)
-		return ;
+		return (0);
 	if (command == ps_sa || command == ps_ss)
 		ps_swap(stacks[a]);
 	if (command == ps_sb || command == ps_ss)
@@ -31,6 +35,9 @@ void	execute(t_stack *stacks[], t_stack *command_stack, int command)
 	*iptr = command;
 	if (iptr != NULL)
 		ft_push(command_stack, iptr);
+	print_stacks(stacks);
+	getchar(); // TESTING
+	return (1);
 }
 
 // Translates command to a string. Returns NULL if ft_strdup fails

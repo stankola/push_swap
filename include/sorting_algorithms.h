@@ -11,12 +11,14 @@
 /* ************************************************************************** */
 #ifndef SORTING_ALGORITHMS_H
 # define SORTING_ALGORITHMS_H
-# include "libft.h"
 # include "stack.h"
+
 void	naive_sort(t_stack *stacks[]);
 
 t_stack	*insertion_sort(t_stack *stacks[]);
 
 t_stack	*merge_sort(t_stack *stacks[]);
+
+t_stack	*radix_sort(t_stack *stacks[]);
 
 #endif

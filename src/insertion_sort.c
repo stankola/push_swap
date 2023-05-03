@@ -10,6 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 #include "sorting_algorithms.h"
+#include "push_swap_operations.h"
 #include "push_swap.h"
 
 // Current max element of sub_stack should remain on top.

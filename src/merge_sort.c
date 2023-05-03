@@ -10,27 +10,25 @@
 /*                                                                            */
 /* ************************************************************************** */
 #include "push_swap.h"
+#include "push_swap_operations.h"
 #include "sorting_algorithms.h"
+#include "ft_math.h"
 
-// Might overflow. TODO: Consider this
-static int	power(int x, int y)
+/* Note to self: This will be nowhere near efficient enough, too many passes
+ * over the data. n/2 moves to divide the first time, max n/2 swaps and n/2
+ * rotates to get the initial tuples. Then merging will take something like 3n/2
+ * (constant) for ~sqrt(n) times. For 100 values this would take ~1650 moves.
+ */
+
+// Returns closest integer (rounded down) to log x of base y.
+static int	ms_log(int x, int y)
 {
-	int	result;
+	int	i;
 
-	result = 1;
-	if (y == 0)
-		return (result);
-	while (y > 0)
-	{
-		result *= x;
-		y--;
-	}
-	while (y < 0)
-	{
-		result *= 1 / x;
-		y++;
-	}
-	return (result);
+	i = 0;
+	while (ft_pow_pos(y, i) <= x)
+		i++;
+	return (i - 1);
 }
 
 // TODO: Consider size < 2
@@ -41,37 +39,10 @@ static void	divide_step(t_stack *stacks[], t_stack *command_stack, int size)
 	int	x;
 
 	i = 0;
-	ft_printf("size: %d\n", size);	// TEST
+	ft_printf("dividing size: %d\n", size);	// TEST
 	while (i < size / 2)
-	{
-		x = *(int*)ft_peek(stacks[a]);
 		execute(stacks, command_stack, ps_sa);
-		if (i % 2 == 0)
-		{
-			if (x < *(int*)ft_peek(stacks[a]))
-				execute(stacks, command_stack, ps_sa);
-			execute(stacks, command_stack, ps_ra);
-			execute(stacks, command_stack, ps_ra);
-		}
-		else
-		{
-			if (x > *(int*)ft_peek(stacks[a]))
-				execute(stacks, command_stack, ps_sa);
-			execute(stacks, command_stack, ps_pa);
-			execute(stacks, command_stack, ps_pa);
-		}
-		i++;
-	}
-	if (size % 2 != 0)
-	{
-//		if (size % 4 == 3)
-//		{
-			execute(stacks, command_stack, ps_pa);
-			execute(stacks, command_stack, ps_rb);
-//		}
-//		if (size % 4 == 1)
-//			execute(stacks, command_stack, ps_ra);
-	}
+	print_stacks(stacks);		// TEST
 }
 
 static void merge_left(t_stack *stacks[], t_stack *command_stack, int a_height, int b_height)

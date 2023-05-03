@@ -6,7 +6,7 @@
 enum		e_ps_commands {ps_sa, ps_sb, ps_ss, ps_pa, ps_pb, ps_ra, ps_rb,
 			ps_rr, ps_rra, ps_rrb, ps_rrr};
 
-void		execute(t_stack *stacks[], t_stack *command_stack, int command);
+int			execute(t_stack *stacks[], t_stack *command_stack, int command);
 
 char		*command_to_string(int command);
 

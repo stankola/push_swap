@@ -1,10 +1,25 @@
-#ignore all
-#*
-*/obj
-obj
-.vscode
-	
+#ignore these
+*
+
 #include these
-#!Makefile
-#!push_swap.h
-#!push_swap.c
+!.gitignore
+!Makefile
+!*/
+!/src
+!/src/*.c
+!/include
+!/include/*.h
+!/doc
+!/doc/*
+!/lib
+!/lib/Makefile
+!/lib/include
+!/lib/include/*.h
+!/lib/src
+!/lib/src/*.c
+!/trash
+!/trash/*
+!/test
+!/test/*
+!checker_linux
+!checker_Mac
