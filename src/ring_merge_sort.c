@@ -4,11 +4,10 @@
 #include "sorting_algorithms.h"
 #include "ring.h"		// Might be unnecessary if included in sorting_algorithms.h
 
-/* Note to self: This will be nowhere near efficient enough, too many passes
- * over the data. n/2 moves to divide the first time, max n/2 swaps and n/2
- * rotates to get the initial tuples. Then merging will take something like 3n/2
- * (constant) for ~sqrt(n) times. For 100 values this would take ~1650 moves.
- * No, that is bad math. It's not that bad.
+/* Complexity: n/2 + 3n/4 + log2(n) * 3/2 * n (divide, 0. step, subsequent steps)
+ * n = 100 => ~1150 moves
+ * n = 500 => ~7350 moves
+ * O(n log n)
  */
 
 // Returns closest integer (rounded down) to log x of base y.
@@ -85,7 +84,7 @@ static void	sorting_step(t_ring *rings[], t_stack *command_stack, int step, int 
 		while (i++ < size / 4)
 		{
 			if (*(int*)rings[a]->content > *(int*)rings[a]->prev->content &&
-				*(int*)rings[b]->content < *(int*rings[b]->prev->content))
+				*(int*)rings[b]->content < *(int*)rings[b]->prev->content)
 				ring_execute(rings, command_stack, ps_ss, 1);
 			else if (*(int*)rings[a]->content > *(int*)rings[a]->prev->content)
 				ring_execute(rings, command_stack, ps_sa, 1);
@@ -145,7 +144,7 @@ t_stack	*merge_sort(t_ring *rings[])
 	size = get_ring_size(rings[a]);
 	// divide stack
 	print_rings(rings);		// TEST
-	divide_step(rings, command_stack, size, step);
+	divide_step(rings, command_stack, size);
 	// while unsorted sort from 2^n to size, where n = 0, 1, 2, 3...
 	ft_printf("Sorting ");		// TEST
 	step = 0;

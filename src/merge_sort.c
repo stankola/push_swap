@@ -137,7 +137,7 @@ t_stack	*merge_sort(t_stack *stacks[])
 	size = get_stack_size(stacks[a]);
 	// divide stack
 	print_stacks(stacks);		// TEST
-	divide_step(stacks, command_stack, size, step);
+	divide_step(stacks, command_stack, size);
 	// while unsorted sort from 2^n to size, where n = 0, 1, 2, 3...
 	ft_printf("Sorting ");		// TEST
 	step = 0;

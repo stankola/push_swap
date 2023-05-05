@@ -67,8 +67,25 @@ t_stack	**get_main_stacks(int *iarr, int size)
 	i = size - 1;
 	while (0 <= i)
 		ft_push(stacks[a], &iarr[i--]);
-	return stacks;
+	return (stacks);
 }
+
+t_ring	**get_main_rings(int *iarr, int size)
+{
+	t_ring	**rings;
+	int		i;
+
+	rings = malloc((b + 1) * sizeof(t_ring*));
+	if (rings == NULL)
+		return (NULL);
+	rings[a] = NULL;
+	rings[b] = NULL;
+	i = size - 1;
+	while (0 <= i)
+		ring_add(&rings[a], &iarr[i--]);
+	return (rings);
+}
+
 
 void	print_command_stack(t_stack *command_stack)
 {
@@ -94,7 +111,6 @@ int		*get_ptr_to_next_min_value(int iarr[], int cur_min, int size)
 	int	i;
 	int	*iptr;
 
-	ft_printf("get_ptr_tonextminvalue\n"); // TEst
 	i = 0;
 	next_min = INT_MAX;
 	while (i < size)
@@ -106,7 +122,6 @@ int		*get_ptr_to_next_min_value(int iarr[], int cur_min, int size)
 		}
 		i++;
 	}
-	ft_printf("Returning %d\n", *iptr);
 	return (iptr);
 }
 
@@ -116,7 +131,6 @@ void	normalize_array(int iarr[], int size)
 	int	i;
 	int	*current_min;
 
-	ft_printf("Normalizing\n"); // TEst
 	if (size <= 0)
 		return ;
 	iptr_arr = malloc(sizeof(int*) * size);
@@ -139,7 +153,8 @@ void	normalize_array(int iarr[], int size)
 
 int	main(int argc, char *argv[])
 {
-	t_stack	**stacks;
+//	t_stack	**stacks;
+	t_ring	**rings;
 	t_stack	*command_stack;
 	int		*iarr;
 	char	**strarr;
@@ -172,21 +187,23 @@ int	main(int argc, char *argv[])
 		ft_printf("%d\n", iarr[j]);
 	return (0);
 */
-	stacks = get_main_stacks(iarr, argc - 1);
-	print_stacks(stacks);
-	ft_printf("---------SORTING STARTING----------\n");
-	if (stacks != NULL)
+//	stacks = get_main_stacks(iarr, argc - 1);
+	rings = get_main_rings(iarr, argc - 1);
+//	print_stacks(stacks);
+//	print_rings(rings);
+//	ft_printf("---------SORTING STARTING----------\n");
+	if (rings != NULL)
 	{
 //		command_stack = insertion_sort(stacks);
 //		command_stack = merge_sort(stacks);
-		command_stack = radix_sort(stacks);
-		ft_printf("---------SORTED----------\n");
+		command_stack = ring_radix_sort(rings, argc - 1);
+//		ft_printf("---------SORTED----------\n");
 		print_command_stack(command_stack);
-		print_stacks(stacks);
+//		print_stacks(stacks);
 		ft_del_stack(&command_stack, NULL);
-		ft_del_stack(&stacks[a], NULL);
-		ft_del_stack(&stacks[b], NULL);
-		free(stacks);
+//		ft_del_stack(&stacks[a], NULL);
+//		ft_del_stack(&stacks[b], NULL);
+//		free(stacks);
 	}
 	free(iarr);
 	return (1);

@@ -5,11 +5,10 @@
 *  stack_functions.c
 *  sorting_algorithms.c
 *  insertion_sort.c
-   naive_sort.c
+x  naive_sort.c				//scrapped
    checker.c
-   (breadth_first_search.c)
-2. convert functions to use ring data structure instead of prev
-   ...
+x  (breadth_first_search.c)		//scrapped
+* 1.2 convert functions to use ring data structure instead of prev
 *2. Add command tracing to push_swap_operations.c
 *3. main function + input parsing + error detection
 4. Replace ft_printf with latest.
@@ -18,9 +17,10 @@
 6. Test and benchmark.
 6.1. Consider what other sorts of bad input there might be
 7. Additional sorting algorithms.
-7.1. Merge sort
+7.1 Merge sort
+7.2 Radix sort
 *8. Makefile
-8.1 Makefile headers
+8.1 Headers
 9. Cleanup
 
 ideas:

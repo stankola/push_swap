@@ -39,16 +39,16 @@ void	ring_ps_push(t_ring **ring_a, t_ring **ring_b)
 void	ring_ps_rotate(t_ring **ring)
 {
 	if (*ring != NULL)
-		*ring = (*ring)->next;
+		*ring = (*ring)->prev;
 }
 
 // Rotates the stack so that the last element becomes the first
 void	ring_ps_reverse_rotate(t_ring **ring)
 {
 	if (*ring != NULL)
-		*ring = (*ring)->prev;
+		*ring = (*ring)->next;
 }
-
+/*
 int main(void)	//TEST
 {
 	t_ring *ringu;
@@ -88,4 +88,4 @@ int main(void)	//TEST
 	ring_ps_push(&rings[a], &rings[b]);
 	fprintf(stderr, "%p %p\n", rings[a], rings[b]);
 	print_rings(rings);
-}
+}*/

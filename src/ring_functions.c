@@ -1,4 +1,5 @@
 #include "ring.h"
+#include "stdlib.h"
 
 int		get_ring_size(t_ring *ring)
 {
