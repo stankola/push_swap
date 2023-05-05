@@ -10,6 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 #include "push_swap.h"
+#include <stdio.h> // TEST
 
 int		countwords(char *strarr[])
 {
@@ -58,6 +59,32 @@ void	print_stacks(t_stack *const stacks[])
 	ft_printf("---------\na\tb\n");
 }
 
+void	print_binary(int value, int padding)
+{
+	char bits[33] = {0};
+	int i = 31;
+	int mask = 1;
+	bits[32] = '\0';
+	bits[31] = '0';
+	while (mask <= value)
+	{
+		if (value & mask)
+			bits[i--] = '1';
+		else 
+			bits[i--] = '0';
+		mask <<= 1;
+		padding--;
+	}
+	if (value == 0)
+	{
+		i = 30;
+		padding--;
+	}
+	while (padding-- > 0)
+		bits[i--] = ' ';
+	ft_printf("%s", &bits[++i]);
+}
+
 void	print_rings(t_ring *rings[])
 {
 	t_ring	*a_iterator;
@@ -72,11 +99,16 @@ void	print_rings(t_ring *rings[])
 		if (a_iterator != NULL)
 		{
 			ft_printf("%d", *(int*)a_iterator->content);
+//			print_binary(*(int*)a_iterator->content, 8);
 			a_iterator = a_iterator->prev;
 		}
+		else
+//			ft_printf("\t");
 		if (b_iterator != NULL)
 		{
 			ft_printf("\t%d", *(int*)b_iterator->content);
+//			ft_printf("\t");
+//			print_binary(*(int*)b_iterator->content, 8);
 			b_iterator = b_iterator->prev;
 		}
 		ft_printf("\n");

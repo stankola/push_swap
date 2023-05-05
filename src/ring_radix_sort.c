@@ -6,6 +6,7 @@
 #include "ring.h"
 #include "sorting_algorithms.h"
 #include "libft.h" // TEST
+#include <stdio.h> // TEST
 
 /* For normalized values, LSD radix sort would be ideal to ensure even 
  * distribution of buckets (I think). 
@@ -30,8 +31,9 @@ static void base_step(t_ring *rings[], t_stack *commands, unsigned int size)
 	// Could this be optimized using the knowledge that we have at max size / 2 (+ 1?) values to move?
 	// Perhaps not, rotating does keep things in order. But we cannot expect any useful order so nevermind.
 	// Answer is: yes.
-//	while (i++ < size && push_count < size / 2 + size % 2)
-	while (i++ < size)
+	// The impact is veeeeery slight. If the last number is odd, then there is no impact.
+	while (i++ < size && push_count < (size / 2) + (size % 2))
+//	while (i++ < size)
 	{
 		if (!(*(int*)rings[a]->content & radix))
 		{
@@ -46,13 +48,15 @@ static void base_step(t_ring *rings[], t_stack *commands, unsigned int size)
 // Sorting, theoretically executes min size, max 2 * size actions.
 // In practice, will execute 3/2 * size actions.
 // Complexity: O(n)
-static void	sorting_step(t_ring *rings[], t_stack *commands, unsigned int radix, unsigned int size)
+static void	sorting_step(t_ring *rings[], t_stack *commands, unsigned int radix)
 {
 	unsigned int	i;
 	unsigned int	j;
-	
-	if (radix > 1)	// redundant
-		size = size / 2;
+	unsigned int	push_a_count;
+	unsigned int	push_b_count;
+
+	push_a_count = 0;
+	push_b_count = 0;
 	i = 0;
 	// This could be optimized using the knowledge that we have at max size / 2 (+ 1?) values to move
 	// Another improvement would be to peek inside the ring and rotate in the direction of the closest value to push
@@ -62,41 +66,28 @@ static void	sorting_step(t_ring *rings[], t_stack *commands, unsigned int radix,
 		if (!(*(int*)rings[a]->content & radix))
 		{
 			ring_execute(rings, commands, ps_pa, 1);
-//			ring_execute(rings, commands, ps_rb, 1);
+			push_a_count++;
+		}
+		else if ((i == 0) && push_a_count > 0)	// Optimization. For 100 numbers the impact was 2 moves, ugh...
+		{
+			ring_execute(rings, commands, ps_rr, 1);
+			push_a_count--;
 		}
 		else
 			ring_execute(rings, commands, ps_ra, 1);
-	ring_execute(rings, commands, ps_rrb, 1);
+	ring_execute(rings, commands, ps_rb, push_a_count);
+//	ft_printf("====A OK ====\n");
 	while (j-- > 0)
 	{
 		if (*(int*)rings[b]->content & radix)
-			ring_execute(rings, commands, ps_pb, 1);
-		ring_execute(rings, commands, ps_rrb, 1);
-	}
-	//TODO: handle uneven sizes. There might be one value left over, and it
-	//should be on the 0 side, right?
-
-	/*
-	// The following implementation is wrong, should be done sequentally instead of parallel, right?
-	while (i++ < size)
-	{
-		if (!(*(int*)rings[a]->content & radix) && (*(int*)rings[b]->content & radix))
-			ring_execute(rings, commands, ps_rr, 1);
-		else 
 		{
-			if (!(*(int*)rings[a]->content & radix))
-			{
-				ring_execute(rings, commands, ps_pa, 1);
-				ring_execute(rings, commands, ps_rb, 1);
-			}
-			if (*(int*)rings[b]->content & radix)
-			{
-				ring_execute(rings, commands, ps_pb, 1);
-				ring_execute(rings, commands, ps_ra, 1);
-			}
+			ring_execute(rings, commands, ps_pb, 1);
+			push_b_count++;							// Not used
 		}
+		else
+			ring_execute(rings, commands, ps_rb, 1);
 	}
-	*/
+//	ft_printf("====B OK ====\n");
 }
 
 // Executes size / 2 actions
@@ -116,27 +107,27 @@ t_stack	*ring_radix_sort(t_ring *rings[], unsigned int size)
 	t_stack			*commands;
 	unsigned int	radix;
 
-	ft_printf("ring radix sort\n");
+//	ft_printf("ring radix sort\n");
 	if (rings == NULL)
 		return (NULL);
 	commands = ft_new_stack();
 	if (commands == NULL)
 		return (NULL);
-	ft_printf("====START====\n");
+//	ft_printf("====START====\n");
 	base_step(rings, commands, size);	// O(n)
-	ft_printf("====BASED====\n");
-	print_rings(rings);
+//	ft_printf("====BASED====\n");
+//	print_rings(rings);
 	radix = 2;
-	while (radix < size)	// This is not accurate, fix it 
+	while (radix < size)
 	{	// Runs log2(n) times
-		ft_printf("====ROUND %d====\n", radix);
-		sorting_step(rings, commands, radix, size);	// o(n)
+//		ft_printf("====ROUND %d====\n", radix);
+		sorting_step(rings, commands, radix);	// o(n)
 		radix <<= 1;
 	}
-	ft_printf("====SORTD====\n");
-	print_rings(rings);
+//	ft_printf("====SORTD====\n");
+//	print_rings(rings);
 	final_step(rings, commands);	// o(n)
-	ft_printf("====FINAL====\n");
-	print_rings(rings);
+//	ft_printf("====FINAL====\n");
+//	print_rings(rings);
 	return (commands);
 }

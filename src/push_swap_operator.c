@@ -46,7 +46,7 @@ int	ring_execute(t_ring *rings[], t_stack *command_stack, int command, unsigned 
 
 	if (repeat == 0)
 		return (0);
-	ft_printf("%s\n", command_to_string(command));	// TESTING
+//	ft_printf("%s\n", command_to_string(command));	// TESTING
 	if (rings == NULL || command_stack == NULL || command < ps_sa || command > ps_rrr)
 		return (0);
 	if (command == ps_sa || command == ps_ss)
@@ -69,8 +69,8 @@ int	ring_execute(t_ring *rings[], t_stack *command_stack, int command, unsigned 
 	*iptr = command;
 	if (iptr != NULL)
 		ft_push(command_stack, iptr);
-	print_rings(rings);	// TESTING
-	getchar(); // TESTING
+//	print_rings(rings);	// TESTING
+//	getchar(); // TESTING
 	return (1 + ring_execute(rings, command_stack, command, repeat - 1));
 }
 

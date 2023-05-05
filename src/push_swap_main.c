@@ -180,8 +180,8 @@ int	main(int argc, char *argv[])
 	}
 
 	// Arguments parsed
-
 	normalize_array(iarr, argc - 1);
+
 /*	// Normalized array print test:
 	for (int j = 0; j < argc - 1; j++)
 		ft_printf("%d\n", iarr[j]);
