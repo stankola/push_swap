@@ -9,10 +9,10 @@
 /*   Updated: 2023/01/03 19:21:41 by tsankola         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-#include "push_swap.h"
-#include "libft.h"
+#include "ft_queue.h"
 #include <stdio.h>	// testing
 
+// Standard FIFO queue
 t_queue	*ft_queuenew(void)
 {
 	t_queue	*queue;
@@ -28,6 +28,8 @@ t_queue	*ft_queuenew(void)
  * "Smart" enqueue and dequeue that creates or frees itself if NULL or empty.
  * Not sure if good idea in practice.
  * Dequeue could perhaps free itself only if called when queue is empty.
+ * 
+ * 6.5.2023: I think it's a good idea
  */
 void	ft_enqueue(t_queue **queue, void *content)
 {
@@ -92,6 +94,10 @@ void	ft_queueclear(t_queue **queue, void (*del)(void*))
 	*queue = NULL;
 }
 
+void	*ft_queuepeek(t_queue *queue)
+{
+	return (queue->head->content);
+}
 
 // TESTING Below
 /*

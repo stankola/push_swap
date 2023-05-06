@@ -102,7 +102,7 @@ void	print_rings(t_ring *rings[])
 //			print_binary(*(int*)a_iterator->content, 8);
 			a_iterator = a_iterator->prev;
 		}
-		else
+//		else
 //			ft_printf("\t");
 		if (b_iterator != NULL)
 		{

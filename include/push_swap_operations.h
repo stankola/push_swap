@@ -4,8 +4,8 @@
 # include "stack.h"
 # include "ring.h"
 
-enum		e_ps_commands {ps_sa, ps_sb, ps_ss, ps_pa, ps_pb, ps_ra, ps_rb,
-			ps_rr, ps_rra, ps_rrb, ps_rrr};
+enum		e_ps_commands {ps_sa, ps_ra, ps_rra, ps_sb, ps_rb, ps_rrb, ps_ss,
+			ps_pa, ps_pb, ps_rr, ps_rrr};
 
 int			execute(t_stack *stacks[], t_stack *command_stack, int command);
 

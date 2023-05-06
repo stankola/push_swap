@@ -22,9 +22,9 @@ void	ring_ps_swap(t_ring **ring)
 	if (*ring == NULL)
 		return ;
 	value = ring_take(ring);
-	ring_rotate(ring);
-	ring_add(ring, value);
 	ring_reverse_rotate(ring);
+	ring_add(ring, value);
+	ring_rotate(ring);
 }
 
 // Pushes the first element from stack_a to stack_b. If a is empty, nothing happens.

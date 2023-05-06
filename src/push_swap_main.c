@@ -5,6 +5,8 @@
 #include "libft.h"
 #include "sorting_algorithms.h"
 #include "ft_math.h"
+#include <stdio.h> // TEST
+
 
 static int	*args_to_int_array(int argc, char *argv[])
 {
@@ -161,6 +163,9 @@ int	main(int argc, char *argv[])
 
 	// Argument parsing
 
+//	ft_printf("sa\npb\npb\npb\nra\nrb\nrra\nrrb\nsa\npa\npa\npa\n");
+//	return (1);
+
 	if (argc <= 1)
 		return (1);
 	if (argc == 2)
@@ -178,17 +183,17 @@ int	main(int argc, char *argv[])
 		free(iarr);
 		return (0);
 	}
-
 	// Arguments parsed
 	normalize_array(iarr, argc - 1);
 
-/*	// Normalized array print test:
-	for (int j = 0; j < argc - 1; j++)
-		ft_printf("%d\n", iarr[j]);
-	return (0);
-*/
+	// Normalized array print test:
+//	for (int j = 0; j < argc - 1; j++)
+//		ft_printf("%d\n", iarr[j]);
+//	getchar();
+
 //	stacks = get_main_stacks(iarr, argc - 1);
 	rings = get_main_rings(iarr, argc - 1);
+
 //	print_stacks(stacks);
 //	print_rings(rings);
 //	ft_printf("---------SORTING STARTING----------\n");

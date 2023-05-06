@@ -3,7 +3,19 @@
 #include "push_swap.h"
 #include "push_swap_operations.h"
 #include "libft.h"
+#include "ft_queue.h"
 #include <stdio.h> // TESTING
+
+
+typedef struct	s_operation		//MOve to header
+{
+	unsigned int	number;
+	int				command;
+	t_ring			**rings;	
+}				t_operation;
+
+
+static const t_queue	g_op_queue[] = {NULL, NULL};
 
 // Executes command on stacks and pushes it into command_stack. Returns 0 on
 // succesful operation, 1 otherwise.
@@ -40,16 +52,41 @@ int	execute(t_stack *stacks[], t_stack *command_stack, int command)
 	return (1);
 }
 
+static int	execute4real(t_operation op)
+{
+
+}
+
+void	flush(void)
+{
+	// DO stuff. Execute operations and combine them
+}
+
 int	ring_execute(t_ring *rings[], t_stack *command_stack, int command, unsigned int repeat)
 {
-	int	*iptr;
+	int					*iptr;
+	static unsigned int	op_counter = 0;
+	t_operation			*op;
 
-	if (repeat == 0)
+	if (repeat == 0 || rings == NULL || command < ps_sa || command > ps_rrr)
 		return (0);
+
+	op = malloc(sizeof(t_operation));
+	op->command = command;
+	op->rings = rings;
+	op->number = operation_counter++;
+	if (command >= ps_ss && command <= ps_rrr)
+	{
+		flush();
+		execute4real(op);
+	}
+	else if (command >= ps_sa && command <= ps_rra)
+		ft_enqueue(g_op_queue[a], op);
+	else if (command >= ps_sb && command <= ps_rrb)
+		ft_enqueue(g_op_queue[b], op);
+
 //	ft_printf("%s\n", command_to_string(command));	// TESTING
-	if (rings == NULL || command < ps_sa || command > ps_rrr)
-		return (0);
-	if (command == ps_sa || command == ps_ss)
+/*	if (command == ps_sa || command == ps_ss)
 		ring_ps_swap(&rings[a]);
 	if (command == ps_sb || command == ps_ss)
 		ring_ps_swap(&rings[b]);
@@ -65,7 +102,7 @@ int	ring_execute(t_ring *rings[], t_stack *command_stack, int command, unsigned 
 		ring_ps_reverse_rotate(&rings[a]);
 	if (command == ps_rrb || command == ps_rrr)
 		ring_ps_reverse_rotate(&rings[b]);
-	if (command_stack != NULL)
+*/	if (command_stack != NULL)
 	{
 		iptr = malloc(sizeof(int));
 		*iptr = command;

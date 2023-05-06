@@ -37,7 +37,7 @@ static void base_step(t_ring *rings[], t_stack *commands, unsigned int size)
 	{
 		if (!(*(int*)rings[a]->content & radix))
 		{
-			ring_execute(rings, commands, ps_pa, 1);
+			ring_execute(rings, commands, ps_pb, 1);
 			push_count++;
 		}
 		else
@@ -65,7 +65,7 @@ static void	sorting_step(t_ring *rings[], t_stack *commands, unsigned int radix)
 	while (i-- > 0)
 		if (!(*(int*)rings[a]->content & radix))
 		{
-			ring_execute(rings, commands, ps_pa, 1);
+			ring_execute(rings, commands, ps_pb, 1);
 			push_a_count++;
 		}
 		else if ((i == 0) && push_a_count > 0)	// Optimization. For 100 numbers the impact was 2 moves, ugh...
@@ -81,7 +81,7 @@ static void	sorting_step(t_ring *rings[], t_stack *commands, unsigned int radix)
 	{
 		if (*(int*)rings[b]->content & radix)
 		{
-			ring_execute(rings, commands, ps_pb, 1);
+			ring_execute(rings, commands, ps_pa, 1);
 			push_b_count++;							// Not used
 		}
 		else
@@ -97,7 +97,7 @@ static void	final_step(t_ring *rings[], t_stack *commands)
 	unsigned int	i;
 
 	i = get_ring_size(rings[b]);
-	ring_execute(rings, commands, ps_pb, i);
+	ring_execute(rings, commands, ps_pa, i);
 }
 
 

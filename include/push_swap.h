@@ -22,12 +22,6 @@ typedef struct	s_vertex
 	void			*content;
 }					t_vertex;
 
-typedef struct	s_queue
-{
-	t_list		*head;
-	t_list		*tail;
-}				t_queue;
-
 typedef struct	s_ps_stacks
 {
 	t_stack		*a;
@@ -62,16 +56,6 @@ int			measure_disorder(t_list const *stack);
 int			inverted_measure_disorder(t_list const *stack);
 
 int			is_sorted(t_list *const stacks[]);
-
-t_queue		*ft_queuenew(void);
-
-void		ft_enqueue(t_queue**, void*);
-
-void		*ft_dequeue(t_queue**);
-
-void		ft_queueclear(t_queue**, void (*)(void*));
-
-int			ft_queueisempty(t_queue *q);
 
 t_vertex	*ft_vertnew(void *content, t_vertex *parent, void *parent_edge);
 
