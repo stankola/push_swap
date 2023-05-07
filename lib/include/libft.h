@@ -123,4 +123,6 @@ char	*ft_ulitoa16(unsigned long int n, int cap);
 
 int		ft_printf(const char *c, ...);
 
+int		ft_fprintf(int fd, const char *s, ...);
+
 #endif

@@ -33,7 +33,7 @@
  * AND hh, ll, vh, hv, vl, lv, vll, llv (? I think...)
  */
 
-static int	write_number(va_list iterator, char type)
+static int	write_number(va_list iterator, char type, int fd)
 {
 	char	*s;
 	char	*s1;
@@ -52,12 +52,12 @@ static int	write_number(va_list iterator, char type)
 		s = ft_strjoin("0x", s1);
 		free(s1);
 	}
-	print_count = write(STDOUT_FILENO, s, ft_strlen(s));
+	print_count = write(fd, s, ft_strlen(s));
 	free(s);
 	return (print_count);
 }
 
-static int	print_argument(va_list iterator, char type)
+static int	print_argument(va_list iterator, char type, int fd)
 {
 	char	*s;
 
@@ -66,20 +66,20 @@ static int	print_argument(va_list iterator, char type)
 	{
 		s = va_arg(iterator, char *);
 		if (s == NULL)
-			return (write(STDOUT_FILENO, "(null)", 6));
+			return (write(fd, "(null)", 6));
 		else
-			return (write(STDOUT_FILENO, s, ft_strlen(s)));
+			return (write(fd, s, ft_strlen(s)));
 	}
 	else if (type == 'c')
-		return (ft_putchar_fd((char)va_arg(iterator, int), STDOUT_FILENO));
+		return (ft_putchar_fd((char)va_arg(iterator, int), fd));
 	else if (ft_strchr(NUMBER_CHARACTERS, type))
-		return (write_number(iterator, type));
+		return (write_number(iterator, type, fd));
 	else if (type == '%')
-		return (ft_putchar_fd('%', STDOUT_FILENO));
+		return (ft_putchar_fd('%', fd));
 	return (0);
 }
 
-static int	print_string(const char *s, va_list iterator)
+static int	print_string(const char *s, va_list iterator, int fd)
 {
 	int		format_specifier_found;
 	int		print_count;
@@ -89,16 +89,29 @@ static int	print_string(const char *s, va_list iterator)
 	while (*s != '\0')
 	{
 		if (!format_specifier_found && *s != '%')
-			print_count += ft_putchar_fd(*s++, STDOUT_FILENO);
+			print_count += ft_putchar_fd(*s++, fd);
 		else if (format_specifier_found)
 		{
-			if (ft_strchr(FORMAT_CHARACTERS, *s))
-				print_count += print_argument(iterator, *s++);
+			if (ft_strchr(FORMAT_CHARACTERS, *s++))
+				print_count += print_argument(iterator, *(s - 1), fd);
 			format_specifier_found = 0;
 		}
 		else if (*s++ == '%')
 			format_specifier_found = 1;
 	}
+	return (print_count);
+}
+
+int	ft_fprintf(int fd, const char *s, ...)
+{
+	int		print_count;
+	va_list	iterator;
+
+	if (s == NULL)
+		return (-1);
+	va_start(iterator, s);
+	print_count = print_string(s, iterator, fd);
+	va_end(iterator);
 	return (print_count);
 }
 
@@ -110,7 +123,7 @@ int	ft_printf(const char *s, ...)
 	if (s == NULL)
 		return (-1);
 	va_start(iterator, s);
-	print_count = print_string(s, iterator);
+	print_count = print_string(s, iterator, STDOUT_FILENO);
 	va_end(iterator);
 	return (print_count);
 }

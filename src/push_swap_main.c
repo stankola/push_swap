@@ -6,6 +6,7 @@
 #include "sorting_algorithms.h"
 #include "ft_math.h"
 #include <stdio.h> // TEST
+#include <unistd.h> // FOR STDERR_FILENO
 
 
 static int	*args_to_int_array(int argc, char *argv[])
@@ -175,11 +176,13 @@ int	main(int argc, char *argv[])
 	}
 	else
 		strarr = &argv[1];
-	
+	// TODO: consider arguments of arbitrary size. Could do a string integer comparison and then normalize the values
+	// Errors include for example: some arguments aren’t integers, some arguments arebigger than an integer and/or there are duplicates.
+	// No need to handle bigger arguments than integers.
 	iarr = args_to_int_array(argc - 1, strarr);
 	if (iarr == NULL || check_duplicates(iarr, argc - 1))
 	{
-		ft_printf("Error\n"); // TODO: This has to be printed in stderr!
+		ft_fprintf(STDERR_FILENO, "Error\n");
 		free(iarr);
 		return (0);
 	}
