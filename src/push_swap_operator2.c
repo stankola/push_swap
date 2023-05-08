@@ -11,11 +11,11 @@ typedef struct	s_operation		//MOve to header
 {
 	unsigned int	number;
 	int				command;
-	t_ring			**rings;	
+	t_ring			**rings;
+	t_stack			*commands;	
 }				t_operation;
 
-
-static const t_queue	g_op_queue[] = {NULL, NULL};
+static const t_queue	*g_op_queue[] = {NULL};	// TODO: Check if allowed
 
 // Executes command on stacks and pushes it into command_stack. Returns 0 on
 // succesful operation, 1 otherwise.
@@ -52,38 +52,65 @@ int	execute(t_stack *stacks[], t_stack *command_stack, int command)
 	return (1);
 }
 
-static int	execute4real(t_operation op)
+static int	execute4real(t_operation *op)
 {
+	int	*iptr;
 
+	if (op->command == ps_sa || op->command == ps_ss)
+		ring_ps_swap(&(op->rings)[a]);
+	if (op->command == ps_sb || op->command == ps_ss)
+		ring_ps_swap(&(op->rings)[a]);
+	if (op->command == ps_pa)
+		ring_ps_push(&(op->rings)[a], &(op->rings)[a]);
+	if (op->command == ps_pb)
+		ring_ps_push(&(op->rings)[a], &(op->rings)[a]);
+	if (op->command == ps_ra || op->command == ps_rr)
+		ring_ps_rotate(&(op->rings)[a]);
+	if (op->command == ps_rb || op->command == ps_rr)
+		ring_ps_rotate(&(op->rings)[a]);
+	if (op->command == ps_rra || op->command == ps_rrr)
+		ring_ps_reverse_rotate(&(op->rings)[a]);
+	if (op->command == ps_rrb || op->command == ps_rrr)
+		ring_ps_reverse_rotate(&(op->rings)[a]);
+
+	if (op->commands != NULL)
+	{
+		iptr = malloc(sizeof(int));
+		if (iptr != NULL)
+		{
+			*iptr = op->command;
+			ft_push(op->commands, iptr);
+		}
+	}
+	return (1);
 }
 
 void	flush(void)
 {
-	// DO stuff. Execute operations and combine them
+	// 1. Find ss, pa, pb, rr or rrr
+	// 2. 
 }
 
 int	ring_execute(t_ring *rings[], t_stack *command_stack, int command, unsigned int repeat)
 {
-	int					*iptr;
 	static unsigned int	op_counter = 0;
 	t_operation			*op;
 
 	if (repeat == 0 || rings == NULL || command < ps_sa || command > ps_rrr)
 		return (0);
 
-	op = malloc(sizeof(t_operation));
-	op->command = command;
-	op->rings = rings;
-	op->number = operation_counter++;
-	if (command >= ps_ss && command <= ps_rrr)
+	while (repeat-- > 0)
 	{
-		flush();
-		execute4real(op);
+		op = malloc(sizeof(t_operation));
+		if (op == NULL)
+			return (0);
+		op->command = command;
+		op->rings = rings;
+		op->number = op_counter++;
+		ft_enqueue(g_op_queue, op);
 	}
-	else if (command >= ps_sa && command <= ps_rra)
-		ft_enqueue(g_op_queue[a], op);
-	else if (command >= ps_sb && command <= ps_rrb)
-		ft_enqueue(g_op_queue[b], op);
+	if (command >= ps_ss && command <= ps_rrr)
+		flush();
 
 //	ft_printf("%s\n", command_to_string(command));	// TESTING
 /*	if (command == ps_sa || command == ps_ss)
@@ -102,13 +129,15 @@ int	ring_execute(t_ring *rings[], t_stack *command_stack, int command, unsigned 
 		ring_ps_reverse_rotate(&rings[a]);
 	if (command == ps_rrb || command == ps_rrr)
 		ring_ps_reverse_rotate(&rings[b]);
-*/	if (command_stack != NULL)
+	if (command_stack != NULL)
 	{
 		iptr = malloc(sizeof(int));
-		*iptr = command;
 		if (iptr != NULL)
+		{
+			*iptr = command;
 			ft_push(command_stack, iptr);
-	}
+		}
+	}*/
 //	print_rings(rings);	// TESTING
 //	getchar(); // TESTING
 	return (1 + ring_execute(rings, command_stack, command, repeat - 1));

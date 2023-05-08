@@ -11,14 +11,15 @@ x  (breadth_first_search.c)		//scrapped
 * 1.2 convert functions to use ring data structure instead of prev
 *2. Add command tracing to push_swap_operations.c
 *3. main function + input parsing + error detection
-* 4. Replace ft_printf with latest.
-4.1 Refactor ft_printf to be able to print to any file
+*4. Replace ft_printf with latest.
+*4.1 Refactor ft_printf to be able to print to any file
 *5. Folder structure
 6. Test and benchmark.
 6.1. Consider what other sorts of bad input there might be
+6.2. Optimize radix sort
 7. Additional sorting algorithms.
 7.1 Merge sort
-7.2 Radix sort
+*7.2 Radix sort
 *8. Makefile
 8.1 Headers
 9. Cleanup
