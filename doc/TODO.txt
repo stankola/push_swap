@@ -21,8 +21,9 @@ x  (breadth_first_search.c)		//scrapped
 7.1 Merge sort
 *7.2 Radix sort
 *8. Makefile
-8.1 Headers
-9. Cleanup
+*8.1 Headers
+*9. Cleanup
+9.1 Last Cleanup
 
 ideas:
 Bubblesort -- BAD
