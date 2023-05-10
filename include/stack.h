@@ -13,13 +13,13 @@
 # define STACK_H
 # include "libft.h"
 
-typedef struct	s_stack
+typedef struct s_stack
 {
 	t_list	*head;
 	int		size;
 }				t_stack;
 
-t_stack	*ft_new_stack();
+t_stack	*ft_new_stack(void);
 
 void	ft_push(t_stack *stack, void *content);
 

@@ -11,8 +11,6 @@
 /* ************************************************************************** */
 #include "libft.h"
 
-// TODO: Makefile addition
-
 int	ft_lsteq(t_list *l1, t_list *l2, int (*eqf)(void*, void*))
 {
 	t_list	*l1_itr;
@@ -22,7 +20,8 @@ int	ft_lsteq(t_list *l1, t_list *l2, int (*eqf)(void*, void*))
 		exit(EXIT_FAILURE);
 	l1_itr = l1;
 	l2_itr = l2;
-	while (l1_itr != NULL && l2_itr != NULL && eqf(l1_itr->content, l2_itr->content))
+	while (l1_itr != NULL && l2_itr != NULL
+		&& eqf(l1_itr->content, l2_itr->content))
 	{
 		l1_itr = l1_itr->next;
 		l2_itr = l2_itr->next;

@@ -1,9 +1,19 @@
-//TODO header
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ring.h                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: tsankola <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/05/10 12:24:30 by tsankola          #+#    #+#             */
+/*   Updated: 2023/05/10 12:24:34 by tsankola         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
 #ifndef RING_H
 # define RING_H
 
-typedef struct	s_ring
+typedef struct s_ring
 {
 	struct s_ring	*next;
 	struct s_ring	*prev;

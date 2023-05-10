@@ -9,70 +9,41 @@
 /*   Updated: 2023/03/24 13:52:06 by tsankola         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-#include "push_swap_operations.h"
+#include "ring.h"
+#include <stdlib.h>
 
 // Swaps the position of the first two elements of stack
-void	ps_swap(t_stack *stack)
+void	ring_ps_swap(t_ring **ring)
 {
-	void	*temp1;
-	void	*temp2;
+	void	*value;
 
-	if (stack == NULL)
+	if (*ring == NULL)
 		return ;
-	temp1 = ft_pop(stack);
-	temp2 = ft_pop(stack);
-	ft_push(stack, temp1);
-	ft_push(stack, temp2);
+	value = ring_take(ring);
+	ring_reverse_rotate(ring);
+	ring_add(ring, value);
+	ring_rotate(ring);
 }
 
-// Pushes the first element from stack_a to stack_b
-void	ps_push(t_stack *stack_a, t_stack *stack_b)
+// Pushes the first element from ring_a to ring_b. If a is empty, nothing
+// happens.
+void	ring_ps_push(t_ring **ring_a, t_ring **ring_b)
 {
-	if (stack_a == NULL || stack_b == NULL)
+	if (*ring_a == NULL)
 		return ;
-	if (ft_peek(stack_a) != NULL)
-		ft_push(stack_b, ft_pop(stack_a));
+	ring_add(ring_b, ring_take(ring_a));
 }
 
 // Rotates the stack so that the first element becomes the last
-void	ps_rotate(t_stack *stack)
+void	ring_ps_rotate(t_ring **ring)
 {
-	void	*temp_first;
-	t_stack	*temp_stack;
-
-	if (stack == NULL)
-		return ;
-	temp_first = ft_pop(stack);
-	if (temp_first == NULL)
-		return ;
-	temp_stack = ft_new_stack();
-	if (temp_stack == NULL)
-		return ;
-	stack_to_stack(stack, temp_stack);
-	ft_push(stack, temp_first);
-	stack_to_stack(temp_stack, stack);
-	ft_del_stack(&temp_stack, NULL);
+	if (*ring != NULL)
+		*ring = (*ring)->prev;
 }
 
 // Rotates the stack so that the last element becomes the first
-void	ps_reverse_rotate(t_stack *stack)
+void	ring_ps_reverse_rotate(t_ring **ring)
 {
-	void	*temp_last;
-	t_stack	*temp_stack;
-
-	if (stack == NULL)
-		return ;
-	temp_stack = ft_new_stack();
-	if (temp_stack == NULL)
-		return ;
-	stack_to_stack(stack, temp_stack);
-	temp_last = ft_pop(temp_stack);
-	if (temp_last == NULL)
-	{
-		ft_del_stack(&temp_stack, NULL);
-		return ;
-	}
-	stack_to_stack(temp_stack, stack);
-	ft_push(stack, temp_last);
-	ft_del_stack(&temp_stack, NULL);
+	if (*ring != NULL)
+		*ring = (*ring)->next;
 }

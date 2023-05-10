@@ -10,9 +10,80 @@
 /*                                                                            */
 /* ************************************************************************** */
 #include "push_swap.h"
-#include <stdio.h> // TEST
+#include "libft.h"
+#ifndef INT_MAX
+# define INT_MAX 2147483647
+#endif
+#ifndef INT_MIN
+# define INT_MIN -2147483648
+#endif
 
-int		countwords(char *strarr[])
+int	check_duplicates(int iarr[], int size)
+{
+	int	i;
+	int	j;
+
+	i = 0;
+	while (i < size)
+	{
+		j = i;
+		while (++j < size)
+		{
+			if (iarr[i] == iarr[j])
+				return (1);
+		}
+		i++;
+	}
+	return (0);
+}
+
+static int	*get_ptr_to_next_min_value(int iarr[], int cur_min, int size)
+{
+	int	next_min;
+	int	i;
+	int	*iptr;
+
+	i = 0;
+	next_min = INT_MAX;
+	while (i < size)
+	{
+		if (iarr[i] < next_min && iarr[i] > cur_min)
+		{
+			next_min = iarr[i];
+			iptr = &(iarr[i]);
+		}
+		i++;
+	}
+	return (iptr);
+}
+
+void	normalize_array(int iarr[], int size)
+{
+	int	**iptr_arr;
+	int	i;
+	int	*current_min;
+
+	if (size <= 0)
+		return ;
+	iptr_arr = malloc(sizeof(int*) * size);
+	if (iptr_arr == NULL)
+		return ;
+	current_min = get_ptr_to_next_min_value(iarr, INT_MIN, size);
+	iptr_arr[0] = current_min;
+	i = 1;
+	while (i < size)
+	{
+		current_min = get_ptr_to_next_min_value(iarr, *current_min, size);
+		iptr_arr[i++] = current_min;
+	}
+	while (--i >= 0)
+	{
+		*(iptr_arr[i]) = i;
+	}
+	free(iptr_arr);
+}
+
+int	countwords(char *strarr[])
 {
 	int	i;
 
@@ -22,122 +93,23 @@ int		countwords(char *strarr[])
 	return (i);
 }
 
-void	print_stacks(t_stack *const stacks[])
-{
-	t_stack *temp_stack_a;
-	t_stack *temp_stack_b;
-	int		*a_iterator;
-	int		*b_iterator;
-
-	if (stacks == NULL || stacks[a] == NULL || stacks[b] == NULL)
-		return ;
-	temp_stack_a = ft_new_stack();
-	if (temp_stack_a == NULL)
-		return ;
-	temp_stack_b = ft_new_stack();
-	if (temp_stack_a == NULL)
-	{
-		free(temp_stack_a);
-		return ;
-	}
-	a_iterator = (int*)ft_pop(stacks[a]);
-	b_iterator = (int*)ft_pop(stacks[b]);
-	while (a_iterator != NULL || b_iterator != NULL)
-	{
-		if (a_iterator != NULL)
-			ft_printf("%d", *a_iterator);
-		if (b_iterator != NULL)
-			ft_printf("\t%d", *b_iterator);
-		ft_printf("\n");
-		ft_push(temp_stack_a, a_iterator);
-		ft_push(temp_stack_b, b_iterator);
-		a_iterator = (int*)ft_pop(stacks[a]);
-		b_iterator = (int*)ft_pop(stacks[b]);
-	}
-	stack_to_stack(temp_stack_a, stacks[a]);
-	stack_to_stack(temp_stack_b, stacks[b]);
-	ft_printf("---------\na\tb\n");
-}
-
-void	print_binary(int value, int padding)
-{
-	char bits[33] = {0};
-	int i = 31;
-	int mask = 1;
-	bits[32] = '\0';
-	bits[31] = '0';
-	while (mask <= value)
-	{
-		if (value & mask)
-			bits[i--] = '1';
-		else 
-			bits[i--] = '0';
-		mask <<= 1;
-		padding--;
-	}
-	if (value == 0)
-	{
-		i = 30;
-		padding--;
-	}
-	while (padding-- > 0)
-		bits[i--] = ' ';
-	ft_printf("%s", &bits[++i]);
-}
-
-void	print_rings(t_ring *rings[])
-{
-	t_ring	*a_iterator;
-	t_ring	*b_iterator;
-
-	if (rings == NULL)
-		return ;
-	a_iterator = rings[a];
-	b_iterator = rings[b];
-	while (a_iterator != NULL || b_iterator != NULL)
-	{
-		if (a_iterator != NULL)
-		{
-			ft_printf("%d", *(int*)a_iterator->content);
-//			print_binary(*(int*)a_iterator->content, 8);
-			a_iterator = a_iterator->prev;
-		}
-//		else
-//			ft_printf("\t");
-		if (b_iterator != NULL)
-		{
-			ft_printf("\t%d", *(int*)b_iterator->content);
-//			ft_printf("\t");
-//			print_binary(*(int*)b_iterator->content, 8);
-			b_iterator = b_iterator->prev;
-		}
-		ft_printf("\n");
-		if (a_iterator == rings[a])
-			a_iterator = NULL;
-		if (b_iterator == rings[b])
-			b_iterator = NULL;
-	}
-	ft_printf("---------\na\tb\n");
-}
-
 /* Checks to see if stack is in order using integer comparison.
  * Const keyword might be misleading since the stack itself is modified during 
  * execution. However, it should be returned to its original order.
- * TODO: Test. Probably works, not 100% sure. Might not be needed.
  */
-int		is_sorted(t_stack *stack)
+int	is_sorted(t_stack *stack) // TODO: Test. Probably works, not 100% sure. Might not be needed.
 {
 	t_stack	*temp_stack;
 
 	if (stack == NULL)
-		return -1;
+		return (-1);
 	temp_stack = ft_new_stack();
 	if (temp_stack == NULL)
 		return (-1);
 	while (ft_peek(stack) != NULL)
 	{
-		if ((ft_peek(temp_stack) == NULL) ||
-			(*(int*)ft_peek(stack) >= *(int*)ft_peek(temp_stack)))
+		if ((ft_peek(temp_stack) == NULL)
+			|| (*(int*)ft_peek(stack) >= *(int*)ft_peek(temp_stack)))
 			ft_push(temp_stack, ft_pop(stack));
 		else
 		{
