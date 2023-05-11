@@ -23,7 +23,7 @@ _SRC =	ft_math.c ft_queue.c isinteger.c push_swap.c push_swap_main.c \
 		ring.c ring_functions.c stack.c stack_functions.c
 #_SRC +=	merge_sort.c radix_sort.c insertion_sort.c ring_merge_sort.c \
 #		ring_radix_sort.c 
-_SRC +=	radix_sort.c
+_SRC +=	lsb_radix_sort.c
 _SRC +=	test_utils.c
 SRC = $(patsubst %, $(SRCDIR)/%, $(_SRC))
 
@@ -36,6 +36,7 @@ LIB_COMPILER_NAME = $(patsubst lib%.a, %, $(_LIB))
 
 _INC =	ft_math.h push_swap.h push_swap_operations.h ring.h \
 		sorting_algorithms.h stack.h
+_INC =	test_utils.h
 INC = $(patsubst %, $(INCDIR)/%, $(_INC))
 
 _LIB_INC = libft.h

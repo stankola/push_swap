@@ -1,5 +1,6 @@
 #ignore these
 *
+push_swap_tester/
 
 #include these
 !.gitignore

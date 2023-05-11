@@ -11,11 +11,11 @@
 /* ************************************************************************** */
 #include "push_swap.h"
 #include "libft.h"
-#ifndef INT_MAX
-# define INT_MAX 2147483647
+#ifndef PS_MAX
+# define PS_MAX 2147483648
 #endif
-#ifndef INT_MIN
-# define INT_MIN -2147483648
+#ifndef PS_MIN
+# define PS_MIN -2147483649
 #endif
 
 int	check_duplicates(int iarr[], int size)
@@ -37,14 +37,14 @@ int	check_duplicates(int iarr[], int size)
 	return (0);
 }
 
-static int	*get_ptr_to_next_min_value(int iarr[], int cur_min, int size)
+static int	*get_ptr_to_next_min_value(int iarr[], long int cur_min, int size)
 {
-	int	next_min;
+	long int	next_min;
 	int	i;
 	int	*iptr;
 
 	i = 0;
-	next_min = INT_MAX;
+	next_min = (long)PS_MAX;
 	while (i < size)
 	{
 		if (iarr[i] < next_min && iarr[i] > cur_min)
@@ -68,7 +68,7 @@ void	normalize_array(int iarr[], int size)
 	iptr_arr = malloc(sizeof(int*) * size);
 	if (iptr_arr == NULL)
 		return ;
-	current_min = get_ptr_to_next_min_value(iarr, INT_MIN, size);
+	current_min = get_ptr_to_next_min_value(iarr, (long)PS_MIN, size);
 	iptr_arr[0] = current_min;
 	i = 1;
 	while (i < size)
