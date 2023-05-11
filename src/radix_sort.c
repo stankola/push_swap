@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ring_radix_sort.c                                  :+:      :+:    :+:   */
+/*   radix_sort.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: tsankola <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -36,11 +36,11 @@ static void	base_step(t_ring *rings[], t_stack *commands, unsigned int size)
 	{
 		if (!(*(int *)rings[a]->content & radix))
 		{
-			ring_execute(rings, commands, ps_pb, 1);
+			execute(rings, commands, ps_pb, 1);
 			push_count++;
 		}
 		else
-			ring_execute(rings, commands, ps_ra, 1);
+			execute(rings, commands, ps_ra, 1);
 	}
 }
 
@@ -69,27 +69,27 @@ static void	sorting_step(t_ring *rings[], t_stack *commands, unsigned int radix)
 	{
 		if (!(*(int *)rings[a]->content & radix))
 		{
-			ring_execute(rings, commands, ps_pb, 1);
+			execute(rings, commands, ps_pb, 1);
 			push_a_count++;
 		}
 		else if ((i == 0) && push_a_count > 0)
 		{
-			ring_execute(rings, commands, ps_rr, 1);
+			execute(rings, commands, ps_rr, 1);
 			push_a_count--;
 		}
 		else
-			ring_execute(rings, commands, ps_ra, 1);
+			execute(rings, commands, ps_ra, 1);
 	}
-	ring_execute(rings, commands, ps_rb, push_a_count);
+	execute(rings, commands, ps_rb, push_a_count);
 	while (j-- > 0)
 	{
 		if (*(int *)rings[b]->content & radix)
 		{
-			ring_execute(rings, commands, ps_pa, 1);
+			execute(rings, commands, ps_pa, 1);
 			push_b_count++;							// Not actually used
 		}
 		else
-			ring_execute(rings, commands, ps_rb, 1);
+			execute(rings, commands, ps_rb, 1);
 	}
 }
 
@@ -100,11 +100,11 @@ static void	final_step(t_ring *rings[], t_stack *commands)
 	unsigned int	i;
 
 	i = get_ring_size(rings[b]);
-	ring_execute(rings, commands, ps_pa, i);
+	execute(rings, commands, ps_pa, i);
 }
 
 // For positive values, assuming normalized values (ie. 0,1,2,3,4,5,6...)
-t_stack	*ring_radix_sort(t_ring *rings[], unsigned int size)
+t_stack	*radix_sort(t_ring *rings[], unsigned int size)
 {
 	t_stack			*commands;
 	unsigned int	radix;

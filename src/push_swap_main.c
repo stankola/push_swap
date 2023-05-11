@@ -16,12 +16,12 @@
 #include "ft_math.h"
 #include <unistd.h>
 
-static int	*args_to_int_array(int argc, char *argv[])
+static int	*str_array_to_int_array(int argc, char *argv[])
 {
 	int		*iarr;
 	int		i;
 
-	iarr = malloc(sizeof(int) * argc);
+	iarr = malloc(sizeof(int) *argc);
 	if (iarr == NULL)
 		return (NULL);
 	i = 0;
@@ -79,36 +79,48 @@ int	main(int argc, char *argv[])
 	t_stack	*command_stack;
 	int		*iarr;
 	char	**strarr;
+	int		integer_count;
 
-	//TODO: Clean this parsing mess up
-	if (argc <= 1)
-		return (1);
+	//TODO: Clean this parsing mess
+	integer_count = 0;
 	if (argc == 2)
 	{
 		strarr = ft_split(argv[1], ' ');
-		argc = countwords(strarr) + 1;
+		iarr = str_array_to_int_array(countwords(strarr), strarr);
+		while (strarr[integer_count] != NULL)
+			free(strarr[integer_count++]);		// This is wrong. might try to free input strings.
+		free (strarr);
+		strarr = NULL;
+	}
+	else if (argc > 2)
+	{
+		iarr = str_array_to_int_array(argc - 1, &argv[1]);
+		integer_count = argc - 1;
 	}
 	else
-		strarr = &argv[1];
-	iarr = args_to_int_array(argc - 1, strarr);
-	int i = 0;
-	while (strarr[i] != NULL)
-		free(strarr[i]);
-	free (strarr);
-	if (iarr == NULL || check_duplicates(iarr, argc - 1))
+		return (1);
+	if (iarr == NULL || check_duplicates(iarr, integer_count))
 	{
 		ft_fprintf(STDERR_FILENO, "Error\n");
 		free(iarr);
 		return (0);
 	}
+	if (integer_count <= 1)
+	{
+		free(iarr);
+		return (1);
+	}
 	// Arguments parsed
-	normalize_array(iarr, argc - 1);
+	normalize_array(iarr, integer_count);
 	// Normalized array print test:
-	rings = get_main_rings(iarr, argc - 1);
+	rings = get_main_rings(iarr, integer_count);
 //	print_rings(rings);
 	if (rings != NULL)
 	{
-		command_stack = ring_radix_sort(rings, argc - 1);
+		if (integer_count > 5)
+			command_stack = radix_sort(rings, integer_count);
+		else
+			command_stack = simple_sort(rings, integer_count);
 		print_command_stack(command_stack);
 		while(ft_peek(command_stack) != NULL)
 			free(ft_pop(command_stack));
@@ -119,6 +131,7 @@ int	main(int argc, char *argv[])
 		while (rings[b] != NULL)
 			free(ring_take(&rings[b]));
 	}
+	free(rings);
 	free(iarr);
 	return (1);
 }

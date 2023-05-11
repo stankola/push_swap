@@ -83,6 +83,7 @@ void	normalize_array(int iarr[], int size)
 	free(iptr_arr);
 }
 
+// Expects NULL terminated array
 int	countwords(char *strarr[])
 {
 	int	i;

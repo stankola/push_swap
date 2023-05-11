@@ -13,7 +13,7 @@
 #include "push_swap_operations.h"
 #include "libft.h"
 
-int	ring_execute(t_ring *rings[], t_stack *command_stack, int command,
+int	execute(t_ring *rings[], t_stack *command_stack, int command,
 	unsigned int repeat)
 {
 	int	*iptr;
@@ -24,21 +24,21 @@ int	ring_execute(t_ring *rings[], t_stack *command_stack, int command,
 	if (rings == NULL || command < ps_sa || command > ps_rrr)
 		return (0);
 	if (command == ps_sa || command == ps_ss)
-		ring_ps_swap(&rings[a]);
+		ps_swap(&rings[a]);
 	if (command == ps_sb || command == ps_ss)
-		ring_ps_swap(&rings[b]);
+		ps_swap(&rings[b]);
 	if (command == ps_pa)
-		ring_ps_push(&rings[b], &rings[a]);
+		ps_push(&rings[b], &rings[a]);
 	if (command == ps_pb)
-		ring_ps_push(&rings[a], &rings[b]);
+		ps_push(&rings[a], &rings[b]);
 	if (command == ps_ra || command == ps_rr)
-		ring_ps_rotate(&rings[a]);
+		ps_rotate(&rings[a]);
 	if (command == ps_rb || command == ps_rr)
-		ring_ps_rotate(&rings[b]);
+		ps_rotate(&rings[b]);
 	if (command == ps_rra || command == ps_rrr)
-		ring_ps_reverse_rotate(&rings[a]);
+		ps_reverse_rotate(&rings[a]);
 	if (command == ps_rrb || command == ps_rrr)
-		ring_ps_reverse_rotate(&rings[b]);
+		ps_reverse_rotate(&rings[b]);
 	if (command_stack != NULL)
 	{
 		iptr = malloc(sizeof(int));
@@ -48,7 +48,7 @@ int	ring_execute(t_ring *rings[], t_stack *command_stack, int command,
 	}
 //	print_rings(rings);	// TESTING
 //	getchar(); // TESTING
-	return (1 + ring_execute(rings, command_stack, command, repeat - 1));
+	return (1 + execute(rings, command_stack, command, repeat - 1));
 }
 
 // Translates command to a string. Returns NULL if ft_strdup fails

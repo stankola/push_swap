@@ -23,7 +23,8 @@ x  (breadth_first_search.c)		//scrapped
 *8. Makefile
 *8.1 Headers
 *9. Cleanup
-9.1 Last Cleanup
+9.1 Remove test "hooks" from code and Makefile (test_utils.c)
+9.2 Last Cleanup
 
 ideas:
 Bubblesort -- BAD

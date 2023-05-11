@@ -29,7 +29,7 @@ void	ft_enqueue(t_queue **queue, void *content)
 	{
 		*queue = malloc(sizeof(t_queue));
 		if (*queue == NULL)
-			return (NULL);
+			exit(EXIT_FAILURE);
 		(*queue)->head = NULL;
 		(*queue)->tail = NULL;
 	}

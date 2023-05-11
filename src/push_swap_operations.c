@@ -13,7 +13,7 @@
 #include <stdlib.h>
 
 // Swaps the position of the first two elements of stack
-void	ring_ps_swap(t_ring **ring)
+void	ps_swap(t_ring **ring)
 {
 	void	*value;
 
@@ -27,22 +27,22 @@ void	ring_ps_swap(t_ring **ring)
 
 // Pushes the first element from ring_a to ring_b. If a is empty, nothing
 // happens.
-void	ring_ps_push(t_ring **ring_a, t_ring **ring_b)
+void	ps_push(t_ring **ring_a, t_ring **ring_b)
 {
 	if (*ring_a == NULL)
 		return ;
 	ring_add(ring_b, ring_take(ring_a));
 }
 
-// Rotates the stack so that the first element becomes the last
-void	ring_ps_rotate(t_ring **ring)
+// Rotates the ring so that the first element becomes the last
+void	ps_rotate(t_ring **ring)
 {
 	if (*ring != NULL)
 		*ring = (*ring)->prev;
 }
 
-// Rotates the stack so that the last element becomes the first
-void	ring_ps_reverse_rotate(t_ring **ring)
+// Rotates the ring so that the last element becomes the first
+void	ps_reverse_rotate(t_ring **ring)
 {
 	if (*ring != NULL)
 		*ring = (*ring)->next;

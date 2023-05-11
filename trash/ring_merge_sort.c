@@ -30,7 +30,7 @@ static void	divide_step(t_ring *rings[], t_stack *command_stack, int size)
 	i = 0;
 	ft_printf("dividing size: %d\n", size);	// TEST
 	while (i++ < size / 2)
-		ring_execute(rings, command_stack, ps_sa, 1);
+		execute(rings, command_stack, ps_sa, 1);
 	print_rings(rings);		// TEST
 }
 
@@ -46,11 +46,11 @@ static void merge_left(t_ring *rings[], t_stack *command_stack, int a_height, in
 			|| (a_height == 0))
 		{
 			b_height--;
-			ring_execute(rings, command_stack, ps_pb, 1);
+			execute(rings, command_stack, ps_pb, 1);
 		}
 		else 
 			a_height--;
-		ring_execute(rings, command_stack, ps_ra, 1);
+		execute(rings, command_stack, ps_ra, 1);
 	}
 }
 
@@ -64,11 +64,11 @@ static void merge_right(t_ring *rings[], t_stack *command_stack, int a_height, i
 			|| (b_height == 0))
 			{
 				a_height--;
-				ring_execute(rings, command_stack, ps_pa, 1);
+				execute(rings, command_stack, ps_pa, 1);
 			}
 			else 
 				b_height--;
-		ring_execute(rings, command_stack, ps_rb, 1);
+		execute(rings, command_stack, ps_rb, 1);
 	}
 }
 
@@ -85,12 +85,12 @@ static void	sorting_step(t_ring *rings[], t_stack *command_stack, int step, int 
 		{
 			if (*(int*)rings[a]->content > *(int*)rings[a]->prev->content &&
 				*(int*)rings[b]->content < *(int*)rings[b]->prev->content)
-				ring_execute(rings, command_stack, ps_ss, 1);
+				execute(rings, command_stack, ps_ss, 1);
 			else if (*(int*)rings[a]->content > *(int*)rings[a]->prev->content)
-				ring_execute(rings, command_stack, ps_sa, 1);
+				execute(rings, command_stack, ps_sa, 1);
 			else if (*(int*)rings[b]->content < *(int*)rings[b]->prev->content)
-				ring_execute(rings, command_stack, ps_sb, 1);
-			ring_execute(rings, command_stack, ps_rr, 2);
+				execute(rings, command_stack, ps_sb, 1);
+			execute(rings, command_stack, ps_rr, 2);
 		}
 		i = (--i) * 4;
 		if (i < size)
