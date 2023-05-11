@@ -20,7 +20,7 @@ int		check_duplicates(int iarr[], int size);
 
 void	normalize_array(int iarr[], int size);
 
-int		is_sorted(t_stack *stack);
+int		is_sorted(t_ring *ring);
 
 int		countwords(char *strarr[]);
 

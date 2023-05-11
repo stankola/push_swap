@@ -98,28 +98,23 @@ int	countwords(char *strarr[])
  * Const keyword might be misleading since the stack itself is modified during 
  * execution. However, it should be returned to its original order.
  */
-int	is_sorted(t_stack *stack) // TODO: Test. Probably works, not 100% sure. Might not be needed.
+int	is_sorted(t_ring *ring)
 {
-	t_stack	*temp_stack;
+	int		current_min;
+	t_ring	*iterator;
 
-	if (stack == NULL)
-		return (-1);
-	temp_stack = ft_new_stack();
-	if (temp_stack == NULL)
-		return (-1);
-	while (ft_peek(stack) != NULL)
+	if (ring == NULL)
+		return (1);
+	iterator = ring;
+	current_min = *(int *)iterator->content;
+	iterator = iterator->prev;
+	while (iterator != ring)
 	{
-		if ((ft_peek(temp_stack) == NULL)
-			|| (*(int*)ft_peek(stack) >= *(int*)ft_peek(temp_stack)))
-			ft_push(temp_stack, ft_pop(stack));
+		if (current_min <= *(int *)iterator->content)
+			current_min = *(int *)iterator->content;
 		else
-		{
-			stack_to_stack(temp_stack, stack);
-			ft_del_stack(&temp_stack, NULL);
 			return (0);
-		}
+		iterator = iterator->prev;
 	}
-	stack_to_stack(temp_stack, stack);
-	ft_del_stack(&temp_stack, NULL);
 	return (1);
 }

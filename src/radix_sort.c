@@ -114,13 +114,16 @@ t_stack	*radix_sort(t_ring *rings[], unsigned int size)
 	commands = ft_new_stack();
 	if (commands == NULL)
 		return (NULL);
-	base_step(rings, commands, size);
-	radix = 2;
-	while (radix < size)
+	if (! (is_sorted(rings[a])))
 	{
-		sorting_step(rings, commands, radix);
-		radix <<= 1;
+		base_step(rings, commands, size);
+		radix = 2;
+		while (radix < size)
+		{
+			sorting_step(rings, commands, radix);
+			radix <<= 1;
+		}
+		final_step(rings, commands);
 	}
-	final_step(rings, commands);
 	return (commands);
 }

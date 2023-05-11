@@ -61,10 +61,11 @@ $(NAME): $(OBJ)
 	$(CC) $(CFLAGS) $(OBJ) -L$(LIBDIR) -l$(LIB_COMPILER_NAME) -o $@
 
 clean:
-	rm -f $(patsubst %, %~, $(SRC))
 	rm -f $(OBJ)
 	$(MAKE) -C $(LIBDIR) clean
 	rm -f $(LIB)
+	rm -f $(patsubst %, %~, $(SRC))
+	rm -f $(patsubst %, %~, $(INC))
 
 fclean: clean
 	rm -f $(NAME)

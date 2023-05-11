@@ -12,25 +12,18 @@
 #include "ring.h"
 #include <stdlib.h>
 
-t_ring	*ring_new(void *content)
-{
-	t_ring	*ring;
-
-	ring = malloc(sizeof(t_ring));
-	if (ring == NULL)
-		return (NULL);
-	ring->next = ring;
-	ring->prev = ring;
-	ring->content = content;
-	return (ring);
-}
-
-// Adds content to the front of the ring
+// Adds content to the front of the ring or creates a new ring if NULL is passed
+// as the first argument
 void	ring_add(t_ring **ring, void *content)
 {
 	t_ring	*newring;
 
-	newring = ring_new(content);
+	newring = malloc(sizeof(t_ring));
+	if (newring == NULL)
+		return ;
+	newring->next = newring;
+	newring->prev = newring;
+	newring->content = content;
 	if (*ring != NULL)
 	{
 		newring->next = (*ring)->next;

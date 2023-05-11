@@ -105,11 +105,6 @@ int	main(int argc, char *argv[])
 		free(iarr);
 		return (0);
 	}
-	if (integer_count <= 1)
-	{
-		free(iarr);
-		return (1);
-	}
 	// Arguments parsed
 	normalize_array(iarr, integer_count);
 	// Normalized array print test:
@@ -117,15 +112,11 @@ int	main(int argc, char *argv[])
 //	print_rings(rings);
 	if (rings != NULL)
 	{
-		if (integer_count > 5)
-			command_stack = radix_sort(rings, integer_count);
-		else
-			command_stack = simple_sort(rings, integer_count);
+		command_stack = radix_sort(rings, integer_count);
 		print_command_stack(command_stack);
-		while(ft_peek(command_stack) != NULL)
-			free(ft_pop(command_stack));
-		ft_del_stack(&command_stack, NULL);
+		ft_del_stack(&command_stack, &free);
 
+		// To minimize rows, the rings could be freed in the sorting function
 		while (rings[a] != NULL) 
 			ring_take(&rings[a]);
 		while (rings[b] != NULL)

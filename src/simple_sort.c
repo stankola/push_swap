@@ -9,3 +9,6 @@
 /*   Updated: 2023/05/11 17:05:42 by tsankola         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+#include "sorting_algorithms.h"
+#include "ring.h"
+#include "push_swap_operations.h"
