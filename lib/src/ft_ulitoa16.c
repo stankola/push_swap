@@ -22,7 +22,6 @@ static unsigned long int	ft_power(int a, unsigned int power)
 	{
 		result *= a;
 		power--;
-		
 	}
 	return (result);
 }

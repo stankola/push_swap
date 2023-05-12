@@ -9,9 +9,12 @@
 /*   Updated: 2023/03/24 13:51:43 by tsankola         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-#include "push_swap.h"
+#include "libft.h"
 #include "ft_math.h"
 
+// Checks if the given string is an integer. Handles overflows as well.
+// Skips whitespace and handles '+' and '-'. This functionality could be 
+// incorporated into atoi in future projects.
 int	ft_isinteger(char *str)
 {
 	int	value;

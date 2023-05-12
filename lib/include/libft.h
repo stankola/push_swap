@@ -109,10 +109,6 @@ void	ft_lstiter(t_list *lst, void (*f)(void *));
 
 t_list	*ft_lstmap(t_list *lst, void *(*f)(void *), void (*del)(void *));
 
-int		ft_lsteq(t_list *l1, t_list *l2, int (*eqf)(void*, void*));
-
-void	*ft_lstsearch(t_list *lst, void *comparee, int (*matcher)(void*, void*));
-
 int		ft_ischarinset(char c, char const *set);
 
 char	*ft_itoa16(unsigned int n, int capitalized);
@@ -122,5 +118,7 @@ char	*ft_uitoa(unsigned int n);
 char	*ft_ulitoa16(unsigned long int n, int cap);
 
 int		ft_printf(const char *c, ...);
+
+int		ft_fprintf(int fd, const char *s, ...);
 
 #endif

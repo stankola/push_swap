@@ -1,16 +1,23 @@
-// TODO header
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_queue.h                                         :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: tsankola <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/05/10 12:15:46 by tsankola          #+#    #+#             */
+/*   Updated: 2023/05/10 12:15:46 by tsankola         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 #ifndef FT_QUEUE_H
 # define FT_QUEUE_H
 # include "libft.h"
 
-
-typedef struct	s_queue
+typedef struct s_queue
 {
 	t_list		*head;
 	t_list		*tail;
 }				t_queue;
-
-t_queue	*ft_queuenew(void);
 
 void	ft_enqueue(t_queue **queue, void *content);
 

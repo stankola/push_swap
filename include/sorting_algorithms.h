@@ -20,8 +20,6 @@ t_stack	*insertion_sort(t_stack *stacks[]);
 
 t_stack	*merge_sort(t_stack *stacks[]);
 
-t_stack	*radix_sort(t_stack *stacks[]);
-
-t_stack	*ring_radix_sort(t_ring *rings[], unsigned int size);
+t_stack	*radix_sort(t_ring *rings[], unsigned int size);
 
 #endif

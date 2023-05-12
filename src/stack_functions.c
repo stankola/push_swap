@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   stack_functions.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tsankola <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: tsankola <tsankola@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/06 18:38:05 by tsankola          #+#    #+#             */
-/*   Updated: 2023/01/06 18:38:06 by tsankola         ###   ########.fr       */
+/*   Updated: 2023/05/10 14:41:13 by tsankola         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #include "stack.h"
@@ -26,10 +26,10 @@ void	stack_to_stack(t_stack *stack_a, t_stack *stack_b)
 	}
 }
 
-int		get_stack_size(t_stack *stack)
+int	get_stack_size(t_stack *stack)
 {
 	t_stack	*temp_stack;
-	int i;
+	int		i;
 
 	if (stack == NULL)
 		return (-1);
@@ -37,8 +37,8 @@ int		get_stack_size(t_stack *stack)
 		return (0);
 	temp_stack = ft_new_stack();
 	if (temp_stack == NULL)
-		return -1;
-	i  = 0;
+		return (-1);
+	i = 0;
 	while (ft_peek(stack) != NULL)
 	{
 		i++;

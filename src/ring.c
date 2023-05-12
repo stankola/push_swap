@@ -1,26 +1,29 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ring.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: tsankola <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/05/10 13:22:16 by tsankola          #+#    #+#             */
+/*   Updated: 2023/05/10 13:22:18 by tsankola         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 #include "ring.h"
 #include <stdlib.h>
-#include <stdio.h> //TEST
 
-t_ring	*ring_new(void *content)
-{
-	t_ring	*ring;
-
-	ring = malloc(sizeof(t_ring));
-	if (ring == NULL)
-		return (NULL);
-	ring->next = ring;
-	ring->prev = ring;
-	ring->content = content;
-	return (ring);
-}
-
-// Adds content to the front of the ring
+// Adds content to the front of the ring or creates a new ring if NULL is passed
+// as the first argument
 void	ring_add(t_ring **ring, void *content)
 {
 	t_ring	*newring;
 
-	newring = ring_new(content);
+	newring = malloc(sizeof(t_ring));
+	if (newring == NULL)
+		return ;
+	newring->next = newring;
+	newring->prev = newring;
+	newring->content = content;
 	if (*ring != NULL)
 	{
 		newring->next = (*ring)->next;
@@ -51,7 +54,6 @@ void	*ring_take(t_ring **ring)
 	temp_ring->prev = NULL;
 	content = temp_ring->content;
 	free(temp_ring);
-	temp_ring = NULL;
 	return (content);
 }
 
@@ -66,41 +68,3 @@ void	ring_reverse_rotate(t_ring **ring)
 	if (*ring != NULL)
 		*ring = (*ring)->prev;
 }
-/*
-int main(void)	//TEST
-{
-	t_ring *ringu;
-
-	int taulu[] = {1,2,3,4,5};
-//	ringu = ring_new(&taulu[0]);
-//	printf("%d\n", *(int*)ring_take(&ringu));
-//	ring_add(&ringu, &taulu[1]);
-//	printf("%d\n", *(int*)ring_take(&ringu));
-
-//	ring_add(&ringu, &taulu[1]);
-//	ring_add(&ringu, &taulu[2]);
-//	ring_add(&ringu, &taulu[2]);
-//	ring_add(&ringu, &taulu[4]);
-//	ring_add(&ringu, &taulu[3]);
-//	for (int i = 0; i < 10; i++)
-//	{
-//		printf("%d\n", *(int*)ringu->content);
-//		ringu = ringu->prev;
-//	}
-//	printf("%p\n", ringu);
-	
-	ringu = NULL;
-	ring_add(&ringu, &taulu[1]);	//2
-	printf("cur %d next %d prev %d\n", *(int*)ringu->content, *(int*)ringu->next->content, *(int*)ringu->prev->content);
-	ring_add(&ringu, &taulu[3]);	//4
-	printf("cur %d next %d prev %d\n", *(int*)ringu->content, *(int*)ringu->next->content, *(int*)ringu->prev->content);
-	ring_add(&ringu, &taulu[0]);	//1
-	printf("cur %d next %d prev %d\n", *(int*)ringu->content, *(int*)ringu->next->content, *(int*)ringu->prev->content);
-	ring_rotate(&ringu);
-	printf("took %d\n", *(int*)ring_take(&ringu));
-	printf("cur %d next %d prev %d\n", *(int*)ringu->content, *(int*)ringu->next->content, *(int*)ringu->prev->content);
-	printf("took %d\n", *(int*)ring_take(&ringu));
-	printf("cur %d next %d prev %d\n", *(int*)ringu->content, *(int*)ringu->next->content, *(int*)ringu->prev->content);
-	printf("took %d\n", *(int*)ring_take(&ringu));
-	printf("cur %d next %d prev %d\n", *(int*)ringu->content, *(int*)ringu->next->content, *(int*)ringu->prev->content);
-}*/
