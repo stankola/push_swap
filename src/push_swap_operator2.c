@@ -52,14 +52,97 @@ int	execute(t_stack *stacks[], t_stack *command_stack, int command)
 	return (1);
 }
 
-static int	execute4real(t_operation op)
+static int	execute4real(t_ring *rings[], t_stack *command_stack, int command)
 {
+	if (command == ps_sa || command == ps_ss)
+		ring_ps_swap(&rings[a]);
+	if (command == ps_sb || command == ps_ss)
+		ring_ps_swap(&rings[b]);
+	if (command == ps_pa)
+		ring_ps_push(&rings[b], &rings[a]);
+	if (command == ps_pb)
+		ring_ps_push(&rings[a], &rings[b]);
+	if (command == ps_ra || command == ps_rr)
+		ring_ps_rotate(&rings[a]);
+	if (command == ps_rb || command == ps_rr)
+		ring_ps_rotate(&rings[b]);
+	if (command == ps_rra || command == ps_rrr)
+		ring_ps_reverse_rotate(&rings[a]);
+	if (command == ps_rrb || command == ps_rrr)
+		ring_ps_reverse_rotate(&rings[b]);
+	if (command_stack != NULL)
+	{
+		iptr = malloc(sizeof(int));
+		*iptr = command;
+		if (iptr != NULL)
+			ft_push(command_stack, iptr);
+	}
+}
 
+// e_ps_commands {ps_sa, ps_ra, ps_rra, ps_sb, ps_rb, ps_rrb, ps_ss,
+//			ps_pa, ps_pb, ps_rr, ps_rrr};
+
+static int combined_ops(int a, int b)
+{
+	if (a == ps_sa && b == ps_sb)
+		return (ps_ss);
+	else if (a == ps_ra && b == ps_rb)
+		return (ps_rr);
+	else if (a == ps_rra && b == ps_rrb)
+		return (ps_rrr);
+	else
+		return (-1);
 }
 
 void	flush(void)
 {
-	// DO stuff. Execute operations and combine them
+	int	a_ops[] = {0, 0, 0};	// swap, rotate, reverse rotate
+	int	b_ops[] = {0, 0, 0};
+	int	d_ops[] = {0, 0, 0};
+	t_list	*a_i;
+	t_list	*b_i;
+
+	while (g_op_queue[a] != NULL || g_op_queue[b] != NULL)
+	{
+		if (g_op_queue[a] == NULL && g_op_queue[b] != NULL)
+			execute4real(ft_dequeue(&g_op_queue[a]));
+		else if (g_op_queue[a] != NULL && g_op_queue[b] == NULL)
+			execute4real(ft_dequeue(&g_op_queue[b]));
+		else if ((t_operation*)ft_queuepeek(g_op_queue[a])->command
+			== (t_operation*)ft_queuepeek(g_op_queue[b])->command)
+	}
+
+
+	a_i = g_op_queue[a];
+	b_i = g_op_queue[b];
+	while (a_i != NULL && b_i != NULL)
+	{
+		if(a_i != NULL)
+		{
+			if (*(int*)a_i->content == ps_sa)
+				a_ops[0]++;
+			else if (*(int*)a_i->content == ps_ra)
+				a_ops[1]++;
+			else if (*(int*)a_i->content == ps_rra)
+				a_ops[2]++;
+			a_i = a_i->next;
+		}
+		if(b_i != NULL)
+		{
+			if (*(int*)b_i->content == ps_sb)
+				b_ops[0]++;
+			else if (*(int*)b_i->content == ps_rb)
+				b_ops[1]++;
+			else if (*(int*)b_i->content == ps_rrb)
+				b_ops[2]++;
+			b_i = b_i->next;
+		}
+	}
+	d_ops[0] = a_ops[0] - b_ops[0];
+	d_ops[1] = a_ops[1] - b_ops[1];
+	d_ops[2] = a_ops[2] - b_ops[2];
+
+	if d_ops[0] > 
 }
 
 int	ring_execute(t_ring *rings[], t_stack *command_stack, int command, unsigned int repeat)
