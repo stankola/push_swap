@@ -18,7 +18,7 @@ INCDIR = include
 
 LIB_INCDIR = $(LIBDIR)/$(INCDIR)
 
-_SRC =	ft_math.c ft_queue.c isinteger.c push_swap.c push_swap_main.c \
+_SRC =	ft_isinteger.c ft_math.c ft_queue.c push_swap.c push_swap_main.c \
 		push_swap_operations.c push_swap_operator.c \
 		ring.c ring_functions.c stack.c stack_functions.c
 #_SRC +=	merge_sort.c radix_sort.c insertion_sort.c ring_merge_sort.c \

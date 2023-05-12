@@ -12,19 +12,9 @@
 #include "push_swap.h"
 #include "push_swap_operations.h"
 #include "libft.h"
-#include "test_utils.h" // test
-#include <stdio.h> // test
 
-int	execute(t_ring *rings[], t_stack *command_stack, int command,
-	unsigned int repeat)
+static void	execute4real(t_ring *rings[], int command)
 {
-	int	*iptr;
-
-	if (repeat == 0)
-		return (0);
-//	ft_printf("%s\n", command_to_string(command));	// TESTING
-	if (rings == NULL || command < ps_sa || command > ps_rrr)
-		return (0);
 	if (command == ps_sa || command == ps_ss)
 		ps_swap(&rings[a]);
 	if (command == ps_sb || command == ps_ss)
@@ -41,6 +31,16 @@ int	execute(t_ring *rings[], t_stack *command_stack, int command,
 		ps_reverse_rotate(&rings[a]);
 	if (command == ps_rrb || command == ps_rrr)
 		ps_reverse_rotate(&rings[b]);
+}
+
+int	execute(t_ring *rings[], t_stack *command_stack, int command,
+	unsigned int repeat)
+{
+	int	*iptr;
+
+	if (repeat == 0 || rings == NULL || command < ps_sa || command > ps_rrr)
+		return (0);
+	execute4real(rings, command);
 	if (command_stack != NULL)
 	{
 		iptr = malloc(sizeof(int));
@@ -48,8 +48,6 @@ int	execute(t_ring *rings[], t_stack *command_stack, int command,
 		if (iptr != NULL)
 			ft_push(command_stack, iptr);
 	}
-//	print_rings(rings);	// TESTING
-//	getchar(); // TESTING, see headers
 	return (1 + execute(rings, command_stack, command, repeat - 1));
 }
 

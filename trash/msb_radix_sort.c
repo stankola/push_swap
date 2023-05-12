@@ -129,8 +129,8 @@ static void	sorting_step(t_ring *rings[], t_stack *commands, unsigned int radix)
 
 	push_a_count = 0;
 	push_b_count = 0;
-	i = get_ring_size(rings[a]);
-	j = get_ring_size(rings[b]);
+	i = ring_get_size(rings[a]);
+	j = ring_get_size(rings[b]);
 	while (i-- > 0)
 	{
 		if (!(*(int *)rings[a]->content & radix))
@@ -165,7 +165,7 @@ static void	final_step(t_ring *rings[], t_stack *commands)
 {
 	unsigned int	i;
 
-	i = get_ring_size(rings[b]);
+	i = ring_get_size(rings[b]);
 	execute(rings, commands, ps_pa, i);
 }
 

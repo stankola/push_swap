@@ -29,4 +29,6 @@ int	ft_chkovrflw_mlt(int x, int y);
 
 int	ft_pow_pos(int x, int y);
 
+int	ft_isinteger(char *str);
+
 #endif

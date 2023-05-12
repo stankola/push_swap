@@ -18,7 +18,7 @@
 # define PS_MIN -2147483649
 #endif
 
-int	check_duplicates(int iarr[], int size)
+int	is_duplicates(int iarr[], int size)
 {
 	int	i;
 	int	j;
@@ -40,8 +40,8 @@ int	check_duplicates(int iarr[], int size)
 static int	*get_ptr_to_next_min_value(int iarr[], long int cur_min, int size)
 {
 	long int	next_min;
-	int	i;
-	int	*iptr;
+	int			i;
+	int			*iptr;
 
 	i = 0;
 	next_min = (long)PS_MAX;
@@ -65,7 +65,7 @@ void	normalize_array(int iarr[], int size)
 
 	if (size <= 0)
 		return ;
-	iptr_arr = malloc(sizeof(int*) * size);
+	iptr_arr = malloc(sizeof(int *) * size);
 	if (iptr_arr == NULL)
 		return ;
 	current_min = get_ptr_to_next_min_value(iarr, (long)PS_MIN, size);

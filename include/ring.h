@@ -29,6 +29,10 @@ void	ring_rotate(t_ring **ring);
 
 void	ring_reverse_rotate(t_ring **ring);
 
-int		get_ring_size(t_ring *ring);
+void	ring_del(t_ring **ring, void (*del)(void*));
+
+int		ring_get_size(t_ring *ring);
+
+t_ring	*ring_clone(t_ring *ring);
 
 #endif

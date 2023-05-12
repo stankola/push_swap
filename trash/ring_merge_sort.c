@@ -141,7 +141,7 @@ t_stack	*merge_sort(t_ring *rings[])
 	command_stack = ft_new_stack();
 	if (command_stack == NULL)
 		return (NULL);
-	size = get_ring_size(rings[a]);
+	size = ring_get_size(rings[a]);
 	// divide stack
 	print_rings(rings);		// TEST
 	divide_step(rings, command_stack, size);

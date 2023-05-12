@@ -12,7 +12,7 @@
 #include "ring.h"
 #include "stdlib.h"
 
-int	get_ring_size(t_ring *ring)
+int	ring_get_size(t_ring *ring)
 {
 	t_ring	*temp_ring;
 	int		i;
@@ -27,4 +27,20 @@ int	get_ring_size(t_ring *ring)
 		temp_ring = temp_ring->next;
 	}
 	return (i);
+}
+
+t_ring	*ring_clone(t_ring *ring)
+{
+	t_ring	*clone;
+	t_ring	*iterator;
+
+	iterator = ring->next;
+	clone = NULL;
+	while (iterator != ring)
+	{
+		ring_add(&clone, iterator->content);
+		iterator = iterator->next;
+	}
+	ring_add(&clone, iterator->content);
+	return (clone);
 }

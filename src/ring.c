@@ -68,3 +68,14 @@ void	ring_reverse_rotate(t_ring **ring)
 	if (*ring != NULL)
 		*ring = (*ring)->prev;
 }
+
+void	ring_del(t_ring **ring, void (*del)(void*))
+{
+	void	*content;
+
+	content = ring_take(ring);
+	if (del != NULL)
+		(del)(content);
+	if (*ring != NULL)
+		ring_del(ring, del);
+}

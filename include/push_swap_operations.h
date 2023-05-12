@@ -14,6 +14,8 @@
 # include "stack.h"
 # include "ring.h"
 
+enum	e_ps_stacks {a, b};
+
 enum	e_ps_commands
 {
 	ps_sa,

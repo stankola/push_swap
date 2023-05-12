@@ -21,7 +21,7 @@ static int	*str_array_to_int_array(int argc, char *argv[])
 	int		*iarr;
 	int		i;
 
-	iarr = malloc(sizeof(int) *argc);
+	iarr = malloc(sizeof(int) * argc);
 	if (iarr == NULL)
 		return (NULL);
 	i = 0;
@@ -38,12 +38,12 @@ static int	*str_array_to_int_array(int argc, char *argv[])
 	return (iarr);
 }
 
-t_ring	**get_main_rings(int *iarr, int size)
+static t_ring	**get_main_rings(int *iarr, int size)
 {
 	t_ring	**rings;
 	int		i;
 
-	rings = malloc((b + 1) * sizeof(t_ring*));
+	rings = malloc((b + 1) * sizeof(t_ring *));
 	if (rings == NULL)
 		return (NULL);
 	rings[a] = NULL;
@@ -64,7 +64,7 @@ void	print_command_stack(t_stack *command_stack)
 	stack_to_stack(command_stack, temp_stack);
 	while (ft_peek(temp_stack) != NULL)
 	{
-		iptr = (int*)ft_pop(temp_stack);
+		iptr = (int *)ft_pop(temp_stack);
 		str = command_to_string(*iptr);
 		ft_printf("%s", str);
 		free(str);
@@ -73,56 +73,48 @@ void	print_command_stack(t_stack *command_stack)
 	ft_del_stack(&temp_stack, NULL);
 }
 
-int	main(int argc, char *argv[])
+void	sort_and_print(int iarr[], int size)
 {
 	t_ring	**rings;
 	t_stack	*command_stack;
-	int		*iarr;
-	char	**strarr;
-	int		integer_count;
 
-	//TODO: Clean this parsing mess
-	integer_count = 0;
-	if (argc == 2)
-	{
-		strarr = ft_split(argv[1], ' ');
-		iarr = str_array_to_int_array(countwords(strarr), strarr);
-		while (strarr[integer_count] != NULL)
-			free(strarr[integer_count++]);		// This is wrong. might try to free input strings.
-		free (strarr);
-		strarr = NULL;
-	}
-	else if (argc > 2)
-	{
-		iarr = str_array_to_int_array(argc - 1, &argv[1]);
-		integer_count = argc - 1;
-	}
-	else
-		return (1);
-	if (iarr == NULL || check_duplicates(iarr, integer_count))
-	{
-		ft_fprintf(STDERR_FILENO, "Error\n");
-		free(iarr);
-		return (0);
-	}
-	// Arguments parsed
-	normalize_array(iarr, integer_count);
-	// Normalized array print test:
-	rings = get_main_rings(iarr, integer_count);
-//	print_rings(rings);
+	normalize_array(iarr, size);
+	rings = get_main_rings(iarr, size);
 	if (rings != NULL)
 	{
-		command_stack = radix_sort(rings, integer_count);
+		command_stack = radix_sort(rings, size);
 		print_command_stack(command_stack);
 		ft_del_stack(&command_stack, &free);
-
-		// To minimize rows, the rings could be freed in the sorting function
-		while (rings[a] != NULL) 
-			ring_take(&rings[a]);
-		while (rings[b] != NULL)
-			free(ring_take(&rings[b]));
+		ring_del(&rings[a], NULL);
+		ring_del(&rings[b], NULL);
+		free(rings);
 	}
-	free(rings);
+}
+
+int	main(int argc, char *argv[])
+{
+	int		*iarr;
+	char	**strarr;
+	int		size;
+	int		i;
+
+	if (argc == 2)
+		strarr = ft_split(argv[1], ' ');
+	else if (argc > 2)
+		strarr = &argv[1];
+	else
+		return (1);
+	size = countwords(strarr);
+	iarr = str_array_to_int_array(size, strarr);
+	if (iarr == NULL || is_duplicates(iarr, size))
+		ft_fprintf(STDERR_FILENO, "Error\n");
+	else
+		sort_and_print(iarr, size);
+	i = 0;
+	while (argc == 2 && (strarr)[i] != NULL)
+		free ((strarr)[i++]);
+	if (argc == 2)
+		free(strarr);
 	free(iarr);
 	return (1);
 }

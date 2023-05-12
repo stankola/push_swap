@@ -14,8 +14,6 @@
 #include "stack.h"
 #include "ring.h"
 #include "sorting_algorithms.h"
-#include "libft.h" // TEST
-#include <stdio.h> // TEST
 
 // Sort 0's right and 1's left (smaller ones right, bigger ones left)
 // executes size actions
@@ -48,10 +46,10 @@ static void	base_step(t_ring *rings[], t_stack *commands, unsigned int size)
 // In practice, will execute 3/2 * size actions.
 // Complexity: O(n)
 // Implements optimization in combining some rotations. Not very effective:
-// For 100 numbers the impact was 2 moves, ugh... Could be furter improved though
+// For 100 numbers the impact was 2 moves, ugh. Could be improved a bit further
 // Could this be optimized using the knowledge that we have at max
 // size / 2 (+ 1?) values to move. Maybe not, the order is important, so 
-// rotations do serve a purpose
+// rotations do serve a purpose.
 // Another improvement would be to peek inside the ring and rotate in the
 // direction of the closest value to push
 static void	sorting_step(t_ring *rings[], t_stack *commands, unsigned int radix)
@@ -59,24 +57,16 @@ static void	sorting_step(t_ring *rings[], t_stack *commands, unsigned int radix)
 	unsigned int	i;
 	unsigned int	j;
 	unsigned int	push_a_count;
-	unsigned int	push_b_count;
 
 	push_a_count = 0;
-	push_b_count = 0;
-	i = get_ring_size(rings[a]);
-	j = get_ring_size(rings[b]);
-//	ft_printf("Round %d\n", radix);
+	i = ring_get_size(rings[a]);
+	j = ring_get_size(rings[b]);
 	while (i-- > 0)
 	{
 		if (!(*(int *)rings[a]->content & radix))
 		{
 			execute(rings, commands, ps_pb, 1);
 			push_a_count++;
-		}
-		else if ((i == 0) && push_a_count > 0)
-		{
-			execute(rings, commands, ps_rr, 1);
-			push_a_count--;
 		}
 		else
 			execute(rings, commands, ps_ra, 1);
@@ -85,10 +75,7 @@ static void	sorting_step(t_ring *rings[], t_stack *commands, unsigned int radix)
 	while (j-- > 0)
 	{
 		if (*(int *)rings[b]->content & radix)
-		{
 			execute(rings, commands, ps_pa, 1);
-			push_b_count++;							// Not actually used
-		}
 		else
 			execute(rings, commands, ps_rb, 1);
 	}
@@ -100,8 +87,7 @@ static void	final_step(t_ring *rings[], t_stack *commands)
 {
 	unsigned int	i;
 
-//	ft_printf("Final round\n");
-	i = get_ring_size(rings[b]);
+	i = ring_get_size(rings[b]);
 	execute(rings, commands, ps_pa, i);
 }
 

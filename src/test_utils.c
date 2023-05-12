@@ -10,6 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 #include "push_swap.h"
+#include "push_swap_operations.h"
 #include "stack.h"
 #include "ring.h"
 

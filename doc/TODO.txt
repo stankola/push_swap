@@ -19,8 +19,8 @@ x  (breadth_first_search.c)		//scrapped
 6.2. Consider what other sorts of bad input there might be
 6.3. Optimize radix sort
 * 7. sorting algorithms.
-7.1 Merge sort
 *7.2 Radix sort
+7.3 brute force for n < 6 or so
 *8. Makefile
 *8.1 Headers
 *9. Cleanup
@@ -28,7 +28,6 @@ x  (breadth_first_search.c)		//scrapped
 9.2 ft_queue ? Is it needed
 10. Last Cleanup
 
-ideas:
-Bubblesort -- BAD
-Radixsort
+Optionals:
+Bubblesort
 Mergesort
