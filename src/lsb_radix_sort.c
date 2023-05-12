@@ -48,9 +48,10 @@ static void	base_step(t_ring *rings[], t_stack *commands, unsigned int size)
 // In practice, will execute 3/2 * size actions.
 // Complexity: O(n)
 // Implements optimization in combining some rotations. Not very effective:
-// For 100 numbers the impact was 2 moves, ugh...
-// This could be optimized using the knowledge that we have at max
-// size / 2 (+ 1?) values to move
+// For 100 numbers the impact was 2 moves, ugh... Could be furter improved though
+// Could this be optimized using the knowledge that we have at max
+// size / 2 (+ 1?) values to move. Maybe not, the order is important, so 
+// rotations do serve a purpose
 // Another improvement would be to peek inside the ring and rotate in the
 // direction of the closest value to push
 static void	sorting_step(t_ring *rings[], t_stack *commands, unsigned int radix)
@@ -64,6 +65,7 @@ static void	sorting_step(t_ring *rings[], t_stack *commands, unsigned int radix)
 	push_b_count = 0;
 	i = get_ring_size(rings[a]);
 	j = get_ring_size(rings[b]);
+//	ft_printf("Round %d\n", radix);
 	while (i-- > 0)
 	{
 		if (!(*(int *)rings[a]->content & radix))
@@ -98,6 +100,7 @@ static void	final_step(t_ring *rings[], t_stack *commands)
 {
 	unsigned int	i;
 
+//	ft_printf("Final round\n");
 	i = get_ring_size(rings[b]);
 	execute(rings, commands, ps_pa, i);
 }

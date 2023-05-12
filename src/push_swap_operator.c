@@ -22,7 +22,7 @@ int	execute(t_ring *rings[], t_stack *command_stack, int command,
 
 	if (repeat == 0)
 		return (0);
-	ft_printf("%s\n", command_to_string(command));	// TESTING
+//	ft_printf("%s\n", command_to_string(command));	// TESTING
 	if (rings == NULL || command < ps_sa || command > ps_rrr)
 		return (0);
 	if (command == ps_sa || command == ps_ss)
@@ -48,8 +48,8 @@ int	execute(t_ring *rings[], t_stack *command_stack, int command,
 		if (iptr != NULL)
 			ft_push(command_stack, iptr);
 	}
-	print_rings(rings);	// TESTING
-	getchar(); // TESTING, see headers
+//	print_rings(rings);	// TESTING
+//	getchar(); // TESTING, see headers
 	return (1 + execute(rings, command_stack, command, repeat - 1));
 }
 
