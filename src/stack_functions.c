@@ -48,3 +48,21 @@ int	get_stack_size(t_stack *stack)
 	ft_del_stack(&temp_stack, NULL);
 	return (i);
 }
+
+t_stack	*stack_clone(t_stack *stack, void *(*f)(void *), void (*del)(void *))
+{
+	t_stack	*clone;
+	t_list	*clone_list;
+
+	clone = ft_new_stack();
+	if (clone == NULL)
+		return (NULL);
+	clone_list = ft_lstmap(stack->head, f, del);
+	if (clone_list == NULL)
+	{
+		free(clone);
+		return (NULL);
+	}
+	clone->head = clone_list;
+	return (clone);
+}

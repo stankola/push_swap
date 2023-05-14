@@ -13,7 +13,8 @@
 
 /* Standard FIFO queue
  * "Smart" enqueue and dequeue that creates or frees itself if NULL or empty.
- * Not sure if it's good practice.
+ * Not sure if it's good practice. Could pose problems when malloc fails,
+ * now it crashes gracefully :D
  * Dequeue could perhaps free itself only if called when queue is empty.
  */
 void	ft_enqueue(t_queue **queue, void *content)
