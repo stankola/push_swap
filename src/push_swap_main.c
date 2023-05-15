@@ -60,6 +60,8 @@ void	print_command_stack(t_stack *command_stack)
 	int		*iptr;
 	t_stack	*temp_stack;
 
+	if (command_stack == NULL)
+		return ;
 	temp_stack = ft_new_stack();
 	stack_to_stack(command_stack, temp_stack);
 	while (ft_peek(temp_stack) != NULL)

@@ -9,7 +9,7 @@
 /*   Updated: 2023/01/03 19:21:41 by tsankola         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-#include "ft_queue.h"
+#include "queue.h"
 
 /* Standard FIFO queue
  * "Smart" enqueue and dequeue that creates or frees itself if NULL or empty.

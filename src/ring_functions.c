@@ -34,6 +34,8 @@ t_ring	*ring_clone(t_ring *ring)
 	t_ring	*clone;
 	t_ring	*iterator;
 
+	if (ring == NULL)
+		return (NULL);
 	iterator = ring->next;
 	clone = NULL;
 	while (iterator != ring)

@@ -124,6 +124,7 @@ t_ring	**clone_rings(t_ring *rings[])
 	clones = malloc(sizeof(t_ring) * b);
 	if (clones == NULL)
 		return (NULL);
+	ft_fprintf(2, "SEeeg\n");
 	clones[a] = ring_clone(rings[a]);
 	clones[b] = ring_clone(rings[b]);
 	return (clones);
@@ -149,15 +150,24 @@ int	ring_state_equality_comparison(t_ring_state *state_a, t_ring_state *state_b)
  * new_state is found, checks if it has greater heuristic_value. If it does
  * deletes the old ring_state.
  */
-void	insert_ordered_by_heuristic(t_ring *q, t_ring_state *new_state)
+void	insert_ordered_by_heuristic(t_ring **q, t_ring_state *new_state)
 {
 	t_ring			*iterator;
 	t_ring_state	*temp_state;
 	t_ring			*insert_position;
 
+	if (*q == NULL)
+	{
+		ring_add(q, new_state);
+		return ;
+	}
+	ft_printf("Got\n");
+	print_rings(new_state->rings);
+	
+	iterator = *q;
 	ring_reverse_rotate(&iterator);
 	insert_position = NULL;
-	while (iterator != q)
+	do						// Illegal
 	{
 		if (ring_state_equality_comparison(new_state, (t_ring_state *)iterator->content))
 		{
@@ -167,12 +177,15 @@ void	insert_ordered_by_heuristic(t_ring *q, t_ring_state *new_state)
 					ring_state_del(&temp_state, NULL);
 				}
 			else
+			{
+				ring_state_del(&new_state, NULL);
 				return ;		// free new_state???
+			}
 		}
 		if (! insert_position && new_state->heuristic_value < ((t_ring_state *)iterator->next->content)->heuristic_value)
 			insert_position = iterator->next;
 		ring_reverse_rotate(&iterator);
-	}
+	} 	while (iterator != *q);
 	if (insert_position)
 		ring_add(&insert_position, new_state);
 }
@@ -184,6 +197,7 @@ t_ring_state	*get_next_unvisited_state(t_ring *queue)
 	if (queue == NULL)
 		return (NULL);
 	iterator = queue;
+	ft_fprintf(2, "oOoOo\n");
 	if (! ((t_ring_state *)iterator->content)->visited)
 		return ((t_ring_state *)iterator->content);
 	while (iterator->prev != queue)
@@ -232,25 +246,34 @@ t_stack	*brute(t_ring *rings[], int size)
 	current_state = new_state(rings, NULL, -1);
 	if (current_state == NULL)
 		return (NULL);
-	insert_ordered_by_heuristic(queue, current_state);
-	ft_printf("heh %d\n", calculate_heuristic(current_state->rings, current_state->path_length), 0);
-	return (NULL);
-	while (current_state != NULL || current_state->heuristic_value != 0)
+	insert_ordered_by_heuristic(&queue, current_state);
+	while (current_state != NULL && current_state->heuristic_value - current_state->path_length != 0)
 	{
 		command = ps_sa;
 		// get and enqueue children
 		while (command <= ps_rrr)
 		{
+			ft_fprintf(2,"Seg?\n");
 			cloned_rings = clone_rings(current_state->rings);
+			ft_fprintf(2,"Seg 2?\n");
 			execute(cloned_rings, NULL, command, 1);
-			insert_ordered_by_heuristic(queue, new_state(cloned_rings, current_state, command));
+			ft_fprintf(2,"Inserting\n");
+			print_rings(cloned_rings);
+			insert_ordered_by_heuristic(&queue, new_state(cloned_rings, current_state, command));
+			ft_fprintf(2,"Seg 4?\n");
 			command++;
 		}
 		current_state->visited = 1;
+		ft_fprintf(2,"Visited\n");
+		print_rings(current_state->rings);
+		ft_fprintf(2,"Seg 5?\n");
 		current_state = get_next_unvisited_state(queue);
+		ft_fprintf(2,"Seg 6? %p\n", current_state);
 	}
 	// get path from current_state to root and return it.
+	ft_fprintf(2,"Seg 7?\n");
 	if (current_state == NULL)
 		return (NULL);
+	ft_fprintf(2,"Seg 8?\n");
 	return (get_command_stack(current_state));
 }
