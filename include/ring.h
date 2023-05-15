@@ -35,4 +35,6 @@ int		ring_get_size(t_ring *ring);
 
 t_ring	*ring_clone(t_ring *ring);
 
+int		ring_is_equal(t_ring *ring_a, t_ring *ring_b, int (*f)(void *, void *));
+
 #endif

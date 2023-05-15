@@ -73,6 +73,8 @@ void	ring_del(t_ring **ring, void (*del)(void*))
 {
 	void	*content;
 
+	if (*ring == NULL)
+		return ;
 	content = ring_take(ring);
 	if (del != NULL)
 		(del)(content);
