@@ -28,7 +28,7 @@ void	ft_enqueue(t_queue **queue, void *content)
 		exit(EXIT_FAILURE);
 	if (*queue == NULL)
 	{
-		*queue = malloc(sizeof(t_queue));
+		*queue = (t_queue*)malloc(sizeof(t_queue));
 		if (*queue == NULL)
 			exit(EXIT_FAILURE);
 		(*queue)->head = NULL;
@@ -59,9 +59,9 @@ void	*ft_dequeue(t_queue **queue)
 	free(node);
 	if ((*queue)->head == NULL && (*queue)->tail == NULL)
 	{
-		free(*queue);
 		(*queue)->tail = NULL;
 		(*queue)->head = NULL;
+		free(*queue);
 		*queue = NULL;
 	}
 	return (content);

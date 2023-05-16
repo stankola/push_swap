@@ -16,6 +16,6 @@
 
 t_stack	*radix_sort(t_ring *rings[], unsigned int size);
 
-t_stack	*brute(t_ring *rings[], int size);
+t_stack	*brute(t_ring *rings[]);
 
 #endif

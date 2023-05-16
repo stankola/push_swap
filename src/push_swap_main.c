@@ -86,7 +86,7 @@ void	sort_and_print(int iarr[], int size)
 	if (rings != NULL)
 	{
 //		command_stack = radix_sort(rings, size);
-		command_stack = brute(rings, size);
+		command_stack = brute(rings);
 		print_command_stack(command_stack);
 		ft_del_stack(&command_stack, &free);
 		ring_del(&rings[a], NULL);
