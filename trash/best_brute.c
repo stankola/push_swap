@@ -28,16 +28,17 @@ typedef struct	s_ring_state
 	int					prev_command;
 }				t_ring_state;
 
-void	ring_state_del(t_ring_state *ring_state)
+void	ring_state_del(t_ring_state **ring_state, void (*del)(void*))
 {
-	if (ring_state == NULL)
+	if (*ring_state == NULL)
 		return ;
-	ring_del(&(ring_state->rings[a]), NULL);
-	ring_del(&(ring_state->rings[b]), NULL);
-	free(ring_state->rings);
-	ring_state->rings = NULL;
-	ring_state->parent = NULL;
-	free(ring_state);
+	ring_del(&((*ring_state)->rings[a]), del);
+	ring_del(&((*ring_state)->rings[b]), del);
+	free((*ring_state)->rings);
+	(*ring_state)->rings = NULL;
+	(*ring_state)->parent = NULL;
+	free(*ring_state);
+	*ring_state = NULL;
 }
 
 // Simply calculates inversions of a given ring element up to depth length.
@@ -173,11 +174,11 @@ void	insert_ordered_by_heuristic(t_ring **q, t_ring_state *new_state)
 			if ((new_state->heuristic_value < ((t_ring_state *)iterator->content)->heuristic_value))
 				{
 					temp_state = (t_ring_state *)ring_take(&iterator);
-					ring_state_del(temp_state);
+					ring_state_del(&temp_state, NULL);
 				}
 			else
 			{
-				ring_state_del(new_state);
+				ring_state_del(&new_state, NULL);
 				return ;		// free new_state???
 			}
 		}
@@ -200,6 +201,7 @@ t_ring_state	*get_next_unvisited_state(t_ring *queue)
 	if (queue == NULL)
 		return (NULL);
 	iterator = queue;
+	ft_fprintf(2, "oOoOo\n");
 	if (! ((t_ring_state *)iterator->content)->visited)
 		return ((t_ring_state *)iterator->content);
 	while (iterator->prev != queue)
@@ -214,93 +216,81 @@ t_ring_state	*get_next_unvisited_state(t_ring *queue)
 t_stack	*get_command_stack(t_ring_state *state)
 {
 	t_stack	*commands;
-	t_stack	*temp_stack;
-	int		*iptr;
 
 	if (state == NULL)
 		return (NULL);
 	commands = ft_new_stack();
-	temp_stack = ft_new_stack();
 	while (state->parent != NULL)
 	{
-		iptr = malloc(sizeof(int));
-		*iptr = state->prev_command;
-		ft_push(temp_stack, iptr);
+		ft_push(commands, command_to_string(state->prev_command));
 		state = state->parent;
 	}
-	stack_to_stack(temp_stack, commands);
-	ft_del_stack(&temp_stack, NULL);
+//	int *iptr = malloc(sizeof(int));
+//	*iptr = ps_pb;
+//	ft_push(commands, iptr);
+//	iptr = malloc(sizeof(int));
+//	*iptr = ps_pb;
+//	ft_push(commands, iptr);
 	return (commands);
-}
-
-int	contains(t_queue *q, t_ring_state *state)
-{
-	t_list	*iterator;
-
-	if (q == NULL)
-		return (0);
-	iterator = q->head;
-	while (iterator != NULL)
-	{
-		if (ring_state_equality_comparison(((t_ring_state *)iterator->content), state))
-			return (1);
-		iterator = iterator->next;
-	}	
-	return (0);
 }
 
 // search space = (n + 1) * n!
 // Best first search
 t_stack	*brute(t_ring *rings[], int size)
 {
+	t_ring			*queue;
 	t_ring_state	*current_state;
 	t_ring			**cloned_rings;
 	int				command;
 	t_ring_state	*temp_state;
-	t_queue			*q;			// unexplored
-	t_queue			*v;			// explored, not really used
-	t_stack			*commands;
 
 	if (is_sorted(rings[a]))
 		return (NULL);
-	q = NULL;
-	v = NULL;
+	queue = NULL;
 	size += 0;
-	cloned_rings = clone_rings(rings);
-	current_state = new_state(cloned_rings, NULL, -1);
+	current_state = new_state(rings, NULL, -1);
 	if (current_state == NULL)
 		return (NULL);
-	ft_enqueue(&q, current_state);
-	int level = -1;
-	while (1)
+
+	insert_ordered_by_heuristic(&queue, current_state);
+	while (current_state != NULL && current_state->heuristic_value - current_state->path_length != 0)
 	{
-		current_state = (t_ring_state *)ft_dequeue(&q);
-		ft_enqueue(&v, current_state);
-		if (current_state->path_length > level)
-		{
-			ft_printf("level %d\n", level);
-			if (q != NULL)
-				ft_printf("queue size %d\n", ft_lstsize(q->head));
-			level = current_state->path_length;
-		}
-		if (current_state->rings[b] == NULL && is_sorted(current_state->rings[a]))
-			break ;
 		command = ps_sa;
+		// get and enqueue children
 		while (command <= ps_rrr)
 		{
 			cloned_rings = clone_rings(current_state->rings);
 			execute(cloned_rings, NULL, command, 1);
+			print_rings(cloned_rings);
 			temp_state =  new_state(cloned_rings, current_state, command);
-			if (contains(v, temp_state))
-				ring_state_del(temp_state);
-			else
-				ft_enqueue(&q, temp_state);
+			ft_printf("heuriheuri %d\n", temp_state->heuristic_value);
+			insert_ordered_by_heuristic(&queue, temp_state);
 			command++;
 		}
+		current_state->visited = 1;
+		print_rings(current_state->rings);
+		current_state = get_next_unvisited_state(queue);
 	}
-//	print_rings(current_state->rings);
-	commands = get_command_stack(current_state);
-	ft_queueclear(&v, (void (*)(void *))ring_state_del);
-	ft_queueclear(&q, (void (*)(void *))ring_state_del);
-	return (commands);
+	// get path from current_state to root and return it.
+
+	t_ring *it;
+	it = queue;
+	char *chrp;
+	do
+	{
+		ft_printf("heuristic %d\n", ((t_ring_state *)it->content)->heuristic_value);
+		ft_printf("path length %d\n", ((t_ring_state *)it->content)->path_length);
+		ft_printf("visited %d\n", ((t_ring_state *)it->content)->visited);
+		chrp = command_to_string(((t_ring_state *)it->content)->prev_command);
+		ft_printf("prev command %s\n", chrp);
+		print_rings(((t_ring_state *)it->content)->rings);
+		free (chrp);
+		it = it->prev;
+	} while (it != queue);
+	
+	ft_printf("%p\n", current_state);
+	ft_printf("queue size %d\n", ring_get_size(queue));
+	if (current_state == NULL)
+		return (NULL);
+	return (get_command_stack(current_state));
 }

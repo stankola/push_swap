@@ -15,6 +15,7 @@
 #include "sorting_algorithms.h"
 #include "ft_math.h"
 #include <unistd.h>
+#include "test_utils.h"
 
 static int	*str_array_to_int_array(int argc, char *argv[])
 {

@@ -1,198 +1,202 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   breadth_first_search.c                             :+:      :+:    :+:   */
+/*   brute.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: tsankola <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/01/06 17:41:18 by tsankola          #+#    #+#             */
-/*   Updated: 2023/01/06 17:41:19 by tsankola         ###   ########.fr       */
+/*   Created: 2023/05/15 19:36:55 by tsankola          #+#    #+#             */
+/*   Updated: 2023/05/15 19:37:02 by tsankola         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #include "push_swap.h"
-#include <stdio.h> // TESTING
+#include "push_swap_operations.h"
+#include "ring.h"
+#include "stack.h"
+#include "ft_queue.h"
+#include "sorting_algorithms.h"
+#include "test_utils.h"
+#define stderr 2
 
-char	*get_path_to_root(t_vertex *v)
+typedef struct	s_ring_state
 {
-	char	*commandstr;
-	char	*pathstr;
-	char	*tempstr;
-	int i;
+	t_ring				**rings;
+	struct s_ring_state	*parent;
+	int					visited;
+	int					heuristic_value;
+	int					path_length;
+	int					prev_command;
+}				t_ring_state;
 
-	if (v == NULL)
+void	ring_state_del(t_ring_state *ring_state)
+{
+	if (ring_state == NULL)
+		return ;
+	ring_del(&(ring_state->rings[a]), NULL);
+	ring_del(&(ring_state->rings[b]), NULL);
+	free(ring_state->rings);
+	ring_state->rings = NULL;
+	ring_state->parent = NULL;
+	free(ring_state);
+}
+
+t_ring_state	*new_state(t_ring *rings[], t_ring_state *parent, int prev_command)
+{
+	t_ring_state	*newstate;
+
+	newstate = malloc(sizeof(t_ring_state));
+	if (newstate == NULL)
 		return (NULL);
-	pathstr = NULL;
-	i = 0;
-	while (v->parent_edge != NULL)		//TODO: If error???
-	{
-		commandstr = command_to_string(*(int*)v->parent_edge);
-		tempstr = ft_strjoin(commandstr, pathstr);
-		free(pathstr);
-		free(commandstr);
-		pathstr = tempstr;
-		v = v->parent;
-	}
-	return (pathstr);
-}
-
-void	delstackvertex(t_vertex *v)
-{
-//	fprintf(stderr, "Deleting %p\n", v);
-	ft_vertdel(&v, (void(*)(void*))delstacks, (void(*)(void*))del_int_ptr);
-}
-
-int		compare_stack_vertices(t_vertex *v1, t_vertex *v2)
-{
-	return (compare_stacks(v1->content, v2->content));
-}
-
-int	get_lowest_index(unsigned int array[], int size, unsigned int gt)
-{
-	int	i;
-	int	mini;
-
-	i = 0;
-	mini = 0;
-	while (i < size)
-	{
-		printf("what %d\n", array[i]);
-		if (array[i] < array[mini])
-		{
-		printf("the\n");
-			if(array[i] > gt)
-			{
-				mini = i;
-				printf("hell\n");
-			}
-		}
-		i++;
-	}
-	if (array[mini] > gt)
-		return (mini);
+	newstate->rings = malloc(sizeof(t_ring) * b);
+	if (newstate->rings == NULL)
+		return (NULL);
+	newstate->rings[a] = rings[a];
+	newstate->rings[b] = rings[b];
+	newstate->parent = parent;
+	if (parent != NULL)
+		newstate->path_length = parent->path_length + 1;
 	else
-		return (-1);
+		newstate->path_length = 0;
+	newstate->heuristic_value = calculate_heuristic(rings, newstate->path_length);
+	newstate->visited = 0;
+	newstate->prev_command = prev_command;
+	return (newstate);
 }
 
-int		generate_neighbours(t_queue **q, t_list *explored, t_vertex *v)
+t_ring	**clone_rings(t_ring *rings[])
 {
-	int			command;
-	int			*commandptr;
-	t_list		**n_stacks;
-	t_vertex	*new_v;
-	int			neighbourcount;
+	t_ring	**clones;
 
-	// shitty variables
-	t_vertex		**neighbours = malloc((ps_rrr + 1) * sizeof(t_vertex*));
-	unsigned int	neighbour_weight[11] = {-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1};
-
-	command = ps_sa;
-	neighbourcount = 0;
-	while (command <= ps_rrr)
-	{
-		n_stacks = execute(v->content, command);
-		commandptr = malloc(sizeof(int));
-		*commandptr = command;
-		new_v = ft_vertnew(n_stacks, v, commandptr);
-//		printf("command %d stack %p vertex %p parent %p\n", command, n_stacks, new_v, new_v->parent);
-//		print_stacks(n_stacks);
-//		fprintf(stderr, "New neighbourh: %p %p %p %p", new_v, new_v->content, new_v->parent, new_v->parent_edge);
-		if (ft_lstsearch(explored, new_v, (int(*)(void*, void*))compare_stack_vertices))
-			delstackvertex(new_v);
-		else
-		{
-//			ft_enqueue(q, new_v);	// TODO: what if vertnew fails?
-			neighbours[command] = new_v;	// shitty line
-			neighbour_weight[command] = measure_disorder(n_stacks[a]);	// shitty line
-			neighbourcount++;	// shitty line
-		}
-		command++;
-	}
-	fprintf(stderr, "shit");
-	/* Shit begins here */
-	int i = -1;
-	while (++i <= ps_rrr)
-	{
-		if (i == ps_pa || i == ps_pb)
-			continue ;
-		int min_i = get_lowest_index(neighbour_weight, ps_rrr + 1, -1);
-		fprintf(stderr, "crap, min_i %d", min_i);
-		if (min_i >= 0)
-		{
-			fprintf(stderr, "doo");
-			ft_enqueue(q, (neighbours[min_i]));
-			fprintf(stderr, "doo");
-		}
-	}
-	fprintf(stderr, "poop");
-//	free(neighbours[ps_pa]);
-//	free(neighbours[ps_pb]);
-	free(neighbours);
-	/* Shit ends here */
-
-	return (neighbourcount);
-//	fprintf(stderr, "neighboursh ok\n");
+	clones = malloc(sizeof(t_ring) * b);
+	if (clones == NULL)
+		return (NULL);
+	clones[a] = ring_clone(rings[a]);
+	clones[b] = ring_clone(rings[b]);
+	return (clones);
 }
 
-char	*breadth_first_search(t_list *stacks[])
+int	iptr_equality_comparator(int *x, int *y)
 {
-	t_queue		*q;			// queue of vertices
-	t_list		*explored;	// list of vertices
-	t_vertex	*v;
-	char		*path;
+	return (*x == *y);
+}
 
-	int exploredsize = 0;
-	int qsize = 0;
-//	unsigned long int			i;
-	
-	q = ft_queuenew();
-	v = ft_vertnew(stacks, NULL, NULL);
-	explored = NULL;
-	ft_enqueue(&q, v);
-	qsize++;
-//	printf("comp1 %d\n", compare_stack_vertices(v, v));
-//	printf("comp2 %p\n", ft_lstsearch(explored, v, (int (*)(void*, void*))compare_stack_vertices));
-	printf("getting to work...\n");
-//	i = 0;
-	while (!ft_queueisempty(q))
+int	ring_state_equality_comparison(t_ring_state *state_a, t_ring_state *state_b)
+{
+	if (ring_is_equal(state_a->rings[a], state_b->rings[a], (int (*)(void *, void *))&iptr_equality_comparator)
+		&& ring_is_equal(state_a->rings[b], state_b->rings[b], (int (*)(void *, void *))&iptr_equality_comparator))
+		return (1);
+	return (0);
+
+}
+
+t_ring_state	*get_next_unvisited_state(t_ring *queue)
+{
+	t_ring	*iterator;
+
+	if (queue == NULL)
+		return (NULL);
+	iterator = queue;
+	if (! ((t_ring_state *)iterator->content)->visited)
+		return ((t_ring_state *)iterator->content);
+	while (iterator->prev != queue)
 	{
-		fprintf(stderr, "queue state head %p tail %p\n", q->head, q->tail);
-		v = ft_dequeue(&q);
-		qsize--;
-//		fprintf(stderr, "working on %d\n", *(int*)v->parent_edge);
-		print_stacks(v->content);
-		if (is_sorted(v->content))
+		if (! ((t_ring_state *)iterator->content)->visited)
+			return ((t_ring_state *)iterator->content);
+		ring_reverse_rotate(&iterator);
+	}
+	return (NULL);
+}
+
+t_stack	*get_command_stack(t_ring_state *state)
+{
+	t_stack	*commands;
+	t_stack	*temp_stack;
+	int		*iptr;
+
+	if (state == NULL)
+		return (NULL);
+	commands = ft_new_stack();
+	temp_stack = ft_new_stack();
+	while (state->parent != NULL)
+	{
+		iptr = malloc(sizeof(int));
+		*iptr = state->prev_command;
+		ft_push(temp_stack, iptr);
+		state = state->parent;
+	}
+	stack_to_stack(temp_stack, commands);
+	ft_del_stack(&temp_stack, NULL);
+	return (commands);
+}
+
+int	contains(t_queue *q, t_ring_state *state)
+{
+	t_list	*iterator;
+
+	if (q == NULL)
+		return (0);
+	iterator = q->head;
+	while (iterator != NULL)
+	{
+		if (ring_state_equality_comparison(((t_ring_state *)iterator->content), state))
+			return (1);
+		iterator = iterator->next;
+	}	
+	return (0);
+}
+
+// search space = (n + 1) * n!
+// Best first search
+t_stack	*brute(t_ring *rings[], int size)
+{
+	t_ring_state	*current_state;
+	t_ring			**cloned_rings;
+	int				command;
+	t_ring_state	*temp_state;
+	t_queue			*q;			// unexplored
+	t_queue			*v;			// explored, not really used
+	t_stack			*commands;
+
+	if (is_sorted(rings[a]))
+		return (NULL);
+	q = NULL;
+	v = NULL;
+	size += 0;
+	cloned_rings = clone_rings(rings);
+	current_state = new_state(cloned_rings, NULL, -1);
+	if (current_state == NULL)
+		return (NULL);
+	ft_enqueue(&q, current_state);
+	int level = -1;
+	while (1)
+	{
+		current_state = (t_ring_state *)ft_dequeue(&q);
+		ft_enqueue(&v, current_state);
+		if (current_state->path_length > level)
 		{
-//			printf("goal found\n");
+			ft_printf("level %d\n", level);
+			if (q != NULL)
+				ft_printf("queue size %d\n", ft_lstsize(q->head));
+			level = current_state->path_length;
+		}
+		if (current_state->rings[b] == NULL && is_sorted(current_state->rings[a]))
 			break ;
-		}
-		if (ft_lstsearch(explored, v, (int (*)(void*, void*))compare_stack_vertices))
+		command = ps_sa;
+		while (command <= ps_rrr)
 		{
-//			fprintf(stderr, "freeing %p\n", v);
-			ft_vertdel(&v, (void (*)(void*))delstacks, (void (*)(void*))del_int_ptr);
-			continue ;
+			cloned_rings = clone_rings(current_state->rings);
+			execute(cloned_rings, NULL, command, 1);
+			temp_state =  new_state(cloned_rings, current_state, command);
+			if (contains(v, temp_state))
+				ring_state_del(temp_state);
+			else
+				ft_enqueue(&q, temp_state);
+			command++;
 		}
-		else
-		{
-			ft_lstadd_front(&explored, ft_lstnew(v));	// TODO: Error detection if lstnew fails
-			exploredsize++;
-		}
-		qsize += generate_neighbours(&q, explored, v);
-//		qsize += 12;
-//		printf("%lu\n", i++);
 	}
-	printf("Work finished\n");
-	printf("q size = %d  exploredsize = %d\n", qsize, exploredsize);
-//	fprintf(stderr, "Goal ptr %p\n", v);
-	path = get_path_to_root(v);
-//	fprintf(stderr, "%s", path);
-	fprintf(stderr, "path gotten\n");
-	ft_queueclear(&q, (void(*)(void*))delstackvertex);
-	fprintf(stderr, "queueclear ok\n");
-//	fprintf(stderr, "Explored contents:\n");
-//	for (t_list *t = explored; t != NULL; t = t->next)
-//		fprintf(stderr, "loopy %p\n", t->content);
-	ft_lstclear(&explored, (void(*)(void*))delstackvertex);
-	fprintf(stderr, "exploredclear ok\n");
-	ft_vertdel(&v, (void (*)(void*))delstacks, (void (*)(void*))del_int_ptr);
-	return (path);
+//	print_rings(current_state->rings);
+	commands = get_command_stack(current_state);
+	ft_queueclear(&v, (void (*)(void *))ring_state_del);
+	ft_queueclear(&q, (void (*)(void *))ring_state_del);
+	return (commands);
 }

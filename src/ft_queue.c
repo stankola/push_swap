@@ -9,7 +9,7 @@
 /*   Updated: 2023/01/03 19:21:41 by tsankola         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-#include "queue.h"
+#include "ft_queue.h"
 
 /* Standard FIFO queue
  * "Smart" enqueue and dequeue that creates or frees itself if NULL or empty.
@@ -67,9 +67,10 @@ void	*ft_dequeue(t_queue **queue)
 	return (content);
 }
 
+// Seems pointless...
 int	ft_queueisempty(t_queue *q)
 {
-	if (q->tail == NULL && q->head == NULL)
+	if (q == NULL || (q->tail == NULL && q->head == NULL))
 		return (1);
 	else
 		return (0);
@@ -77,7 +78,7 @@ int	ft_queueisempty(t_queue *q)
 
 void	ft_queueclear(t_queue **queue, void (*del)(void*))
 {
-	if (queue == NULL || del == NULL)
+	if (queue == NULL && del == NULL)
 		return ;
 	ft_lstclear(&(*queue)->head, del);
 	(*queue)->tail = NULL;

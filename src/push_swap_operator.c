@@ -12,6 +12,8 @@
 #include "push_swap.h"
 #include "push_swap_operations.h"
 #include "libft.h"
+//#include "test_utils.h"
+//#include "stdio.h"
 
 static void	execute4real(t_ring *rings[], int command)
 {
@@ -40,7 +42,14 @@ int	execute(t_ring *rings[], t_stack *command_stack, int command,
 
 	if (repeat == 0 || rings == NULL || command < ps_sa || command > ps_rrr)
 		return (0);
+//	ft_printf("*****************\n");
+//	print_rings(rings);
+//	char *s = command_to_string(command);
+//	ft_printf("%s\nv\n\n", s);
 	execute4real(rings, command);
+//	print_rings(rings);
+//	ft_printf("*****************\n");
+//	getchar();
 	if (command_stack != NULL)
 	{
 		iptr = malloc(sizeof(int));
