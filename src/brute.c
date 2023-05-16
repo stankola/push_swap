@@ -16,6 +16,7 @@
 #include "ft_queue.h"
 #include "sorting_algorithms.h"
 #include "test_utils.h"
+#define stderr 2
 
 typedef struct	s_ring_state
 {
@@ -24,7 +25,7 @@ typedef struct	s_ring_state
 	int					visited;
 	int					heuristic_value;
 	int					path_length;
-	unsigned int		prev_command;
+	int					prev_command;
 }				t_ring_state;
 
 void	ring_state_del(t_ring_state **ring_state, void (*del)(void*))
@@ -94,7 +95,7 @@ static int	calculate_heuristic(t_ring *rings[], int length_to_root)
 	return (value);
 }
 
-t_ring_state	*new_state(t_ring *rings[], t_ring_state *parent, unsigned int prev_command)
+t_ring_state	*new_state(t_ring *rings[], t_ring_state *parent, int prev_command)
 {
 	t_ring_state	*newstate;
 
@@ -253,27 +254,34 @@ t_stack	*brute(t_ring *rings[], int size)
 		// get and enqueue children
 		while (command <= ps_rrr)
 		{
-			ft_fprintf(2,"Seg?\n");
 			cloned_rings = clone_rings(current_state->rings);
-			ft_fprintf(2,"Seg 2?\n");
 			execute(cloned_rings, NULL, command, 1);
-			ft_fprintf(2,"Inserting\n");
 			print_rings(cloned_rings);
 			insert_ordered_by_heuristic(&queue, new_state(cloned_rings, current_state, command));
-			ft_fprintf(2,"Seg 4?\n");
 			command++;
 		}
 		current_state->visited = 1;
-		ft_fprintf(2,"Visited\n");
 		print_rings(current_state->rings);
-		ft_fprintf(2,"Seg 5?\n");
 		current_state = get_next_unvisited_state(queue);
-		ft_fprintf(2,"Seg 6? %p\n", current_state);
 	}
 	// get path from current_state to root and return it.
-	ft_fprintf(2,"Seg 7?\n");
+
+	t_ring *it;
+	it = queue;
+	char *chrp;
+	do
+	{
+		ft_printf("heuristic %d\n", ((t_ring_state *)it->content)->heuristic_value);
+		ft_printf("path length %d\n", ((t_ring_state *)it->content)->path_length);
+		ft_printf("visited %d\n", ((t_ring_state *)it->content)->visited);
+		chrp = command_to_string(((t_ring_state *)it->content)->prev_command);
+		ft_printf("prev command %s\n", chrp);
+		print_rings(((t_ring_state *)it->content)->rings);
+		free (chrp);
+		it = it->prev;
+	} while (it != queue);
+	
 	if (current_state == NULL)
 		return (NULL);
-	ft_fprintf(2,"Seg 8?\n");
 	return (get_command_stack(current_state));
 }

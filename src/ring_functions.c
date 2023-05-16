@@ -52,6 +52,8 @@ int	ring_is_equal(t_ring *ring_a, t_ring *ring_b, int (*f)(void *, void *))
 	t_ring	*a_iterator;
 	t_ring	*b_iterator;
 
+	if (ring_a == NULL || ring_b == NULL || f == NULL)
+		return (0);
 	a_iterator = ring_a->prev;
 	b_iterator = ring_b->prev;
 	while (a_iterator != ring_a || b_iterator != ring_b)

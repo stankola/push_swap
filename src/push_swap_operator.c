@@ -54,31 +54,29 @@ int	execute(t_ring *rings[], t_stack *command_stack, int command,
 // Translates command to a string. Returns NULL if ft_strdup fails
 char	*command_to_string(int command)
 {
-	char	*str;
-
 	if (command == ps_sa)
-		str = "sa\n";
+		return (ft_strdup("sa\n"));
 	else if (command == ps_sb)
-		str = "sb\n";
+		return (ft_strdup("sb\n"));
 	else if (command == ps_ss)
-		str = "ss\n";
+		return (ft_strdup("ss\n"));
 	else if (command == ps_pa)
-		str = "pa\n";
+		return (ft_strdup("pa\n"));
 	else if (command == ps_pb)
-		str = "pb\n";
+		return (ft_strdup("pb\n"));
 	else if (command == ps_ra)
-		str = "ra\n";
+		return (ft_strdup("ra\n"));
 	else if (command == ps_rb)
-		str = "rb\n";
+		return (ft_strdup("rb\n"));
 	else if (command == ps_rr)
-		str = "rr\n";
+		return (ft_strdup("rr\n"));
 	else if (command == ps_rra)
-		str = "rra\n";
+		return (ft_strdup("rra\n"));
 	else if (command == ps_rrb)
-		str = "rrb\n";
+		return (ft_strdup("rrb\n"));
 	else if (command == ps_rrr)
-		str = "rrr\n";
-	return (ft_strdup(str));
+		return (ft_strdup("rrr\n"));
+	return (NULL);
 }
 
 int	string_to_command(char *str)
