@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 #include "ring.h"
-#include "stdlib.h"
+#include <stdlib.h>
 
 int	ring_get_size(t_ring *ring)
 {

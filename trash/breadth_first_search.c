@@ -13,7 +13,7 @@
 #include "push_swap_operations.h"
 #include "ring.h"
 #include "stack.h"
-#include "ft_queue.h"
+#include "queue.h"
 #include "sorting_algorithms.h"
 #include "test_utils.h"
 #define stderr 2
@@ -75,15 +75,15 @@ t_ring	**clone_rings(t_ring *rings[])
 	return (clones);
 }
 
-int	iptr_equality_comparator(int *x, int *y)
+int	iptr_eq(int *x, int *y)
 {
 	return (*x == *y);
 }
 
-int	ring_state_equality_comparison(t_ring_state *state_a, t_ring_state *state_b)
+int	ring_state_eq(t_ring_state *state_a, t_ring_state *state_b)
 {
-	if (ring_is_equal(state_a->rings[a], state_b->rings[a], (int (*)(void *, void *))&iptr_equality_comparator)
-		&& ring_is_equal(state_a->rings[b], state_b->rings[b], (int (*)(void *, void *))&iptr_equality_comparator))
+	if (ring_is_equal(state_a->rings[a], state_b->rings[a], (int (*)(void *, void *))&iptr_eq)
+		&& ring_is_equal(state_a->rings[b], state_b->rings[b], (int (*)(void *, void *))&iptr_eq))
 		return (1);
 	return (0);
 
@@ -138,7 +138,7 @@ int	contains(t_queue *q, t_ring_state *state)
 	iterator = q->head;
 	while (iterator != NULL)
 	{
-		if (ring_state_equality_comparison(((t_ring_state *)iterator->content), state))
+		if (ring_state_eq(((t_ring_state *)iterator->content), state))
 			return (1);
 		iterator = iterator->next;
 	}	

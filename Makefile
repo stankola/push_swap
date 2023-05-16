@@ -18,10 +18,10 @@ INCDIR = include
 
 LIB_INCDIR = $(LIBDIR)/$(INCDIR)
 
-_SRC =	ft_isinteger.c ft_math.c ft_queue.c push_swap.c push_swap_main.c \
-		push_swap_operations.c push_swap_operator.c \
+_SRC =	ft_isinteger.c ft_math.c queue.c push_swap.c push_swap_main.c \
+		push_swap_operations.c push_swap_operator.c queue_functions.c \
 		ring.c ring_functions.c stack.c stack_functions.c
-_SRC +=	lsb_radix_sort.c brute.c
+_SRC +=	lsb_radix_sort.c brute.c brute_helpers.c
 _SRC +=	test_utils.c
 SRC = $(patsubst %, $(SRCDIR)/%, $(_SRC))
 
@@ -33,7 +33,7 @@ LIB = $(patsubst %, $(LIBDIR)/%, $(_LIB))
 LIB_COMPILER_NAME = $(patsubst lib%.a, %, $(_LIB))
 
 _INC =	ft_math.h push_swap.h push_swap_operations.h ring.h \
-		sorting_algorithms.h stack.h ft_queue.h
+		sorting_algorithms.h stack.h queue.h
 _INC =	test_utils.h
 INC = $(patsubst %, $(INCDIR)/%, $(_INC))
 

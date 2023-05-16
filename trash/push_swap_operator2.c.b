@@ -3,7 +3,7 @@
 #include "push_swap.h"
 #include "push_swap_operations.h"
 #include "libft.h"
-#include "ft_queue.h"
+#include "queue.h"
 
 typedef struct	s_operation		//Move to header
 {

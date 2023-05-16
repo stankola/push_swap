@@ -13,7 +13,7 @@
 #include "push_swap_operations.h"
 #include "ring.h"
 #include "stack.h"
-#include "ft_queue.h"
+#include "queue.h"
 #include "sorting_algorithms.h"
 #include "test_utils.h"
 #define stderr 2
@@ -130,15 +130,15 @@ t_ring	**clone_rings(t_ring *rings[])
 	return (clones);
 }
 
-int	iptr_equality_comparator(int *x, int *y)
+int	iptr_eq(int *x, int *y)
 {
 	return (*x == *y);
 }
 
-int	ring_state_equality_comparison(t_ring_state *state_a, t_ring_state *state_b)
+int	ring_state_eq(t_ring_state *state_a, t_ring_state *state_b)
 {
-	if (ring_is_equal(state_a->rings[a], state_b->rings[a], (int (*)(void *, void *))&iptr_equality_comparator)
-		&& ring_is_equal(state_a->rings[b], state_b->rings[b], (int (*)(void *, void *))&iptr_equality_comparator))
+	if (ring_is_equal(state_a->rings[a], state_b->rings[a], (int (*)(void *, void *))&iptr_eq)
+		&& ring_is_equal(state_a->rings[b], state_b->rings[b], (int (*)(void *, void *))&iptr_eq))
 		return (1);
 	return (0);
 
@@ -169,7 +169,7 @@ void	insert_ordered_by_heuristic(t_ring **q, t_ring_state *new_state)
 	insert_position = NULL;
 	do						// Illegal
 	{
-		if (ring_state_equality_comparison(new_state, (t_ring_state *)iterator->content))
+		if (ring_state_eq(new_state, (t_ring_state *)iterator->content))
 		{
 			if ((new_state->heuristic_value < ((t_ring_state *)iterator->content)->heuristic_value))
 				{

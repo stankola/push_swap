@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_queue.h                                         :+:      :+:    :+:   */
+/*   queue.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: tsankola <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -28,5 +28,7 @@ int		ft_queueisempty(t_queue *q);
 void	ft_queueclear(t_queue **queue, void (*del)(void*));
 
 void	*ft_queuepeek(t_queue *queue);
+
+int		queue_contains(t_queue *q, void *state, int (*f)(void*, void*));
 
 #endif

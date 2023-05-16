@@ -13,49 +13,10 @@
 #include "push_swap_operations.h"
 #include "ring.h"
 #include "stack.h"
-#include "ft_queue.h"
+#include "queue.h"
 #include "sorting_algorithms.h"
 
-typedef struct	s_ring_state
-{
-	t_ring				**rings;
-	struct s_ring_state	*parent;
-	int					visited;
-	int					path_length;
-	int					prev_command;
-}				t_ring_state;
-
-void	ring_state_del(t_ring_state *ring_state)
-{
-	if (ring_state == NULL)
-		return ;
-	ring_del(&(ring_state->rings[a]), NULL);
-	ring_del(&(ring_state->rings[b]), NULL);
-	free(ring_state->rings);
-	ring_state->rings = NULL;
-	ring_state->parent = NULL;
-	free(ring_state);
-}
-
-t_ring_state	*new_state(t_ring *rings[], t_ring_state *parent, int prev_command)
-{
-	t_ring_state	*newstate;
-
-	newstate = malloc(sizeof(t_ring_state));
-	if (newstate == NULL)
-		return (NULL);
-	newstate->rings = rings;
-	newstate->parent = parent;
-	if (parent != NULL)
-		newstate->path_length = parent->path_length + 1;
-	else
-		newstate->path_length = 0;
-	newstate->visited = 0;
-	newstate->prev_command = prev_command;
-	return (newstate);
-}
-
-t_ring	**clone_rings(t_ring *rings[])
+static t_ring	**clone_rings(t_ring *rings[])
 {
 	t_ring	**clones;
 
@@ -67,21 +28,7 @@ t_ring	**clone_rings(t_ring *rings[])
 	return (clones);
 }
 
-int	iptr_equality_comparator(int *x, int *y)
-{
-	return (*x == *y);
-}
-
-int	ring_state_equality_comparison(t_ring_state *state_a, t_ring_state *state_b)
-{
-	if (ring_is_equal(state_a->rings[a], state_b->rings[a], (int (*)(void *, void *))&iptr_equality_comparator)
-		&& ring_is_equal(state_a->rings[b], state_b->rings[b], (int (*)(void *, void *))&iptr_equality_comparator))
-		return (1);
-	return (0);
-
-}
-
-t_stack	*get_command_stack(t_ring_state *state)
+static t_stack	*get_command_stack(t_ring_state *state)
 {
 	t_stack	*commands;
 	t_stack	*temp_stack;
@@ -103,57 +50,41 @@ t_stack	*get_command_stack(t_ring_state *state)
 	return (commands);
 }
 
-int	contains(t_queue *q, t_ring_state *state)
+void create_child(int command, t_ring_state *state, t_queue *q[])
 {
-	t_list	*iterator;
+	t_ring_state	*t;
 
-	if (q == NULL)
-		return (0);
-	iterator = q->head;
-	while (iterator != NULL)
-	{
-		if (ring_state_equality_comparison(((t_ring_state *)iterator->content), state))
-			return (1);
-		iterator = iterator->next;
-	}	
-	return (0);
+	t = new_state(clone_rings(state->rings), state, command);
+	execute(t->rings, NULL, command, 1);
+	if (queue_contains(q[0], (void *)t, (int(*)(void*,void*))ring_state_eq)
+		|| queue_contains(q[1], (void *)t, (int(*)(void*,void*))ring_state_eq))
+		ring_state_del(t);
+	else
+		ft_enqueue(&q[0], t);
 }
 
 // search space = (n + 1) * n!
 t_stack	*brute(t_ring *rings[])
 {
-	t_ring_state	*current_state;
+	t_ring_state	*cur_state;
 	int				command;
-	t_ring_state	*temp_state;
 	t_queue			**queues;
 	t_stack			*commands;
 
-	if (is_sorted(rings[a]))
-		return (NULL);
 	queues = ft_calloc(2, sizeof(t_queue *));
-	current_state = new_state(clone_rings(rings), NULL, -1);
-	if (current_state == NULL)
-		return (NULL);
-	ft_enqueue(&queues[0], current_state);
+	cur_state = new_state(clone_rings(rings), NULL, -1);
+	ft_enqueue(&queues[0], cur_state);
 	while (1)
 	{
-		current_state = (t_ring_state *)ft_dequeue(&queues[0]);
-		if (current_state->rings[b] == NULL && is_sorted(current_state->rings[a]))
+		cur_state = (t_ring_state *)ft_dequeue(&queues[0]);
+		if (cur_state->rings[b] == NULL && is_sorted(cur_state->rings[a]))
 			break ;
-		ft_enqueue(&queues[1], current_state);
+		ft_enqueue(&queues[1], cur_state);
 		command = ps_sa;
 		while (command <= ps_rrr)
-		{
-			temp_state =  new_state(clone_rings(current_state->rings), current_state, command);
-			execute(temp_state->rings, NULL, command, 1);
-			if (contains(queues[0], temp_state) || contains(queues[1], temp_state))
-				ring_state_del(temp_state);
-			else
-				ft_enqueue(&queues[0], temp_state);
-			command++;
-		}
+			create_child(command++, cur_state, queues);
 	}
-	commands = get_command_stack(current_state);
+	commands = get_command_stack(cur_state);
 	ft_queueclear(&queues[1], (void (*)(void *))ring_state_del);
 	ft_queueclear(&queues[0], (void (*)(void *))ring_state_del);
 	free(queues);

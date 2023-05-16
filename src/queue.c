@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_queue.c                                         :+:      :+:    :+:   */
+/*   queue.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: tsankola <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -9,7 +9,7 @@
 /*   Updated: 2023/01/03 19:21:41 by tsankola         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-#include "ft_queue.h"
+#include "queue.h"
 
 /* Standard FIFO queue
  * "Smart" enqueue and dequeue that creates or frees itself if NULL or empty.
@@ -78,7 +78,7 @@ int	ft_queueisempty(t_queue *q)
 
 void	ft_queueclear(t_queue **queue, void (*del)(void*))
 {
-	if (queue == NULL && del == NULL)
+	if (queue == NULL || *queue == NULL)
 		return ;
 	ft_lstclear(&(*queue)->head, del);
 	(*queue)->tail = NULL;

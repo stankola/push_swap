@@ -15,7 +15,6 @@
 #include "sorting_algorithms.h"
 #include "ft_math.h"
 #include <unistd.h>
-#include "test_utils.h"
 
 static int	*str_array_to_int_array(int argc, char *argv[])
 {
@@ -85,8 +84,10 @@ void	sort_and_print(int iarr[], int size)
 	rings = get_main_rings(iarr, size);
 	if (rings != NULL)
 	{
-//		command_stack = radix_sort(rings, size);
-		command_stack = brute(rings);
+		if (size > 6)
+			command_stack = radix_sort(rings, size);
+		else
+			command_stack = brute(rings);
 		print_command_stack(command_stack);
 		ft_del_stack(&command_stack, &free);
 		ring_del(&rings[a], NULL);

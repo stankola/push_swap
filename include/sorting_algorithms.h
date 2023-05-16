@@ -14,8 +14,23 @@
 # include "stack.h"
 # include "ring.h"
 
-t_stack	*radix_sort(t_ring *rings[], unsigned int size);
+typedef struct	s_ring_state
+{
+	t_ring				**rings;
+	struct s_ring_state	*parent;
+	int					visited;
+	int					path_length;
+	int					prev_command;
+}				t_ring_state;
 
-t_stack	*brute(t_ring *rings[]);
+void			ring_state_del(t_ring_state *ring_state);
+
+t_ring_state	*new_state(t_ring *rings[], t_ring_state *parent, int prev_cmd);
+
+int				ring_state_eq(t_ring_state *state_a, t_ring_state *state_b);
+
+t_stack			*radix_sort(t_ring *rings[], unsigned int size);
+
+t_stack			*brute(t_ring *rings[]);
 
 #endif
